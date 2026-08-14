@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pnpm dev *)",
+      "Bash(grep -nE '\\\\b\\(bg|text|border|from|to|via|ring|placeholder\\)-\\(gray|slate|zinc|blue|green|red|yellow|amber|emerald|white|black\\)\\(-[0-9]{2,3}\\)?\\\\b' components/transferencia-modal.tsx)",
+      "Bash(pnpm build *)"
+    ]
+  }
+}

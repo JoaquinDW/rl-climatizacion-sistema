@@ -1,0 +1,242 @@
+import { supabase } from "./supabase"
+import { MARCA } from "./marca"
+
+// Links de interés / redes sociales que se muestran en la página pública
+export type TipoRed =
+  | "instagram"
+  | "facebook"
+  | "tiktok"
+  | "youtube"
+  | "x"
+  | "whatsapp"
+  | "telegram"
+  | "web"
+
+export interface RedSocial {
+  tipo: TipoRed
+  etiqueta: string
+  url: string
+}
+
+export const TIPOS_RED: { valor: TipoRed; etiqueta: string }[] = [
+  { valor: "instagram", etiqueta: "Instagram" },
+  { valor: "facebook", etiqueta: "Facebook" },
+  { valor: "tiktok", etiqueta: "TikTok" },
+  { valor: "youtube", etiqueta: "YouTube" },
+  { valor: "x", etiqueta: "X (Twitter)" },
+  { valor: "whatsapp", etiqueta: "Canal de WhatsApp" },
+  { valor: "telegram", etiqueta: "Canal de Telegram" },
+  { valor: "web", etiqueta: "Otro link" },
+]
+
+// Textos editables de la página pública. Se guardan como JSON en la tabla
+// `configuracion` (clave "contenido_sitio") y se mergean con estos defaults,
+// así agregar un campo nuevo acá no requiere migración.
+export interface ContenidoSitio {
+  // General
+  marca: string
+  whatsapp_url: string
+
+  // Hero
+  hero_badge: string
+  hero_titulo: string
+  hero_subtitulo: string
+  hero_chances_label: string
+  hero_completado_label: string
+  hero_completo_titulo: string
+  hero_completo_descripcion: string
+  hero_sorteado_titulo: string
+  hero_cerrado_titulo: string
+  hero_cerrado_descripcion: string
+
+  // Cierre de ventas programado (contador regresivo)
+  cierre_kicker: string
+  cierre_sorteo_label: string
+  cierre_cerrado_titulo: string
+  cierre_cerrado_descripcion: string
+
+  // Packs
+  packs_popular_label: string
+  packs_comprar_boton: string
+  packs_nota: string
+
+  // Premios
+  premios_kicker: string
+  premios_titulo: string
+  premios_primer_label: string
+  premios_sec_label: string
+  premios_sec_descripcion: string
+
+  // FAQ
+  faq_titulo: string
+  faq_pregunta_fecha: string
+  faq_respuesta_fecha_pendiente: string
+  faq_pregunta_ganador: string
+  faq_respuesta_ganador: string
+  faq_link_quiniela: string
+
+  // Consulta de números
+  consulta_kicker: string
+  consulta_titulo: string
+  consulta_descripcion: string
+  consulta_placeholder: string
+  consulta_boton: string
+  consulta_vacio: string
+  consulta_vacio_nota: string
+
+  // Ganadores Express
+  express_kicker: string
+  express_titulo: string
+
+  // Ganadores Anteriores
+  pasados_cta_texto: string
+  pasados_cta_boton: string
+  pasados_kicker: string
+  pasados_titulo: string
+  pasados_descripcion: string
+
+  // Links de interés / redes sociales
+  redes_kicker: string
+  redes_titulo: string
+  redes_descripcion: string
+  redes: RedSocial[]
+
+  // Pantalla "Próximamente" (sin sorteo activo)
+  proximamente_titulo: string
+  proximamente_descripcion: string
+  proximamente_boton: string
+
+  // Footer
+  footer_copyright: string
+}
+
+// Claves de ContenidoSitio cuyo valor es un texto simple (excluye `redes`)
+export type ClaveTextoContenido = {
+  [K in keyof ContenidoSitio]: ContenidoSitio[K] extends string ? K : never
+}[keyof ContenidoSitio]
+
+export const CONTENIDO_DEFAULTS: ContenidoSitio = {
+  marca: MARCA,
+  // TODO: completar desde /backoffice -> Contenido del sitio.
+  whatsapp_url: "",
+
+  hero_badge: "Sorteo vigente",
+  hero_titulo: "¡Participá por {premio}!",
+  hero_subtitulo: "Elegí tu pack de chances y participá.",
+  hero_chances_label: "Chances vendidas",
+  hero_completado_label: "completado",
+  hero_completo_titulo: "¡Se vendieron todas las chances!",
+  hero_completo_descripcion:
+    "El sorteo se realizará mañana a las 14:00 hs según el primer número de la Quiniela de Buenos Aires",
+  hero_sorteado_titulo: "Resultados",
+  hero_cerrado_titulo: "¡Gracias por participar!",
+  hero_cerrado_descripcion: "Mucha suerte a todos!",
+
+  cierre_kicker: "Las ventas cierran en",
+  cierre_sorteo_label: "Sorteamos el {fecha}",
+  cierre_cerrado_titulo: "Ventas cerradas",
+  cierre_cerrado_descripcion:
+    "Ya no se pueden comprar números. ¡Mucha suerte a todos!",
+
+  packs_popular_label: "Más popular",
+  packs_comprar_boton: "Comprar",
+  packs_nota: "Mientras más chances comprás, más posibilidades de ganar.",
+
+  premios_kicker: "Lo que podés ganar",
+  premios_titulo: "Premios",
+  premios_primer_label: "1er Premio",
+  premios_sec_label: "Premios Secundarios",
+  premios_sec_descripcion: "Si te toca alguno de estos números ganás {monto}",
+
+  faq_titulo: "Preguntas frecuentes",
+  faq_pregunta_fecha: "¿Cuándo se realiza el evento?",
+  faq_respuesta_fecha_pendiente:
+    "Cuando se vende el 100% de las chances se realiza el sorteo.",
+  faq_pregunta_ganador: "¿En dónde vemos el ganador?",
+  faq_respuesta_ganador:
+    "Publicamos el resultado en nuestras redes y avisamos al ganador.",
+  faq_link_quiniela: "",
+
+  consulta_kicker: "Participantes",
+  consulta_titulo: "¿Ya participaste?",
+  consulta_descripcion:
+    "Ingresá el email con el que compraste para ver tus números asignados.",
+  consulta_placeholder: "tuemail@ejemplo.com",
+  consulta_boton: "Consultar",
+  consulta_vacio: "No encontramos participaciones confirmadas para ese email.",
+  consulta_vacio_nota:
+    "Si pagaste por transferencia, tu pago puede estar pendiente de aprobación.",
+
+  express_kicker: "Premios instantáneos",
+  express_titulo: "Ganadores Express",
+
+  pasados_cta_texto: "¿Tenés consultas?",
+  pasados_cta_boton: "WhatsApp",
+  pasados_kicker: "Historial",
+  pasados_titulo: "Ganadores Anteriores",
+  pasados_descripcion: "Conocé a las personas que ya ganaron con nosotros",
+
+  redes_kicker: "Comunidad",
+  redes_titulo: "Links de interés",
+  redes_descripcion:
+    "Seguinos en nuestras redes para enterarte de nuevos sorteos y ganadores.",
+  redes: [],
+
+  proximamente_titulo: "Próximamente",
+  proximamente_descripcion:
+    "Estamos preparando el próximo sorteo. ¡Volvé pronto!",
+  proximamente_boton: "Avisame cuando arranque",
+
+  footer_copyright: `© ${new Date().getFullYear()} ${MARCA}. Todos los derechos reservados.`,
+}
+
+const CLAVE_CONTENIDO = "contenido_sitio"
+
+export async function obtenerContenido(): Promise<ContenidoSitio> {
+  try {
+    const { data } = await supabase
+      .from("configuracion")
+      .select("valor")
+      .eq("clave", CLAVE_CONTENIDO)
+      .maybeSingle()
+
+    if (!data?.valor) return CONTENIDO_DEFAULTS
+
+    const guardado = JSON.parse(data.valor) as Partial<ContenidoSitio>
+    return { ...CONTENIDO_DEFAULTS, ...guardado }
+  } catch (error) {
+    console.error("Error obteniendo contenido del sitio:", error)
+    return CONTENIDO_DEFAULTS
+  }
+}
+
+export async function actualizarContenido(
+  contenido: ContenidoSitio,
+): Promise<boolean> {
+  try {
+    const { error } = await supabase.from("configuracion").upsert([
+      {
+        clave: CLAVE_CONTENIDO,
+        valor: JSON.stringify(contenido),
+        updated_at: new Date().toISOString(),
+      },
+    ])
+
+    if (error) {
+      console.error("Error actualizando contenido del sitio:", error)
+      return false
+    }
+    return true
+  } catch (error) {
+    console.error("Error actualizando contenido del sitio:", error)
+    return false
+  }
+}
+
+// Reemplaza placeholders tipo {premio} o {monto} en un texto editable
+export function conPlaceholders(
+  texto: string,
+  valores: Record<string, string>,
+): string {
+  return texto.replace(/\{(\w+)\}/g, (match, clave) => valores[clave] ?? match)
+}
