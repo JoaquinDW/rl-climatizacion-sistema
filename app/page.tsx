@@ -562,9 +562,6 @@ export default function LandingPage() {
                               {sorteo.numero_ganador}
                             </p>
                           </div>
-                          <p className="text-sm text-ice-muted pt-1">
-                            Transmitido en vivo por Facebook
-                          </p>
                         </div>
                       )}
                     </div>

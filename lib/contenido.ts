@@ -150,8 +150,7 @@ export const CONTENIDO_DEFAULTS: ContenidoSitio = {
 
   faq_titulo: "Preguntas frecuentes",
   faq_pregunta_fecha: "¿Cuándo se realiza el evento?",
-  faq_respuesta_fecha_pendiente:
-    "Cuando se vende el 100% de las chances se realiza el sorteo.",
+  faq_respuesta_fecha_pendiente: "Cuando se vende el 100% de las chances.",
   faq_pregunta_ganador: "¿En dónde vemos el ganador?",
   faq_respuesta_ganador:
     "Publicamos el resultado en nuestras redes y avisamos al ganador.",
@@ -176,8 +175,8 @@ export const CONTENIDO_DEFAULTS: ContenidoSitio = {
   pasados_titulo: "Ganadores Anteriores",
   pasados_descripcion: "Conocé a las personas que ya ganaron con nosotros",
 
-  redes_kicker: "Comunidad",
-  redes_titulo: "Links de interés",
+  redes_kicker: "",
+  redes_titulo: "Faustino Motors",
   redes_descripcion:
     "Seguinos en nuestras redes para enterarte de nuevos sorteos y ganadores.",
   redes: [],
@@ -192,6 +191,25 @@ export const CONTENIDO_DEFAULTS: ContenidoSitio = {
 
 const CLAVE_CONTENIDO = "contenido_sitio"
 
+// Mantiene actualizados los textos que ya estaban guardados en la configuración
+// del sitio. Al guardar desde el backoffice, estos valores quedan persistidos.
+function normalizarContenido(contenido: ContenidoSitio): ContenidoSitio {
+  return {
+    ...contenido,
+    redes_kicker:
+      contenido.redes_kicker === "Sorteos Oficiales" ? "" : contenido.redes_kicker,
+    redes_titulo:
+      contenido.redes_titulo === "Faustino en las redes"
+        ? "Faustino Motors"
+        : contenido.redes_titulo,
+    faq_respuesta_fecha_pendiente:
+      contenido.faq_respuesta_fecha_pendiente ===
+      "Cuando se vende el 100% de las chances se realiza el sorteo."
+        ? "Cuando se vende el 100% de las chances."
+        : contenido.faq_respuesta_fecha_pendiente,
+  }
+}
+
 export async function obtenerContenido(): Promise<ContenidoSitio> {
   try {
     const { data } = await supabase
@@ -203,7 +221,7 @@ export async function obtenerContenido(): Promise<ContenidoSitio> {
     if (!data?.valor) return CONTENIDO_DEFAULTS
 
     const guardado = JSON.parse(data.valor) as Partial<ContenidoSitio>
-    return { ...CONTENIDO_DEFAULTS, ...guardado }
+    return normalizarContenido({ ...CONTENIDO_DEFAULTS, ...guardado })
   } catch (error) {
     console.error("Error obteniendo contenido del sitio:", error)
     return CONTENIDO_DEFAULTS
