@@ -35,10 +35,12 @@ export function RedesSociales({ contenido }: { contenido: ContenidoSitio }) {
       <div className="divider-brand max-w-4xl mx-auto mb-16" />
       <div className="container mx-auto px-4 max-w-2xl text-center">
         <Reveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
-            {contenido.redes_kicker}
-          </p>
-          <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-3">
+          {contenido.redes_kicker && (
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+              {contenido.redes_kicker}
+            </p>
+          )}
+          <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-ice mb-3">
             {contenido.redes_titulo}
           </h2>
           {contenido.redes_descripcion && (

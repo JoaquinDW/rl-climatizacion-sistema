@@ -567,15 +567,6 @@ export default function LandingPage() {
                               {sorteo.numero_ganador}
                             </p>
                           </div>
-                          <a
-                            href={INSTAGRAM_LIVE_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 pt-1 text-sm text-brand-muted transition-colors hover:text-brand-accent"
-                          >
-                            <Instagram className="h-4 w-4" />
-                            Transmitido en vivo por Instagram
-                          </a>
                         </div>
                       )}
                     </div>
