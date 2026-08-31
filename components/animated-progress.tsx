@@ -11,7 +11,7 @@ export function AnimatedProgress({ value, className }: AnimatedProgressProps) {
   return (
     <div
       className={cn(
-        "relative w-full progress-rl-track rounded-full overflow-hidden",
+        "relative w-full progress-brand-track rounded-full overflow-hidden",
         className
       )}
       role="progressbar"
@@ -20,7 +20,7 @@ export function AnimatedProgress({ value, className }: AnimatedProgressProps) {
       aria-valuemax={100}
     >
       <div
-        className="h-full progress-rl-fill rounded-full transition-all duration-1000 ease-out"
+        className="h-full progress-brand-fill rounded-full transition-all duration-1000 ease-out"
         style={{ width: `${Math.min(value, 100)}%` }}
       />
     </div>

@@ -1,5 +1,5 @@
 import { supabase } from "./supabase"
-import { MARCA } from "./marca"
+import { MARCA, REDES_OFICIALES, INSTAGRAM_LIVE_URL } from "./marca"
 
 // Links de interés / redes sociales que se muestran en la página pública
 export type TipoRed =
@@ -127,7 +127,7 @@ export const CONTENIDO_DEFAULTS: ContenidoSitio = {
   hero_completado_label: "completado",
   hero_completo_titulo: "¡Se vendieron todas las chances!",
   hero_completo_descripcion:
-    "El sorteo se realizará mañana a las 14:00 hs según el primer número de la Quiniela de Buenos Aires",
+    "El sorteo se transmitirá en vivo por Instagram desde @faustino_motors.",
   hero_sorteado_titulo: "Resultados",
   hero_cerrado_titulo: "¡Gracias por participar!",
   hero_cerrado_descripcion: "Mucha suerte a todos!",
@@ -154,8 +154,8 @@ export const CONTENIDO_DEFAULTS: ContenidoSitio = {
     "Cuando se vende el 100% de las chances se realiza el sorteo.",
   faq_pregunta_ganador: "¿En dónde vemos el ganador?",
   faq_respuesta_ganador:
-    "Publicamos el resultado en nuestras redes y avisamos al ganador.",
-  faq_link_quiniela: "",
+    "Transmitimos el sorteo en vivo por Instagram desde @faustino_motors, publicamos el resultado y avisamos al ganador.",
+  faq_link_quiniela: INSTAGRAM_LIVE_URL,
 
   consulta_kicker: "Participantes",
   consulta_titulo: "¿Ya participaste?",
@@ -176,11 +176,27 @@ export const CONTENIDO_DEFAULTS: ContenidoSitio = {
   pasados_titulo: "Ganadores Anteriores",
   pasados_descripcion: "Conocé a las personas que ya ganaron con nosotros",
 
-  redes_kicker: "Comunidad",
-  redes_titulo: "Links de interés",
+  redes_kicker: "Seguinos",
+  redes_titulo: "Faustino en las redes",
   redes_descripcion:
-    "Seguinos en nuestras redes para enterarte de nuevos sorteos y ganadores.",
-  redes: [],
+    "Enterate de nuevos sorteos, vehículos, transmisiones en vivo y ganadores.",
+  redes: [
+    {
+      tipo: "instagram",
+      etiqueta: "Instagram",
+      url: REDES_OFICIALES.instagram,
+    },
+    {
+      tipo: "tiktok",
+      etiqueta: "TikTok",
+      url: REDES_OFICIALES.tiktok,
+    },
+    {
+      tipo: "facebook",
+      etiqueta: "Facebook",
+      url: REDES_OFICIALES.facebook,
+    },
+  ],
 
   proximamente_titulo: "Próximamente",
   proximamente_descripcion:

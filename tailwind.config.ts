@@ -17,33 +17,20 @@ const config: Config = {
   			sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui'],
   			mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
   		},
-  		colors: {
-  			rl: {
-  				bg: 'var(--rl-bg)',
-  				surface: 'var(--rl-surface)',
-  				'surface-2': 'var(--rl-surface-2)',
-  				teal: {
-  					100: 'var(--rl-teal-100)',
-  					200: 'var(--rl-teal-200)',
-  					300: 'var(--rl-teal-300)',
-  					400: 'var(--rl-teal-400)',
-  					500: 'var(--rl-teal-500)',
-  					600: 'var(--rl-teal-600)',
-  				},
-  				orange: {
-  					100: 'var(--rl-orange-100)',
-  					200: 'var(--rl-orange-200)',
-  					300: 'var(--rl-orange-300)',
-  					400: 'var(--rl-orange-400)',
-  					500: 'var(--rl-orange-500)',
-  				},
-  				ice: {
-  					100: 'var(--rl-ice-100)',
-  					200: 'var(--rl-ice-200)',
-  					300: 'var(--rl-ice-300)',
-  					400: 'var(--rl-ice-400)',
-  				},
-  			},
+		colors: {
+			brand: {
+				bg: 'var(--brand-bg)',
+				surface: 'var(--brand-surface)',
+				'surface-2': 'var(--brand-surface-2)',
+				'surface-3': 'var(--brand-surface-3)',
+				red: 'var(--brand-red)',
+				'red-hover': 'var(--brand-red-hover)',
+				'red-soft': 'var(--brand-red-soft)',
+				silver: 'var(--brand-silver)',
+				copy: 'var(--brand-copy)',
+				muted: 'var(--brand-muted)',
+				dim: 'var(--brand-dim)',
+			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

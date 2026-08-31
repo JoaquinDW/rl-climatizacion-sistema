@@ -42,19 +42,19 @@ export function MuralGanadores() {
 
   return (
     <section id="ganadores" className="py-16">
-      <div className="divider-rl max-w-4xl mx-auto mb-16" />
+      <div className="divider-brand max-w-4xl mx-auto mb-16" />
       <div className="container mx-auto px-4">
         <Reveal className="text-center mb-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
             Nuestros Ganadores
           </p>
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#4fafc4]/8 rounded-full mb-4 border border-[#4fafc4]/20">
-            <Trophy className="h-6 w-6 text-[#4fafc4]/70" />
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#ef4962]/8 rounded-full mb-4 border border-[#ef4962]/20">
+            <Trophy className="h-6 w-6 text-[#ef4962]/70" />
           </div>
-          <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-ice mb-3">
+          <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-3">
             Ganadores Anteriores
           </h2>
-          <p className="text-ice-muted text-sm max-w-md mx-auto">
+          <p className="text-brand-muted text-sm max-w-md mx-auto">
             Estas son algunas de las personas que ya se llevaron su premio.
           </p>
         </Reveal>
@@ -69,7 +69,7 @@ export function MuralGanadores() {
               type="button"
               aria-label="Desplazar a la izquierda"
               onClick={() => desplazar("izquierda")}
-              className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-[#4fafc4] border border-[#4fafc4]/30 transition-opacity opacity-0 group-hover/mural:opacity-100"
+              className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-[#ef4962] border border-[#ef4962]/30 transition-opacity opacity-0 group-hover/mural:opacity-100"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -77,7 +77,7 @@ export function MuralGanadores() {
               type="button"
               aria-label="Desplazar a la derecha"
               onClick={() => desplazar("derecha")}
-              className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-[#4fafc4] border border-[#4fafc4]/30 transition-opacity opacity-0 group-hover/mural:opacity-100"
+              className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-[#ef4962] border border-[#ef4962]/30 transition-opacity opacity-0 group-hover/mural:opacity-100"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -85,8 +85,8 @@ export function MuralGanadores() {
         )}
 
         {/* Difuminados en los bordes */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 z-[5] bg-gradient-to-r from-[#061014] to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 z-[5] bg-gradient-to-l from-[#061014] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 z-[5] bg-gradient-to-r from-[#08090b] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 z-[5] bg-gradient-to-l from-[#08090b] to-transparent" />
 
         <div
           ref={scrollRef}
@@ -97,7 +97,7 @@ export function MuralGanadores() {
             {fotos.map((foto) => (
               <div
                 key={foto.id}
-                className="snap-start group/foto relative w-36 h-36 sm:w-44 sm:h-44 rounded-xl overflow-hidden border border-[#4fafc4]/15 bg-[#061014]"
+                className="snap-start group/foto relative w-36 h-36 sm:w-44 sm:h-44 rounded-xl overflow-hidden border border-[#ef4962]/15 bg-[#08090b]"
               >
                 <img
                   src={foto.imagen_url}
@@ -107,8 +107,8 @@ export function MuralGanadores() {
                 />
                 {foto.nombre && (
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-3 py-2 opacity-0 group-hover/foto:opacity-100 transition-opacity">
-                    <p className="text-ice text-xs font-medium truncate flex items-center gap-1">
-                      <Trophy className="h-3 w-3 text-[#4fafc4]/80 flex-shrink-0" />
+                    <p className="text-brand-copy text-xs font-medium truncate flex items-center gap-1">
+                      <Trophy className="h-3 w-3 text-[#ef4962]/80 flex-shrink-0" />
                       {foto.nombre}
                     </p>
                   </div>

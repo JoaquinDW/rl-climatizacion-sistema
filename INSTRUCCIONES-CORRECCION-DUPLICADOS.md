@@ -1,6 +1,6 @@
 # 📋 Instrucciones para Corregir Números Duplicados
 
-> **Nota (rediseño RL Climatización):** este documento es histórico. Describe la
+> **Nota (rediseño Faustino Motors):** este documento es histórico. Describe la
 > corrección de un bug de números duplicados ya resuelto, y menciona scripts
 > `scripts/NN-*.sql` que fueron consolidados en **`scripts/00-schema-completo.sql`**
 > y eliminados. Las funciones de diagnóstico que nombra siguen existiendo, dentro

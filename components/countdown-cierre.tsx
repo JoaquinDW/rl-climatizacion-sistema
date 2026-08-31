@@ -94,17 +94,17 @@ export function CountdownCierre({
 
     return (
       <div
-        className="fixed bottom-0 inset-x-0 z-40 sm:hidden border-t border-[#4fafc4]/20 bg-[#061014]/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
+        className="fixed bottom-0 inset-x-0 z-40 sm:hidden border-t border-[#ef4962]/20 bg-[#08090b]/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
         role="timer"
       >
         <div className="flex items-center justify-between gap-3 px-4 py-3">
           <div className="min-w-0">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-ice-muted">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-brand-muted">
               {kicker}
             </p>
             <p
               className={`font-mono text-lg font-semibold tabular-nums leading-tight ${
-                urgente ? "text-[#f3ae7f]" : "text-teal-solid"
+                urgente ? "text-[#f4b3bd]" : "text-brand-accent"
               }`}
               aria-hidden="true"
             >
@@ -116,7 +116,7 @@ export function CountdownCierre({
           </div>
           <a
             href="#packs"
-            className="btn-cta shrink-0 rounded-full px-5 py-2.5 text-xs font-semibold tracking-wide"
+            className="btn-brand shrink-0 rounded-full px-5 py-2.5 text-xs font-semibold tracking-wide"
           >
             Comprar
           </a>
@@ -134,16 +134,16 @@ export function CountdownCierre({
 
   return (
     <div
-      className={`card-rl p-5 sm:p-6 space-y-4 text-left ${
-        urgente ? "border-[#f3ae7f]/40" : ""
+      className={`card-brand p-5 sm:p-6 space-y-4 text-left ${
+        urgente ? "border-[#f4b3bd]/40" : ""
       }`}
       role="timer"
     >
       <div className="flex items-center gap-2">
         <Clock
-          className={`w-3.5 h-3.5 shrink-0 ${urgente ? "text-[#f3ae7f]" : "text-teal-solid"}`}
+          className={`w-3.5 h-3.5 shrink-0 ${urgente ? "text-[#f4b3bd]" : "text-brand-accent"}`}
         />
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-ice-muted">
+        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-muted">
           {kicker}
         </span>
       </div>
@@ -157,8 +157,8 @@ export function CountdownCierre({
             key={bloque.etiqueta}
             className={`rounded-xl border px-2 py-3 text-center ${
               urgente
-                ? "border-[#f3ae7f]/25 bg-[#f3ae7f]/[0.06]"
-                : "border-[#4fafc4]/15 bg-[#4fafc4]/[0.04]"
+                ? "border-[#f4b3bd]/25 bg-[#f4b3bd]/[0.06]"
+                : "border-[#ef4962]/15 bg-[#ef4962]/[0.04]"
             } ${
               urgente && index === bloques.length - 1
                 ? "animate-pulse motion-reduce:animate-none"
@@ -167,12 +167,12 @@ export function CountdownCierre({
           >
             <span
               className={`block num-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-none ${
-                urgente ? "text-[#f3ae7f]" : "text-brand"
+                urgente ? "text-[#f4b3bd]" : "text-brand-display"
               }`}
             >
               {bloque.valor === undefined ? "--" : dosDigitos(bloque.valor)}
             </span>
-            <span className="mt-1.5 block text-[10px] uppercase tracking-[0.2em] text-ice-muted">
+            <span className="mt-1.5 block text-[10px] uppercase tracking-[0.2em] text-brand-muted">
               {bloque.etiqueta}
             </span>
           </div>
@@ -184,7 +184,7 @@ export function CountdownCierre({
       </span>
 
       {notaSorteo && (
-        <p className="text-sm text-ice-muted leading-relaxed">{notaSorteo}</p>
+        <p className="text-sm text-brand-muted leading-relaxed">{notaSorteo}</p>
       )}
     </div>
   )

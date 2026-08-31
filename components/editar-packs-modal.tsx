@@ -264,7 +264,7 @@ export function EditarPacksModal({
             <PackCard
               id="pack4"
               label="Pack 4"
-              color="text-teal-400"
+              color="text-red-600"
               pack={pack4}
               setPack={setPack4}
               placeholderDesc="Descripción del pack 4"

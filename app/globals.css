@@ -172,98 +172,74 @@
 }
 
 /* ============================================================
-   RL Climatización · Sistema teal / naranja
-   Derivado del logo: teal petróleo #007E95 (frío) + terracota
-   #D25E23 (calor). Teal = estructura, títulos, links. Naranja =
-   acción, CTAs, urgencia.
+   Faustino Motors · Grafito / rojo automotor / plata
+   El rojo #CF1834 y los neutros metálicos se midieron del logo.
    Las clases "neon" de arriba quedan solo para el backoffice.
    ============================================================ */
 
 :root {
-  /* Base petróleo */
-  --rl-bg: #08151a;
-  --rl-surface: #0e2129;
-  --rl-surface-2: #142c36;
-
-  /* Teal — frío / estructura / marca */
-  --rl-teal-100: #d8eef3;
-  --rl-teal-200: #9ad5e1;
-  --rl-teal-300: #4fafc4; /* links y texto de acento — 7.3:1 sobre el fondo */
-  --rl-teal-400: #007e95; /* color exacto del logo — rellenos y bordes */
-  --rl-teal-500: #00637a;
-  --rl-teal-600: #0a4757;
-
-  /* Naranja — calor / acción / urgencia */
-  --rl-orange-100: #fbdcc7;
-  --rl-orange-200: #f3ae7f; /* texto de urgencia — 9.9:1 */
-  --rl-orange-300: #e5813f;
-  --rl-orange-400: #d25e23; /* color exacto del logo — relleno de CTA */
-  --rl-orange-500: #ae4a19;
-
-  /* Ice — neutros de texto */
-  --rl-ice-100: #edf4f6;
-  --rl-ice-200: #c4d5db; /* cuerpo — 12.3:1 */
-  --rl-ice-300: #8ca4ad; /* atenuado — 7.1:1 */
-  --rl-ice-400: #5c7078; /* placeholders */
-
-  /* Texto sobre rellenos claros (naranja / teal claro) */
-  --rl-on-fill: #08151a;
-
-  --rl-radius: 0.625rem;
+  --brand-bg: #08090b;
+  --brand-surface: #111318;
+  --brand-surface-2: #1a1d23;
+  --brand-surface-3: #22262e;
+  --brand-red: #cf1834;
+  --brand-red-hover: #a90f28;
+  --brand-red-soft: #ef4962;
+  --brand-silver: #c0c0c0;
+  --brand-copy: #f4f4f2;
+  --brand-muted: #9a9da3;
+  --brand-dim: #686c73;
+  --brand-radius: 0.375rem;
 }
 
-html {
-  scroll-behavior: smooth;
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--brand-bg);
+  color: var(--brand-copy);
 }
 
-/* ---------- Fondo: flujo de aire ---------------------------------
-   Los dos halos son las dos mitades del logo sangrando en la página:
-   teal arriba a la izquierda, naranja abajo a la derecha. Encima, un
-   rayado diagonal casi imperceptible que sugiere corrientes de aire. */
-.bg-rl {
-  background-color: var(--rl-bg);
+::selection {
+  background: var(--brand-red);
+  color: #fff;
+}
+
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--brand-red-soft);
+  outline-offset: 3px;
+}
+
+/* Microtextura de fibra de carbono y halos rojos de carrocería. */
+.bg-brand {
+  background-color: var(--brand-bg);
   background-image:
-    repeating-linear-gradient(
-      118deg,
-      rgba(154, 213, 225, 0.016) 0px,
-      rgba(154, 213, 225, 0.016) 1px,
-      transparent 1px,
-      transparent 9px
-    ),
-    radial-gradient(ellipse 85% 55% at 12% -10%, rgba(0, 126, 149, 0.16), transparent 68%),
-    radial-gradient(ellipse 75% 50% at 95% 108%, rgba(210, 94, 35, 0.11), transparent 64%);
+    linear-gradient(27deg, rgba(255, 255, 255, 0.018) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.018) 75%),
+    linear-gradient(27deg, rgba(255, 255, 255, 0.014) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.014) 75%),
+    radial-gradient(ellipse 70% 48% at 92% 2%, rgba(207, 24, 52, 0.18), transparent 68%),
+    radial-gradient(ellipse 55% 38% at -8% 70%, rgba(207, 24, 52, 0.08), transparent 70%);
+  background-position: 0 0, 4px 4px, 0 0, 0 0;
+  background-size: 8px 8px, 8px 8px, auto, auto;
 }
 
-/* ---------- Titular bitono -------------------------------------- */
 @keyframes brand-shine {
-  0%   { background-position: 0% 50%; }
+  0% { background-position: 0% 50%; }
   100% { background-position: 200% 50%; }
 }
 
-.text-brand {
-  background: linear-gradient(
-    115deg,
-    #d8eef3 0%,
-    #9ad5e1 20%,
-    #4fafc4 38%,
-    #e5813f 62%,
-    #f3ae7f 78%,
-    #d8eef3 95%
-  );
+.text-brand-display {
+  background: linear-gradient(110deg, #f4f4f2 0%, #c0c0c0 34%, #ffffff 52%, #cf1834 72%, #f4f4f2 96%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  /* Sin glow pulsante: el parpadeo neón contradice una marca técnica. */
-  filter: drop-shadow(0 1px 10px rgba(0, 126, 149, 0.28));
-  animation: brand-shine 6s linear infinite;
+  filter: drop-shadow(0 10px 34px rgba(0, 0, 0, 0.48));
+  animation: brand-shine 7s linear infinite;
 }
 
-.text-teal-solid { color: var(--rl-teal-300); }
-.text-ice { color: var(--rl-ice-200); }
-.text-ice-muted { color: var(--rl-ice-300); }
+.text-brand-accent { color: var(--brand-red-soft); }
+.text-brand-copy { color: var(--brand-copy); }
+.text-brand-muted { color: var(--brand-muted); }
 
-/* ---------- Números como display de equipo ---------------------- */
 .num-display {
   font-family: var(--font-display), "Arial Narrow", sans-serif;
   font-variant-numeric: tabular-nums;
@@ -271,143 +247,169 @@ html {
   letter-spacing: 0.01em;
 }
 
-/* ---------- Botones -------------------------------------------- */
-/* CTA naranja. Texto casi negro: blanco sobre #D25E23 da 3.9:1 y no
-   pasa AA; #08151A da 4.7:1. */
-.btn-cta {
-  background: linear-gradient(135deg, var(--rl-orange-300) 0%, var(--rl-orange-400) 100%);
-  color: var(--rl-on-fill);
-  font-weight: 600;
+/* Botones con corte diagonal, inspirados en una franja de competición. */
+.btn-brand,
+.btn-brand-outline {
+  position: relative;
+  border-radius: var(--brand-radius);
   cursor: pointer;
-  border-radius: 0.375rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-cta:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 26px rgba(210, 94, 35, 0.3);
+.btn-brand {
+  background: linear-gradient(135deg, var(--brand-red) 0%, #b1112a 100%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 32px rgba(207, 24, 52, 0.2);
 }
 
-.btn-cta:active {
-  transform: translateY(0) scale(0.98);
+.btn-brand::after {
+  content: "";
+  position: absolute;
+  inset: 0 12px 0 auto;
+  width: 5px;
+  background: rgba(255, 255, 255, 0.22);
+  transform: skewX(-24deg);
+  pointer-events: none;
 }
 
-.btn-cta:disabled {
-  filter: grayscale(0.5) brightness(0.7);
+.btn-brand:hover {
+  background: linear-gradient(135deg, #df1d3b 0%, var(--brand-red-hover) 100%);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 16px 38px rgba(207, 24, 52, 0.3);
+}
+
+.btn-brand:active { transform: translateY(0) scale(0.985); }
+
+.btn-brand:disabled {
+  filter: grayscale(0.7) brightness(0.7);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-/* Secundario: outline teal */
-.btn-cta-outline {
-  background: rgba(79, 175, 196, 0.06);
-  border: 1px solid rgba(79, 175, 196, 0.3);
-  color: var(--rl-teal-200);
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 0.375rem;
-  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+.btn-brand-outline {
+  background: rgba(192, 192, 192, 0.035);
+  border: 1px solid rgba(192, 192, 192, 0.28);
+  color: var(--brand-silver);
 }
 
-.btn-cta-outline:hover {
-  border-color: rgba(79, 175, 196, 0.62);
-  background: rgba(0, 126, 149, 0.14);
-  color: var(--rl-teal-100);
+.btn-brand-outline:hover {
+  border-color: rgba(239, 73, 98, 0.68);
+  background: rgba(207, 24, 52, 0.1);
+  color: #fff;
 }
 
-/* ---------- Cards ---------------------------------------------- */
-.card-rl {
-  background: linear-gradient(180deg, var(--rl-surface-2) 0%, var(--rl-surface) 100%);
-  border: 1px solid rgba(79, 175, 196, 0.15);
-  border-radius: var(--rl-radius);
+.card-brand,
+.card-brand-soft {
+  position: relative;
+  border-radius: var(--brand-radius);
   transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.card-rl:hover {
-  border-color: rgba(79, 175, 196, 0.34);
+.card-brand {
+  background: linear-gradient(145deg, rgba(34, 38, 46, 0.96), rgba(17, 19, 24, 0.98));
+  border: 1px solid rgba(207, 24, 52, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 18px 55px rgba(0, 0, 0, 0.2);
 }
 
-.card-rl-soft {
-  background: linear-gradient(180deg, var(--rl-surface-2) 0%, var(--rl-surface) 100%);
-  border: 1px solid rgba(196, 213, 219, 0.12);
-  border-radius: var(--rl-radius);
-  transition: border-color 0.25s ease;
+.card-brand::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 22px;
+  width: 64px;
+  height: 3px;
+  background: var(--brand-red);
+  transform: skewX(-28deg);
 }
 
-.card-rl-soft:hover {
-  border-color: rgba(196, 213, 219, 0.26);
+.card-brand:hover {
+  border-color: rgba(239, 73, 98, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 22px 65px rgba(0, 0, 0, 0.3);
 }
 
-/* Borde degradado teal → naranja (pack destacado): el logo hecho borde */
-.border-rl-gradient {
+.card-brand-soft {
+  background: linear-gradient(180deg, rgba(26, 29, 35, 0.94), rgba(17, 19, 24, 0.96));
+  border: 1px solid rgba(192, 192, 192, 0.14);
+}
+
+.card-brand-soft:hover { border-color: rgba(192, 192, 192, 0.28); }
+
+.border-brand-accent {
   border: 1px solid transparent;
   background:
-    linear-gradient(180deg, #16303b, #0e2129) padding-box,
-    linear-gradient(135deg, #4fafc4, #007e95 38%, #d25e23 72%, #e5813f) border-box;
-  border-radius: var(--rl-radius);
+    linear-gradient(145deg, #1d2027, #0f1115) padding-box,
+    linear-gradient(130deg, #6d7076 0%, #c0c0c0 28%, #cf1834 64%, #7d0c1d 100%) border-box;
+  border-radius: var(--brand-radius);
+  box-shadow: 0 22px 64px rgba(0, 0, 0, 0.28);
 }
 
-/* ---------- Divisores ------------------------------------------ */
-.divider-rl {
+.divider-brand {
+  position: relative;
+  height: 5px;
+  max-width: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(192, 192, 192, 0.38) 18%, rgba(192, 192, 192, 0.38) 46%, transparent 46%);
+}
+
+.divider-brand::after {
+  content: "";
+  position: absolute;
+  left: 47%;
+  top: 0;
+  width: 92px;
+  height: 5px;
+  background: var(--brand-red);
+  transform: skewX(-32deg);
+  box-shadow: 25px 0 0 rgba(207, 24, 52, 0.42);
+}
+
+.divider-brand-soft {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 126, 149, 0.55) 35%,
-    rgba(210, 94, 35, 0.5) 65%,
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.24), transparent);
 }
 
-.divider-soft {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(196, 213, 219, 0.18), transparent);
+.chip-brand {
+  background: rgba(207, 24, 52, 0.11);
+  border: 1px solid rgba(239, 73, 98, 0.34);
+  color: #f4b3bd;
 }
 
-/* ---------- Chips de números ----------------------------------- */
-.chip-rl {
-  background: rgba(0, 126, 149, 0.14);
-  border: 1px solid rgba(79, 175, 196, 0.3);
-  color: var(--rl-teal-200);
-}
-
-/* ---------- Inputs -------------------------------------------- */
-.input-rl {
-  background: var(--rl-surface);
-  border: 1px solid rgba(196, 213, 219, 0.16);
-  color: var(--rl-ice-100);
-  border-radius: 0.375rem;
+.input-brand {
+  background: var(--brand-surface);
+  border: 1px solid rgba(192, 192, 192, 0.18);
+  color: var(--brand-copy);
+  border-radius: var(--brand-radius);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.input-rl::placeholder { color: var(--rl-ice-400); }
+.input-brand::placeholder { color: var(--brand-dim); }
 
-.input-rl:focus {
+.input-brand:focus {
   outline: none;
-  border-color: rgba(79, 175, 196, 0.65);
-  box-shadow: 0 0 0 3px rgba(0, 126, 149, 0.22);
+  border-color: rgba(239, 73, 98, 0.72);
+  box-shadow: 0 0 0 3px rgba(207, 24, 52, 0.18);
 }
 
-/* ---------- Barra de progreso ---------------------------------- */
-.progress-rl-track {
-  background: rgba(196, 213, 219, 0.08);
-  border: 1px solid rgba(196, 213, 219, 0.1);
+.progress-brand-track {
+  background: rgba(192, 192, 192, 0.08);
+  border: 1px solid rgba(192, 192, 192, 0.13);
 }
 
-/* Se llena de frío a calor a medida que se acerca al 100% */
-.progress-rl-fill {
+.progress-brand-fill {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(90deg, #007e95 0%, #4fafc4 45%, #e5813f 82%, #d25e23 100%);
+  background: linear-gradient(90deg, #7d0c1d 0%, #cf1834 54%, #ef4962 100%);
+  box-shadow: 0 0 20px rgba(207, 24, 52, 0.36);
 }
 
-.progress-rl-fill::after {
+.progress-brand-fill::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.48), transparent);
   animation: shimmer 2.5s infinite;
 }
 
@@ -442,12 +444,17 @@ html {
     transition: none !important;
   }
 
-  .progress-rl-fill::after {
+  .progress-brand-fill::after {
     animation: none;
   }
 
-  .text-brand {
+  .text-brand-display {
     animation: none;
     filter: none;
+  }
+
+  .btn-brand:hover,
+  .btn-brand:active {
+    transform: none;
   }
 }

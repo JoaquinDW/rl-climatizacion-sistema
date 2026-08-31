@@ -20,7 +20,7 @@ export async function crearSorteoDefecto(): Promise<Sorteo | null> {
       .from("sorteos")
       .insert({
         nombre: "T-SHIRT 150M - SORTEO EXCLUSIVO",
-        descripcion: "Sorteo de RL Climatización",
+        descripcion: "Sorteo de Faustino Motors",
         total_chances: 9999,
         cantidad_pack_1: 6,
         cantidad_pack_2: 12,
@@ -60,7 +60,7 @@ export async function obtenerSorteoActivo(): Promise<Sorteo | null> {
       return {
         id: "default",
         nombre: "T-SHIRT 150M - SORTEO EXCLUSIVO",
-        descripcion: "Sorteo de RL Climatización",
+        descripcion: "Sorteo de Faustino Motors",
         total_chances: 9999,
         cantidad_pack_1: 6,
         cantidad_pack_2: 12,
@@ -1313,7 +1313,7 @@ export async function obtenerSorteo(sorteoId: string): Promise<Sorteo | null> {
       return {
         id: "default",
         nombre: "T-SHIRT 150M - SORTEO EXCLUSIVO",
-        descripcion: "Sorteo de RL Climatización",
+        descripcion: "Sorteo de Faustino Motors",
         total_chances: 9999,
         cantidad_pack_1: 6,
         cantidad_pack_2: 12,

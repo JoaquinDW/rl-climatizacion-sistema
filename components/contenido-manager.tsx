@@ -131,7 +131,10 @@ const SECCIONES: Seccion[] = [
       },
       { key: "faq_pregunta_ganador", label: "Pregunta sobre el ganador" },
       { key: "faq_respuesta_ganador", label: "Respuesta sobre el ganador" },
-      { key: "faq_link_quiniela", label: "Link de la transmisión en vivo" },
+      {
+        key: "faq_link_quiniela",
+        label: "Link de la transmisión en vivo por Instagram",
+      },
     ],
   },
   {

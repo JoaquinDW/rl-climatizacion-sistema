@@ -22,7 +22,7 @@ const CUENTA_INICIAL = 5
 
 type Fase = "listo" | "mezclando" | "conteo" | "revelado"
 
-const COLORES_CONFETTI = ["#007e95", "#4fafc4", "#d25e23", "#f3ae7f", "#d8eef3"]
+const COLORES_CONFETTI = ["#cf1834", "#ef4962", "#cf1834", "#f4b3bd", "#f4f4f2"]
 
 export function SorteoDiarioReveal({
   open,
@@ -153,7 +153,7 @@ export function SorteoDiarioReveal({
 
       <div className="relative w-full max-w-xl text-center">
         {/* Encabezado */}
-        <div className="mb-8 flex items-center justify-center gap-2 text-[#4fafc4]">
+        <div className="mb-8 flex items-center justify-center gap-2 text-[#ef4962]">
           <Gift className={`h-5 w-5 ${enProceso ? "sd-spin" : ""}`} />
           <p className="text-xs font-semibold uppercase tracking-[0.3em]">
             {fase === "listo" && "Regalo del día"}
@@ -175,7 +175,7 @@ export function SorteoDiarioReveal({
           <button
             type="button"
             onClick={revolver}
-            className="sd-pulse mx-auto inline-flex items-center gap-3 rounded-full bg-[#d25e23] px-10 py-5 text-lg font-bold text-black transition-transform hover:scale-105"
+            className="sd-pulse mx-auto inline-flex items-center gap-3 rounded-full bg-[#cf1834] px-10 py-5 text-lg font-bold text-white transition-transform hover:scale-105"
           >
             <Shuffle className="h-6 w-6" />
             Revolver
@@ -196,7 +196,7 @@ export function SorteoDiarioReveal({
           <div className="flex flex-col items-center">
             <span
               key={cuenta}
-              className="sd-count font-display text-8xl font-bold text-[#9ad5e1] md:text-9xl"
+              className="sd-count font-display text-8xl font-bold text-[#c0c0c0] md:text-9xl"
             >
               {cuenta}
             </span>
@@ -209,16 +209,16 @@ export function SorteoDiarioReveal({
         {/* REVELADO: ganador */}
         {fase === "revelado" && (
           <>
-            <div className="sd-pop mx-auto flex min-h-[120px] items-center justify-center rounded-2xl border border-[#4fafc4] bg-[#4fafc4]/10 px-6 py-8 shadow-[0_0_60px_rgba(212,175,55,0.35)]">
-              <span className="break-words text-4xl font-bold leading-tight text-[#9ad5e1] md:text-5xl">
+            <div className="sd-pop mx-auto flex min-h-[120px] items-center justify-center rounded-2xl border border-[#ef4962] bg-[#ef4962]/10 px-6 py-8 shadow-[0_0_60px_rgba(207,24,52,0.35)]">
+              <span className="break-words text-4xl font-bold leading-tight text-[#c0c0c0] md:text-5xl">
                 {display || "..."}
               </span>
             </div>
 
             {resultado?.ganador_numero != null && (
-              <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#4fafc4]/40 bg-black/40 px-4 py-1.5">
-                <Trophy className="h-4 w-4 text-[#4fafc4]" />
-                <span className="font-mono text-lg font-bold text-[#9ad5e1]">
+              <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#ef4962]/40 bg-black/40 px-4 py-1.5">
+                <Trophy className="h-4 w-4 text-[#ef4962]" />
+                <span className="font-mono text-lg font-bold text-[#c0c0c0]">
                   {resultado.ganador_numero}
                 </span>
               </div>
@@ -237,7 +237,7 @@ export function SorteoDiarioReveal({
             <button
               type="button"
               onClick={onClose}
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#d25e23] px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#cf1834] px-8 py-3 text-sm font-semibold text-white transition-transform hover:scale-105"
             >
               <X className="h-4 w-4" />
               Cerrar
@@ -277,8 +277,8 @@ export function SorteoDiarioReveal({
         }
         .sd-count { display: inline-block; animation: sd-count 1s ease-out; }
         @keyframes sd-pulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.5); }
-          50% { box-shadow: 0 0 0 18px rgba(212,175,55,0); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(207,24,52,0.5); }
+          50% { box-shadow: 0 0 0 18px rgba(207,24,52,0); }
         }
         .sd-pulse { animation: sd-pulse 1.8s ease-out infinite; }
       `}</style>
