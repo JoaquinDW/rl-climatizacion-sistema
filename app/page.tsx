@@ -10,6 +10,7 @@ import {
   Ticket,
   Car,
   Lock,
+  Instagram,
 } from "lucide-react"
 import Link from "next/link"
 import { CompraModalNuevo } from "@/components/compra-modal-nuevo"
@@ -20,10 +21,10 @@ import { PromoDiaria } from "@/components/promo-diaria"
 import { MuralGanadores } from "@/components/mural-ganadores"
 import { RedesSociales } from "@/components/redes-sociales"
 import { Reveal } from "@/components/reveal"
-import { WaveDivider } from "@/components/wave-divider"
+import { MotorsportDivider } from "@/components/motorsport-divider"
 import dynamic from "next/dynamic"
 
-const IphoneCarousel = dynamic(() => import("@/components/iphone-carousel"), {
+const PremioCarousel = dynamic(() => import("@/components/premio-carousel"), {
   ssr: false,
 })
 import {
@@ -55,6 +56,7 @@ import { AnimatedProgress } from "@/components/animated-progress"
 import { CountdownCierre } from "@/components/countdown-cierre"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
+import { INSTAGRAM_LIVE_URL, LOGO_PATH } from "@/lib/marca"
 
 export default function LandingPage() {
   const [sorteo, setSorteo] = useState<Sorteo | null>(null)
@@ -369,10 +371,10 @@ export default function LandingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-rl flex items-center justify-center">
+      <div className="min-h-screen bg-brand flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-2 border-[#4fafc4] border-t-transparent rounded-full animate-spin mx-auto opacity-80"></div>
-          <p className="text-ice-muted text-sm tracking-[0.3em] uppercase">
+          <div className="w-12 h-12 border-2 border-[#ef4962] border-t-transparent rounded-full animate-spin mx-auto opacity-80"></div>
+          <p className="text-brand-muted text-sm tracking-[0.3em] uppercase">
             Cargando
           </p>
         </div>
@@ -382,22 +384,22 @@ export default function LandingPage() {
 
   if (!sorteo) {
     return (
-      <div className="min-h-screen bg-rl flex flex-col">
+      <div className="min-h-screen bg-brand flex flex-col">
         <Header marca={contenido.marca} />
         <div className="flex-1 flex items-center justify-center px-4">
           <div className="text-center space-y-6 max-w-md">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl bg-white p-2.5 ring-1 ring-[#4fafc4]/30">
+            <div className="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-[#08090b] shadow-[0_24px_70px_rgba(207,24,52,.18)]">
               <img
-                src="/logo-rl-wave.png"
+                src={LOGO_PATH}
                 alt={contenido.marca}
-                className="h-auto w-full object-contain"
+                className="h-full w-full object-cover"
               />
             </div>
             <div className="space-y-2">
-              <h2 className="text-4xl font-display uppercase tracking-tight text-brand">
+              <h2 className="text-4xl font-display uppercase tracking-tight text-brand-display">
                 {contenido.proximamente_titulo}
               </h2>
-              <p className="text-ice-muted text-sm">
+              <p className="text-brand-muted text-sm">
                 {contenido.proximamente_descripcion}
               </p>
             </div>
@@ -406,7 +408,7 @@ export default function LandingPage() {
                 href={contenido.whatsapp_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-cta inline-block px-7 py-3 text-sm tracking-wide"
+                className="btn-brand inline-block px-7 py-3 text-sm tracking-wide"
               >
                 {contenido.proximamente_boton}
               </Link>
@@ -414,8 +416,8 @@ export default function LandingPage() {
           </div>
         </div>
         <RedesSociales contenido={contenido} />
-        <footer className="border-t border-[#4fafc4]/10 py-6">
-          <div className="container mx-auto px-4 text-center text-ice-muted text-xs tracking-wide">
+        <footer className="border-t border-[#ef4962]/10 py-6">
+          <div className="container mx-auto px-4 text-center text-brand-muted text-xs tracking-wide">
             <p>{contenido.footer_copyright}</p>
           </div>
         </footer>
@@ -425,12 +427,15 @@ export default function LandingPage() {
 
   return (
     <div
-      className={`min-h-screen bg-rl ${mostrarContador ? "pb-24 sm:pb-0" : ""}`}
+      className={`min-h-screen bg-brand ${mostrarContador ? "pb-24 sm:pb-0" : ""}`}
     >
       <Header marca={contenido.marca} />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden border-b border-white/[0.04]">
+        <div className="pointer-events-none absolute -right-32 top-14 h-[28rem] w-[28rem] rounded-full bg-[#cf1834]/10 blur-[110px]" />
+        <div className="pointer-events-none absolute left-[-12%] top-1/3 h-px w-[62%] -rotate-6 bg-gradient-to-r from-transparent via-[#cf1834]/45 to-transparent" />
+        <div className="pointer-events-none absolute left-[-8%] top-[38%] h-px w-[48%] -rotate-6 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
         <div className="relative container mx-auto px-4 pt-14 pb-16 lg:pt-24 lg:pb-24">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Texto a la izquierda */}
@@ -441,33 +446,33 @@ export default function LandingPage() {
                   : "opacity-0 translate-y-6"
               }`}
             >
-              <div className="chip-rl inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.25em]">
+              <div className="chip-brand inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.25em]">
                 <Sparkles className="w-3.5 h-3.5" />
                 {contenido.hero_badge}
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold uppercase leading-[0.95] tracking-tight text-brand text-balance">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold uppercase leading-[0.95] tracking-tight text-brand-display text-balance">
                 {conPlaceholders(contenido.hero_titulo, {
                   premio: sorteo.titulo_remera || "el premio principal",
                 })}
               </h1>
 
               {sorteo?.estado !== "sorteado" && (
-                <p className="text-lg lg:text-xl text-ice font-light leading-relaxed max-w-md mx-auto lg:mx-0">
+                <p className="text-lg lg:text-xl text-brand-copy font-light leading-relaxed max-w-md mx-auto lg:mx-0">
                   {contenido.hero_subtitulo}
                 </p>
               )}
 
               {/* Progress / Evento finalizado */}
               {sorteo?.estado === "sorteado" ? (
-                <div className="card-rl-soft p-6 sm:p-8 text-center lg:text-left">
-                  <p className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold uppercase tracking-[0.12em] text-ice">
+                <div className="card-brand-soft p-6 sm:p-8 text-center lg:text-left">
+                  <p className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold uppercase tracking-[0.12em] text-brand-copy">
                     Finalizado
                   </p>
                 </div>
               ) : (
-                <div className="card-rl p-5 sm:p-6 space-y-4 text-left">
-                  <span className="text-xs font-semibold text-ice-muted uppercase tracking-[0.2em]">
+                <div className="card-brand p-5 sm:p-6 space-y-4 text-left">
+                  <span className="text-xs font-semibold text-brand-muted uppercase tracking-[0.2em]">
                     {contenido.hero_chances_label}
                   </span>
                   <AnimatedProgress
@@ -475,10 +480,10 @@ export default function LandingPage() {
                     className="h-2.5"
                   />
                   <div className="flex items-baseline gap-2">
-                    <span className="num-display text-4xl font-bold text-brand">
+                    <span className="num-display text-4xl font-bold text-brand-display">
                       {porcentajeVendido.toFixed(1)}%
                     </span>
-                    <span className="text-sm text-ice-muted">
+                    <span className="text-sm text-brand-muted">
                       {contenido.hero_completado_label}
                     </span>
                   </div>
@@ -499,16 +504,16 @@ export default function LandingPage() {
               {ventasCerradas &&
                 sorteo?.estado !== "sorteado" &&
                 sorteo?.estado !== "cerrado" && (
-                  <div className="card-rl-soft px-5 py-4 text-left">
-                    <h3 className="text-base font-semibold text-ice mb-1 flex items-center gap-2">
+                  <div className="card-brand-soft px-5 py-4 text-left">
+                    <h3 className="text-base font-semibold text-brand-copy mb-1 flex items-center gap-2">
                       <Lock className="w-4 h-4 shrink-0" />
                       {contenido.cierre_cerrado_titulo}
                     </h3>
-                    <p className="text-sm text-ice-muted">
+                    <p className="text-sm text-brand-muted">
                       {contenido.cierre_cerrado_descripcion}
                     </p>
                     {notaSorteo && (
-                      <p className="text-sm text-teal-solid mt-2">{notaSorteo}</p>
+                      <p className="text-sm text-brand-accent mt-2">{notaSorteo}</p>
                     )}
                   </div>
                 )}
@@ -517,16 +522,16 @@ export default function LandingPage() {
               {(sorteoCompleto || sorteo?.estado === "cerrado") && (
                 <div className="space-y-4 text-left">
                   {sorteo?.estado === "completo" && (
-                    <div className="card-rl px-5 py-4">
-                      <h3 className="text-base font-semibold text-teal-solid mb-1 flex items-center gap-2">
+                    <div className="card-brand px-5 py-4">
+                      <h3 className="text-base font-semibold text-brand-accent mb-1 flex items-center gap-2">
                         <Clock className="w-4 h-4" />
                         {contenido.hero_completo_titulo}
                       </h3>
-                      <p className="text-sm text-ice-muted">
+                      <p className="text-sm text-brand-muted">
                         {contenido.hero_completo_descripcion}
                       </p>
                       {sorteo.fecha_sorteo_realizado && (
-                        <p className="text-xs text-ice-muted opacity-70 mt-1">
+                        <p className="text-xs text-brand-muted opacity-70 mt-1">
                           Prendas completadas el{" "}
                           {new Date(
                             sorteo.fecha_sorteo_realizado,
@@ -537,8 +542,8 @@ export default function LandingPage() {
                   )}
 
                   {sorteo?.estado === "sorteado" && (
-                    <div className="border-rl-gradient px-6 py-6 sm:px-8 sm:py-7">
-                      <h3 className="text-lg sm:text-xl font-semibold text-teal-solid mb-4 flex items-center gap-2">
+                    <div className="border-brand-accent px-6 py-6 sm:px-8 sm:py-7">
+                      <h3 className="text-lg sm:text-xl font-semibold text-brand-accent mb-4 flex items-center gap-2">
                         <Trophy className="w-5 h-5" />
                         {contenido.hero_sorteado_titulo}
                       </h3>
@@ -546,19 +551,19 @@ export default function LandingPage() {
                         <div className="space-y-4">
                           {sorteo.ganador_nombre && (
                             <div>
-                              <p className="text-xs font-semibold text-ice-muted uppercase tracking-[0.2em] mb-1">
+                              <p className="text-xs font-semibold text-brand-muted uppercase tracking-[0.2em] mb-1">
                                 Ganador
                               </p>
-                              <p className="text-3xl sm:text-4xl lg:text-5xl font-display font-semibold uppercase tracking-tight text-teal-solid leading-tight">
+                              <p className="text-3xl sm:text-4xl lg:text-5xl font-display font-semibold uppercase tracking-tight text-brand-accent leading-tight">
                                 {sorteo.ganador_nombre}
                               </p>
                             </div>
                           )}
                           <div>
-                            <p className="text-xs font-semibold text-ice-muted uppercase tracking-[0.2em] mb-1">
+                            <p className="text-xs font-semibold text-brand-muted uppercase tracking-[0.2em] mb-1">
                               Número Ganador
                             </p>
-                            <p className="font-mono font-bold text-teal-solid text-4xl sm:text-5xl lg:text-6xl leading-none">
+                            <p className="font-mono font-bold text-brand-accent text-4xl sm:text-5xl lg:text-6xl leading-none">
                               {sorteo.numero_ganador}
                             </p>
                           </div>
@@ -573,11 +578,11 @@ export default function LandingPage() {
                     (sorteo?.estado === "cerrado" ||
                       (sorteo?.estado &&
                         !sorteo.estado.match(/completo|sorteado/))) && (
-                      <div className="card-rl-soft px-5 py-4">
-                        <h3 className="text-base font-semibold text-ice mb-1">
+                      <div className="card-brand-soft px-5 py-4">
+                        <h3 className="text-base font-semibold text-brand-copy mb-1">
                           {contenido.hero_cerrado_titulo}
                         </h3>
-                        <p className="text-sm text-ice-muted">
+                        <p className="text-sm text-brand-muted">
                           {contenido.hero_cerrado_descripcion}
                         </p>
                       </div>
@@ -590,14 +595,14 @@ export default function LandingPage() {
                 <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                   <a
                     href="#packs"
-                    className="btn-cta inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold tracking-wide"
+                    className="btn-brand inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold tracking-wide"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     {contenido.packs_comprar_boton}
                   </a>
                   <a
                     href="#premios"
-                    className="btn-cta-outline inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm tracking-wide"
+                    className="btn-brand-outline inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm tracking-wide"
                   >
                     Ver premios
                     <ChevronDown className="w-4 h-4" />
@@ -615,10 +620,10 @@ export default function LandingPage() {
               }`}
             >
               <div className="relative">
-                <IphoneCarousel />
+                <PremioCarousel />
 
                 {/* Floating badge */}
-                <div className="absolute -top-4 inset-x-0 mx-auto w-fit lg:inset-x-auto lg:-right-2 lg:mx-0 btn-cta px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.2em] uppercase z-30 flex items-center gap-1.5 shadow-lg">
+                <div className="absolute -top-4 inset-x-0 mx-auto w-fit lg:inset-x-auto lg:-right-2 lg:mx-0 btn-brand px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.2em] uppercase z-30 flex items-center gap-1.5 shadow-lg">
                   <Trophy className="w-3 h-3" />
                   {contenido.hero_badge}
                 </div>
@@ -631,13 +636,13 @@ export default function LandingPage() {
       {/* Sección de Packs */}
       {!ventasBloqueadas && (
         <section id="packs" className="py-20 scroll-mt-16">
-          <WaveDivider className="mx-auto mb-16 max-w-4xl" />
+          <MotorsportDivider className="mx-auto mb-16 max-w-4xl" />
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-12">
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
                 Elegí tus números
               </p>
-              <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-ice">
+              <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy">
                 Compra tus números
               </h2>
             </Reveal>
@@ -651,43 +656,43 @@ export default function LandingPage() {
                 >
                   <div
                     className={`relative flex flex-col w-full p-7 text-center ${
-                      pack.popular ? "border-rl-gradient" : "card-rl-soft"
+                      pack.popular ? "border-brand-accent" : "card-brand-soft"
                     }`}
                   >
                     {pack.popular && (
-                      <span className="btn-cta absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.2em]">
+                      <span className="btn-brand absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.2em]">
                         {contenido.packs_popular_label}
                       </span>
                     )}
 
-                    <p className="flex items-center justify-center gap-3 num-display text-6xl font-bold text-teal-solid mt-3">
+                    <p className="flex items-center justify-center gap-3 num-display text-6xl font-bold text-brand-accent mt-3">
                       <Ticket className="w-9 h-9" strokeWidth={1.5} />
                       {pack.chances}
                     </p>
-                    <p className="text-xs uppercase tracking-[0.25em] text-ice-muted mt-2 mb-5">
+                    <p className="text-xs uppercase tracking-[0.25em] text-brand-muted mt-2 mb-5">
                       {pack.chances === 1 ? "Chance" : "Chances"}
                     </p>
 
-                    <div className="divider-soft mb-5" />
+                    <div className="divider-brand-soft mb-5" />
 
-                    <p className="flex flex-wrap items-center justify-center gap-2.5 text-2xl lg:text-3xl font-display font-semibold uppercase tracking-tight text-brand leading-tight flex-1">
+                    <p className="flex flex-wrap items-center justify-center gap-2.5 text-2xl lg:text-3xl font-display font-semibold uppercase tracking-tight text-brand-display leading-tight flex-1">
                       {pack.chances === 1
                         ? "Número para ganar"
                         : "Números para ganar"}
                       <Car
-                        className="w-7 h-7 text-teal-solid"
+                        className="w-7 h-7 text-brand-accent"
                         strokeWidth={1.5}
                       />
                     </p>
 
-                    <p className="text-3xl font-semibold text-teal-solid mt-5">
+                    <p className="text-3xl font-semibold text-brand-accent mt-5">
                       ${pack.precio.toLocaleString()}
                     </p>
 
                     <button
                       onClick={() => handleCompra(pack)}
                       className={`mt-5 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold tracking-wide w-full ${
-                        pack.popular ? "btn-cta" : "btn-cta-outline"
+                        pack.popular ? "btn-brand" : "btn-brand-outline"
                       }`}
                     >
                       <ShoppingCart className="w-4 h-4" />
@@ -700,7 +705,7 @@ export default function LandingPage() {
 
             {PACKS.length > 1 && (
               <Reveal delay={200}>
-                <p className="text-xs text-ice-muted text-center tracking-wide mt-8">
+                <p className="text-xs text-brand-muted text-center tracking-wide mt-8">
                   {contenido.packs_nota}
                 </p>
               </Reveal>
@@ -711,13 +716,13 @@ export default function LandingPage() {
 
       {/* Sección de Premios */}
       <section id="premios" className="py-20 scroll-mt-16">
-        <WaveDivider className="mx-auto mb-16 max-w-4xl" />
+        <MotorsportDivider className="mx-auto mb-16 max-w-4xl" />
         <div className="container mx-auto px-4">
           <Reveal className="text-center mb-12">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
               {contenido.premios_kicker}
             </p>
-            <h2 className="text-6xl lg:text-7xl font-display font-bold uppercase tracking-tight text-brand">
+            <h2 className="text-6xl lg:text-7xl font-display font-bold uppercase tracking-tight text-brand-display">
               {contenido.premios_titulo}
             </h2>
           </Reveal>
@@ -729,12 +734,12 @@ export default function LandingPage() {
           >
             {/* 1er Premio */}
             <Reveal variant="left">
-              <div className="border-rl-gradient p-8 md:p-10 text-center h-full flex flex-col justify-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+              <div className="border-brand-accent p-8 md:p-10 text-center h-full flex flex-col justify-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
                   {contenido.premios_primer_label}
                 </p>
                 <p
-                  className={`font-display text-ice ${
+                  className={`font-display text-brand-copy ${
                     promoDiaria?.visible
                       ? "text-2xl lg:text-3xl"
                       : "text-3xl lg:text-4xl"
@@ -759,15 +764,15 @@ export default function LandingPage() {
               {premiosSecundarios?.visible &&
                 premiosSecundarios.numeros.length > 0 && (
                   <Reveal variant="right" delay={100}>
-                    <div className="card-rl p-6 md:p-8 h-full">
+                    <div className="card-brand p-6 md:p-8 h-full">
                       <div className="flex items-center gap-2 mb-4">
-                        <Trophy className="w-4 h-4 text-[#4fafc4]" />
-                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid">
+                        <Trophy className="w-4 h-4 text-[#ef4962]" />
+                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent">
                           {contenido.premios_sec_label}
                         </p>
                       </div>
 
-                      <p className="text-base font-semibold text-ice mb-4">
+                      <p className="text-base font-semibold text-brand-copy mb-4">
                         {premiosSecundarios.titulo}
                       </p>
 
@@ -777,21 +782,21 @@ export default function LandingPage() {
                           return (
                             <span
                               key={num}
-                              className={"chip-rl font-mono font-bold text-xl rounded-lg px-4 py-1.5 " + (tachado ? "line-through opacity-50" : "")}
+                              className={"chip-brand font-mono font-bold text-xl rounded-lg px-4 py-1.5 " + (tachado ? "line-through opacity-50" : "")}
                             >
                               {num}
                             </span>
                           )
                         })}
                       </div>
-                      <p className="text-xs text-ice-muted leading-relaxed">
+                      <p className="text-xs text-brand-muted leading-relaxed">
                         {contenido.premios_sec_descripcion
                           .split("{monto}")
                           .map((parte, i, partes) => (
                             <span key={i}>
                               {parte}
                               {i < partes.length - 1 && (
-                                <span className="font-semibold text-ice">
+                                <span className="font-semibold text-brand-copy">
                                   {premiosSecundarios.monto}
                                 </span>
                               )}
@@ -808,21 +813,21 @@ export default function LandingPage() {
 
       {/* Sección FAQ */}
       <section className="py-20">
-        <div className="divider-soft max-w-4xl mx-auto mb-20" />
+        <div className="divider-brand-soft max-w-4xl mx-auto mb-20" />
         <div className="container mx-auto px-4 max-w-2xl">
           <Reveal>
-            <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-ice mb-12 text-center">
+            <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-12 text-center">
               {contenido.faq_titulo}
             </h2>
           </Reveal>
 
           <div className="grid sm:grid-cols-2 gap-5">
             <Reveal variant="left">
-              <div className="card-rl-soft p-6 h-full">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-solid mb-3">
+              <div className="card-brand-soft p-6 h-full">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-accent mb-3">
                   {contenido.faq_pregunta_fecha}
                 </p>
-                <span className="text-ice text-lg font-medium">
+                <span className="text-brand-copy text-lg font-medium">
                   {fechaSorteoTexto || contenido.faq_respuesta_fecha_pendiente}
                 </span>
               </div>
@@ -833,15 +838,15 @@ export default function LandingPage() {
                   como link muerto. */}
               {(() => {
                 const cardGanador = (
-                  <div className="card-rl h-full p-6">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-teal-solid">
+                  <div className="card-brand h-full p-6">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-brand-accent">
                       {contenido.faq_pregunta_ganador}
                     </p>
                     <span
                       className={`text-base font-medium ${
                         contenido.faq_link_quiniela
-                          ? "text-teal-solid underline-offset-4 hover:underline"
-                          : "text-ice"
+                          ? "text-brand-accent underline-offset-4 hover:underline"
+                          : "text-brand-copy"
                       }`}
                     >
                       {contenido.faq_respuesta_ganador}
@@ -868,16 +873,16 @@ export default function LandingPage() {
 
       {/* Sección Consultá tus números */}
       <section id="consulta" className="py-20 scroll-mt-16">
-        <WaveDivider className="mx-auto mb-16 max-w-4xl" />
+        <MotorsportDivider className="mx-auto mb-16 max-w-4xl" />
         <div className="container mx-auto px-4 max-w-xl">
           <Reveal className="text-center mb-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
               {contenido.consulta_kicker}
             </p>
-            <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-ice mb-3">
+            <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-3">
               {contenido.consulta_titulo}
             </h2>
-            <p className="text-ice-muted text-sm">
+            <p className="text-brand-muted text-sm">
               {contenido.consulta_descripcion}
             </p>
           </Reveal>
@@ -895,12 +900,12 @@ export default function LandingPage() {
                 onChange={(e) => setConsultaEmail(e.target.value)}
                 placeholder={contenido.consulta_placeholder}
                 disabled={consultaLoading}
-                className="input-rl flex-1 rounded-full px-5 py-3 text-sm disabled:opacity-50"
+                className="input-brand flex-1 rounded-full px-5 py-3 text-sm disabled:opacity-50"
               />
               <button
                 type="submit"
                 disabled={consultaLoading || !consultaEmail.trim()}
-                className="btn-cta px-7 py-3 rounded-full text-sm font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none whitespace-nowrap"
+                className="btn-brand px-7 py-3 rounded-full text-sm font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none whitespace-nowrap"
               >
                 {consultaLoading ? "Buscando..." : contenido.consulta_boton}
               </button>
@@ -914,11 +919,11 @@ export default function LandingPage() {
           )}
 
           {consultaResultados !== null && consultaResultados.length === 0 && (
-            <div className="card-rl-soft p-6 text-center">
-              <p className="text-ice-muted text-sm">
+            <div className="card-brand-soft p-6 text-center">
+              <p className="text-brand-muted text-sm">
                 {contenido.consulta_vacio}
               </p>
-              <p className="text-ice-muted text-xs mt-2 opacity-70">
+              <p className="text-brand-muted text-xs mt-2 opacity-70">
                 {contenido.consulta_vacio_nota}
               </p>
             </div>
@@ -927,15 +932,15 @@ export default function LandingPage() {
           {consultaResultados !== null && consultaResultados.length > 0 && (
             <div className="space-y-4">
               {consultaResultados.map((p) => (
-                <div key={p.id} className="card-rl p-5">
+                <div key={p.id} className="card-brand p-5">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                     <div>
-                      <p className="text-ice font-semibold">{p.nombre}</p>
-                      <p className="text-ice-muted text-xs mt-0.5">
+                      <p className="text-brand-copy font-semibold">{p.nombre}</p>
+                      <p className="text-brand-muted text-xs mt-0.5">
                         {p.sorteo_nombre}
                       </p>
                     </div>
-                    <span className="text-xs text-ice-muted">
+                    <span className="text-xs text-brand-muted">
                       {new Date(p.created_at).toLocaleDateString("es-AR", {
                         day: "numeric",
                         month: "long",
@@ -943,7 +948,7 @@ export default function LandingPage() {
                       })}
                     </span>
                   </div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-solid mb-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-accent mb-3">
                     Tus {p.cantidad_chances} números asignados
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -952,7 +957,7 @@ export default function LandingPage() {
                       .map((numero) => (
                         <span
                           key={numero}
-                          className="chip-rl font-mono font-semibold px-3 py-1 rounded text-sm"
+                          className="chip-brand font-mono font-semibold px-3 py-1 rounded text-sm"
                         >
                           {numero}
                         </span>
@@ -960,7 +965,7 @@ export default function LandingPage() {
                   </div>
                   <button
                     onClick={() => generarComprobante(p.sorteo_nombre, p)}
-                    className="btn-cta px-5 py-2 rounded-full text-xs font-semibold tracking-wide flex items-center gap-2"
+                    className="btn-brand px-5 py-2 rounded-full text-xs font-semibold tracking-wide flex items-center gap-2"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -1003,19 +1008,18 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-12">
-        <div className="divider-rl max-w-5xl mx-auto mb-10" />
+        <div className="divider-brand max-w-5xl mx-auto mb-10" />
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <span className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white p-1">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-[#08090b]">
                 <img
-                  src="/logo-rl-wave.png"
-                  alt=""
-                  aria-hidden="true"
-                  className="h-auto w-full object-contain"
+                  src={LOGO_PATH}
+                  alt={`Logo de ${contenido.marca}`}
+                  className="h-full w-full object-cover"
                 />
               </span>
-              <span className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-brand">
+              <span className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-brand-display">
                 {contenido.marca}
               </span>
             </span>
@@ -1023,28 +1027,28 @@ export default function LandingPage() {
               {contenido.whatsapp_url && (
                 <Link
                   href={contenido.whatsapp_url}
-                  className="text-ice-muted hover:text-teal-solid transition-colors text-sm"
+                  className="text-brand-muted hover:text-brand-accent transition-colors text-sm"
                 >
                   Contacto
                 </Link>
               )}
               <Link
                 href="/terminos"
-                className="text-ice-muted hover:text-teal-solid transition-colors text-sm"
+                className="text-brand-muted hover:text-brand-accent transition-colors text-sm"
               >
                 Términos
               </Link>
             </div>
           </div>
-          <div className="border-t border-[#c4d5db]/10 mt-6 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <p className="text-ice-muted text-xs opacity-70">
+          <div className="border-t border-[#c0c0c0]/10 mt-6 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p className="text-brand-muted text-xs opacity-70">
               {contenido.footer_copyright}
             </p>
             <Link
               href="https://linktr.ee/deweertstudio"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-ice-muted text-xs opacity-70 hover:opacity-100 hover:text-teal-solid transition-all"
+              className="text-brand-muted text-xs opacity-70 hover:opacity-100 hover:text-brand-accent transition-all"
             >
               Desarrollado por De Weert Studio
             </Link>

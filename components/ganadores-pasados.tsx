@@ -35,11 +35,11 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
   }
 
   return (
-    <Card className="card-rl border-0 overflow-hidden">
+    <Card className="card-brand border-0 overflow-hidden">
       <CardContent className="p-0">
         <div className="grid md:grid-cols-2 gap-0">
           {/* Columna de imagen */}
-          <div className="relative bg-[#061014] aspect-square md:aspect-[4/3] min-h-[400px]">
+          <div className="relative bg-[#08090b] aspect-square md:aspect-[4/3] min-h-[400px]">
             {imagenes.length > 0 ? (
               <>
                 <div className="absolute inset-0 flex items-center justify-center p-8">
@@ -55,7 +55,7 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#4fafc4] border border-[#4fafc4]/25 rounded-full w-8 h-8"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#ef4962] border border-[#ef4962]/25 rounded-full w-8 h-8"
                       onClick={anteriorImagen}
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -63,7 +63,7 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#4fafc4] border border-[#4fafc4]/25 rounded-full w-8 h-8"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#ef4962] border border-[#ef4962]/25 rounded-full w-8 h-8"
                       onClick={siguienteImagen}
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -77,8 +77,8 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
                           onClick={() => setImagenActual(index)}
                           className={`h-1.5 rounded-full transition-all ${
                             index === imagenActual
-                              ? "bg-[#4fafc4] w-5"
-                              : "bg-[#8ca4ad]/40 hover:bg-[#8ca4ad]/70 w-1.5"
+                              ? "bg-[#ef4962] w-5"
+                              : "bg-[#9a9da3]/40 hover:bg-[#9a9da3]/70 w-1.5"
                           }`}
                         />
                       ))}
@@ -88,8 +88,8 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
               </>
             ) : (
               <div className="h-full flex items-center justify-center p-8">
-                <div className="w-24 h-24 rounded-full bg-[#4fafc4]/8 flex items-center justify-center border border-[#4fafc4]/20">
-                  <Trophy className="h-12 w-12 text-[#4fafc4]/40" />
+                <div className="w-24 h-24 rounded-full bg-[#ef4962]/8 flex items-center justify-center border border-[#ef4962]/20">
+                  <Trophy className="h-12 w-12 text-[#ef4962]/40" />
                 </div>
               </div>
             )}
@@ -99,48 +99,48 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
           <div className="p-8 md:p-10 flex flex-col justify-center space-y-6">
             <Badge
               variant="outline"
-              className="chip-rl border w-fit text-xs"
+              className="chip-brand border w-fit text-xs"
             >
               <Trophy className="h-3 w-3 mr-1" />
               Ganador
             </Badge>
 
             <div>
-              <h3 className="text-4xl md:text-5xl font-display font-semibold uppercase tracking-tight text-ice mb-3">
+              <h3 className="text-4xl md:text-5xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-3">
                 {ganador.nombre_ganador}
               </h3>
-              <div className="h-px w-16 divider-rl"></div>
+              <div className="h-px w-16 divider-brand"></div>
             </div>
 
             <div className="space-y-3">
-              <p className="text-lg text-ice-muted font-medium leading-relaxed">
+              <p className="text-lg text-brand-muted font-medium leading-relaxed">
                 {ganador.premio}
               </p>
               <Badge
                 variant="outline"
-                className="bg-[#c4d5db]/5 text-ice border-[#c4d5db]/20 text-sm px-3 py-0.5"
+                className="bg-[#c0c0c0]/5 text-brand-copy border-[#c0c0c0]/20 text-sm px-3 py-0.5"
               >
                 <DollarSign className="h-3 w-3 mr-1" />
                 {ganador.precio_premio}
               </Badge>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 pt-5 border-t border-[#c4d5db]/10">
+            <div className="grid grid-cols-2 gap-4 pt-5 border-t border-[#c0c0c0]/10">
               <div className="space-y-1.5">
-                <div className="flex items-center gap-1.5 text-xs text-ice-muted uppercase tracking-wider">
+                <div className="flex items-center gap-1.5 text-xs text-brand-muted uppercase tracking-wider">
                   <Calendar className="h-3 w-3" />
                   <span>Fecha</span>
                 </div>
-                <p className="text-ice font-medium text-sm">
+                <p className="text-brand-copy font-medium text-sm">
                   {formatearFecha(ganador.fecha_sorteo)}
                 </p>
               </div>
               <div className="space-y-1.5">
-                <div className="flex items-center gap-1.5 text-xs text-ice-muted uppercase tracking-wider">
+                <div className="flex items-center gap-1.5 text-xs text-brand-muted uppercase tracking-wider">
                   <Hash className="h-3 w-3" />
                   <span>Número Ganador</span>
                 </div>
-                <p className="font-mono font-bold text-2xl text-teal-solid">
+                <p className="font-mono font-bold text-2xl text-brand-accent">
                   {ganador.numero_ganador}
                 </p>
               </div>
@@ -190,13 +190,13 @@ export function GanadoresPasados({
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#4fafc4]/8 rounded-full mb-4 border border-[#4fafc4]/20">
-              <Trophy className="h-6 w-6 text-[#4fafc4]/60" />
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#ef4962]/8 rounded-full mb-4 border border-[#ef4962]/20">
+              <Trophy className="h-6 w-6 text-[#ef4962]/60" />
             </div>
-            <h2 className="text-5xl font-display font-semibold uppercase tracking-tight text-ice mb-4">
+            <h2 className="text-5xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-4">
               {contenido.pasados_titulo}
             </h2>
-            <p className="text-ice-muted text-sm">Cargando...</p>
+            <p className="text-brand-muted text-sm">Cargando...</p>
           </div>
         </div>
       </section>
@@ -212,16 +212,16 @@ export function GanadoresPasados({
       {/* CTA de contacto: solo si hay WhatsApp configurado */}
       {contenido.whatsapp_url && (
         <div className="py-12 text-center">
-          <div className="divider-rl max-w-4xl mx-auto mb-12" />
+          <div className="divider-brand max-w-4xl mx-auto mb-12" />
           <Reveal>
-            <p className="text-ice-muted text-sm mb-5 tracking-wide">
+            <p className="text-brand-muted text-sm mb-5 tracking-wide">
               {contenido.pasados_cta_texto}
             </p>
             <a
               href={contenido.whatsapp_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-cta inline-flex items-center gap-2 px-8 py-3 text-sm tracking-wide"
+              className="btn-brand inline-flex items-center gap-2 px-8 py-3 text-sm tracking-wide"
             >
               {contenido.pasados_cta_boton}
             </a>
@@ -230,19 +230,19 @@ export function GanadoresPasados({
       )}
 
       <section id="ganadores" className="py-16">
-        <div className="divider-soft max-w-4xl mx-auto mb-16" />
+        <div className="divider-brand-soft max-w-4xl mx-auto mb-16" />
         <div className="container mx-auto px-4">
           <Reveal className="text-center mb-12">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
               {contenido.pasados_kicker}
             </p>
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#4fafc4]/8 rounded-full mb-4 border border-[#4fafc4]/20">
-              <Trophy className="h-6 w-6 text-[#4fafc4]/70" />
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#ef4962]/8 rounded-full mb-4 border border-[#ef4962]/20">
+              <Trophy className="h-6 w-6 text-[#ef4962]/70" />
             </div>
-            <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-ice mb-3">
+            <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-3">
               {contenido.pasados_titulo}
             </h2>
-            <p className="text-ice-muted text-sm max-w-md mx-auto">
+            <p className="text-brand-muted text-sm max-w-md mx-auto">
               {contenido.pasados_descripcion}
             </p>
           </Reveal>

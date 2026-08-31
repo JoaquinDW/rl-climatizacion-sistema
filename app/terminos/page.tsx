@@ -48,31 +48,31 @@ const SECCIONES = [
 
 export default function TerminosPage() {
   return (
-    <div className="min-h-screen bg-rl">
+    <div className="min-h-screen bg-brand">
       <Header />
 
       {/* Content */}
       <main className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid mb-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
               Información legal
             </p>
-            <h1 className="text-5xl lg:text-6xl font-display font-bold uppercase tracking-tight text-brand">
+            <h1 className="text-5xl lg:text-6xl font-display font-bold uppercase tracking-tight text-brand-display">
               Términos y Condiciones
             </h1>
           </div>
 
-          <div className="divider-rl max-w-md mx-auto mb-12" />
+          <div className="divider-brand max-w-md mx-auto mb-12" />
 
-          <div className="card-rl p-7 sm:p-10">
+          <div className="card-brand p-7 sm:p-10">
             <div className="space-y-8">
               {SECCIONES.map((seccion) => (
                 <section key={seccion.titulo}>
-                  <h2 className="text-lg font-semibold text-teal-solid mb-2">
+                  <h2 className="text-lg font-semibold text-brand-accent mb-2">
                     {seccion.titulo}
                   </h2>
-                  <p className="text-ice leading-relaxed">{seccion.texto}</p>
+                  <p className="text-brand-copy leading-relaxed">{seccion.texto}</p>
                 </section>
               ))}
             </div>
@@ -81,7 +81,7 @@ export default function TerminosPage() {
           <div className="mt-12 text-center">
             <Link
               href="/"
-              className="btn-cta inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold tracking-wide"
+              className="btn-brand inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold tracking-wide"
             >
               <ArrowLeft className="w-4 h-4" />
               Volver al Inicio
@@ -92,16 +92,16 @@ export default function TerminosPage() {
 
       {/* Footer */}
       <footer className="py-12">
-        <div className="divider-rl max-w-5xl mx-auto mb-10" />
+        <div className="divider-brand max-w-5xl mx-auto mb-10" />
         <div className="container mx-auto px-4 text-center space-y-2">
-          <p className="text-ice-muted text-xs opacity-70">
+          <p className="text-brand-muted text-xs opacity-70">
             &copy; {new Date().getFullYear()} {MARCA}. Todos los derechos reservados.
           </p>
           <Link
             href="https://linktr.ee/deweertstudio"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ice-muted text-xs opacity-70 hover:opacity-100 hover:text-teal-solid transition-all"
+            className="text-brand-muted text-xs opacity-70 hover:opacity-100 hover:text-brand-accent transition-all"
           >
             Desarrollado por De Weert Studio
           </Link>

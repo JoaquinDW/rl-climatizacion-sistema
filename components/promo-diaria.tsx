@@ -40,35 +40,35 @@ export function PromoDiaria({ sorteoId, promo: promoProp }: PromoDiariaProps) {
 
   return (
     <Reveal variant="right" delay={100}>
-      <div className="card-rl p-6 md:p-8 h-full flex flex-col">
+      <div className="card-brand p-6 md:p-8 h-full flex flex-col">
         <div className="flex items-center gap-2 mb-4">
-          <Gift className="w-4 h-4 text-[#4fafc4]" />
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-teal-solid">
+          <Gift className="w-4 h-4 text-[#ef4962]" />
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent">
             {promo.titulo}
           </p>
         </div>
 
         <div className="mb-4">
-          <p className="text-xs text-ice-muted uppercase tracking-[0.2em] mb-1">
+          <p className="text-xs text-brand-muted uppercase tracking-[0.2em] mb-1">
             Premio de hoy
           </p>
-          <p className="text-4xl md:text-5xl font-display font-semibold uppercase tracking-tight text-ice">
+          <p className="text-4xl md:text-5xl font-display font-semibold uppercase tracking-tight text-brand-copy">
             {promo.premio}
           </p>
         </div>
 
-        <p className="text-sm text-ice-muted leading-relaxed">
+        <p className="text-sm text-brand-muted leading-relaxed">
           {promo.descripcion}
         </p>
 
         {ultimoGanador?.ganador_nombre && (
           <div className="mt-auto pt-4">
-            <div className="divider-rl mb-3" />
+            <div className="divider-brand mb-3" />
             <div className="flex items-center gap-2">
-              <Trophy className="w-4 h-4 text-[#4fafc4] flex-shrink-0" />
-              <p className="text-xs text-ice-muted">
+              <Trophy className="w-4 h-4 text-[#ef4962] flex-shrink-0" />
+              <p className="text-xs text-brand-muted">
                 Último ganador:{" "}
-                <span className="text-ice font-semibold">
+                <span className="text-brand-copy font-semibold">
                   {ultimoGanador.ganador_nombre}
                 </span>{" "}
                 — {ultimoGanador.premio}

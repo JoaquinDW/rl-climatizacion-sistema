@@ -7,7 +7,7 @@ import { obtenerSorteoActivo } from "@/lib/database"
 import type { Sorteo } from "@/lib/supabase"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-export default function IphoneCarousel() {
+export default function PremioCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
   const [sorteo, setSorteo] = useState<Sorteo | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -68,11 +68,18 @@ export default function IphoneCarousel() {
         ]
 
   return (
-    <div className="relative w-full max-w-md sm:max-w-lg md:max-w-2xl mx-auto">
+    <div className="relative mx-auto w-full max-w-md sm:max-w-lg md:max-w-2xl">
+      <div className="pointer-events-none absolute -inset-4 -z-10 border border-[#cf1834]/12 bg-[#cf1834]/[0.025] [clip-path:polygon(0_0,calc(100%-28px)_0,100%_28px,100%_100%,28px_100%,0_calc(100%-28px))]" />
       <div
-        className="overflow-hidden rounded-2xl border border-[#4fafc4]/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+        className="overflow-hidden rounded-md border border-white/15 bg-[#0d0f13] shadow-[0_28px_80px_rgba(0,0,0,0.56)]"
         ref={emblaRef as any}
       >
+        <div className="flex h-8 items-center justify-between border-b border-white/10 bg-[#111318] px-3">
+          <span className="h-1.5 w-16 -skew-x-[28deg] bg-[#cf1834]" />
+          <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-brand-muted">
+            Premio destacado
+          </span>
+        </div>
         <div className="flex">
           {finalSlides.map((src, idx) => (
             <div key={idx} className="min-w-full flex-shrink-0">
@@ -107,14 +114,14 @@ export default function IphoneCarousel() {
         <>
           <button
             aria-label="Imagen anterior"
-            className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 backdrop-blur-sm text-[#4fafc4] border border-[#4fafc4]/25 p-2 rounded-full transition-all duration-200 z-10"
+            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-md border border-[#ef4962]/35 bg-black/65 p-2 text-[#ef4962] backdrop-blur-sm transition-all duration-200 hover:bg-[#cf1834] hover:text-white"
             onClick={scrollPrev}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             aria-label="Imagen siguiente"
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 backdrop-blur-sm text-[#4fafc4] border border-[#4fafc4]/25 p-2 rounded-full transition-all duration-200 z-10"
+            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-md border border-[#ef4962]/35 bg-black/65 p-2 text-[#ef4962] backdrop-blur-sm transition-all duration-200 hover:bg-[#cf1834] hover:text-white"
             onClick={scrollNext}
           >
             <ChevronRight className="w-5 h-5" />
@@ -128,8 +135,8 @@ export default function IphoneCarousel() {
                 aria-label={`Ir a la imagen ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   idx === currentIndex
-                    ? "bg-[#4fafc4] w-6"
-                    : "bg-[#8ca4ad]/40 hover:bg-[#8ca4ad]/70 w-2"
+                    ? "w-7 -skew-x-[24deg] bg-[#cf1834]"
+                    : "w-2 bg-[#9a9da3]/35 hover:bg-[#9a9da3]/70"
                 }`}
                 onClick={() => emblaApi?.scrollTo(idx)}
               />

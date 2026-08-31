@@ -1,35 +1,36 @@
 import type { Metadata } from "next"
-import { Barlow_Condensed, Inter } from "next/font/google"
+import { Barlow, Barlow_Condensed } from "next/font/google"
 import { GeistMono } from "geist/font/mono"
 import { MARCA, SITIO_URL } from "@/lib/marca"
 import "./globals.css"
 
-// Titulares y números: condensada e industrial, tono técnico de climatización.
+// Titulares: condensada, contundente y con carácter automotor.
 const barlowCondensed = Barlow_Condensed({
-  weight: ["500", "600", "700"],
+  weight: ["500", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
 })
 
-// Cuerpo: neutra y muy legible.
-const inter = Inter({
+// Cuerpo: la misma familia en su variante regular para mantener cohesión.
+const barlow = Barlow({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 })
 
 const DESCRIPCION =
-  "Sorteos de RL Climatización. Comprá tus chances y participá por equipos de climatización."
+  "Sorteos oficiales de Faustino Motors. Comprá tus chances y participá por vehículos y premios."
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITIO_URL),
   title: MARCA,
   description: DESCRIPCION,
   icons: {
-    icon: "/logo-rl.png",
-    shortcut: "/logo-rl.png",
-    apple: "/logo-rl.png",
+    icon: "/favicon-faustino.png",
+    shortcut: "/favicon-faustino.png",
+    apple: "/apple-touch-icon-faustino.png",
   },
   openGraph: {
     type: "website",
@@ -37,20 +38,13 @@ export const metadata: Metadata = {
     siteName: MARCA,
     title: MARCA,
     description: DESCRIPCION,
-    images: [
-      {
-        url: "/og-rl.jpg",
-        width: 1200,
-        height: 630,
-        alt: `Logo de ${MARCA}`,
-      },
-    ],
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: MARCA,
     description: DESCRIPCION,
-    images: ["/og-rl.jpg"],
+    images: ["/opengraph-image"],
   },
 }
 
@@ -62,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${barlowCondensed.variable} ${inter.variable} ${GeistMono.variable}`}
+      className={`${barlowCondensed.variable} ${barlow.variable} ${GeistMono.variable}`}
     >
       <body className="font-sans">{children}</body>
     </html>

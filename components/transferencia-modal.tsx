@@ -191,36 +191,36 @@ export function TransferenciaModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-[#0e2129] text-white border border-[#4fafc4]/20 px-1 py-10 lg:py-2 overflow-hidden max-h-[95vh] overflow-y-auto rounded-2xl">
+      <DialogContent className="sm:max-w-md bg-[#111318] text-white border border-[#ef4962]/20 px-1 py-10 lg:py-2 overflow-hidden max-h-[95vh] overflow-y-auto rounded-md">
         {/* Header */}
         <div className="pt-8 pb-4 px-6 text-center">
-          <h2 className="text-3xl font-display font-semibold uppercase tracking-tight text-brand">
+          <h2 className="text-3xl font-display font-semibold uppercase tracking-tight text-brand-display">
             Completá tu compra
           </h2>
-          <p className="text-ice-muted text-sm mt-1">
+          <p className="text-brand-muted text-sm mt-1">
             Transferí y cargá el comprobante
           </p>
         </div>
 
         {/* Monto destacado */}
-        <div className="mx-6 mb-4 rounded-xl bg-[#142c36] border border-[#4fafc4]/15 p-4 text-center">
-          <p className="text-sm text-ice-muted mb-1">Total a transferir</p>
-          <p className="text-3xl font-black text-brand">
+        <div className="mx-6 mb-4 rounded-md bg-[#1a1d23] border border-[#ef4962]/15 p-4 text-center">
+          <p className="text-sm text-brand-muted mb-1">Total a transferir</p>
+          <p className="text-3xl font-black text-brand-display">
             ${pack.precio.toLocaleString()}
           </p>
-          <p className="text-xs text-ice-muted mt-1">
+          <p className="text-xs text-brand-muted mt-1">
             {pack.chances} {pack.chances === 1 ? "chance" : "chances"}
           </p>
         </div>
 
         {/* Alias */}
-        <div className="mx-6 mb-5 rounded-xl bg-[#142c36] border border-[#4fafc4]/15 p-4">
-          <p className="text-xs text-ice-muted uppercase tracking-widest mb-2 font-semibold">
+        <div className="mx-6 mb-5 rounded-md bg-[#1a1d23] border border-[#ef4962]/15 p-4">
+          <p className="text-xs text-brand-muted uppercase tracking-widest mb-2 font-semibold">
             Alias
           </p>
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-[#061014] rounded-lg border border-[#4fafc4]/30 px-4 py-3">
-              <span className="font-mono text-base text-teal-solid tracking-wide">
+            <div className="flex-1 bg-[#08090b] rounded-md border border-[#ef4962]/30 px-4 py-3">
+              <span className="font-mono text-base text-brand-accent tracking-wide">
                 {alias}
               </span>
             </div>
@@ -228,7 +228,7 @@ export function TransferenciaModal({
               type="button"
               onClick={copiarAlias}
               aria-label="Copiar alias"
-              className="btn-cta flex items-center justify-center w-11 h-11 rounded-lg flex-shrink-0"
+              className="btn-brand flex items-center justify-center w-11 h-11 rounded-md flex-shrink-0"
             >
               {aliasCopiado ? (
                 <Check className="w-5 h-5" />
@@ -237,18 +237,18 @@ export function TransferenciaModal({
               )}
             </button>
           </div>
-          <p className="text-xs text-ice-muted mt-2">Titular: {titular}</p>
+          <p className="text-xs text-brand-muted mt-2">Titular: {titular}</p>
         </div>
 
         {/* CBU */}
         {cbu && (
-          <div className="mx-6 mb-5 rounded-xl bg-[#142c36] border border-[#4fafc4]/15 p-4">
-            <p className="text-xs text-ice-muted uppercase tracking-widest mb-2 font-semibold">
+          <div className="mx-6 mb-5 rounded-md bg-[#1a1d23] border border-[#ef4962]/15 p-4">
+            <p className="text-xs text-brand-muted uppercase tracking-widest mb-2 font-semibold">
               CBU / CVU
             </p>
             <div className="flex items-center gap-2">
-              <div className="flex-1 bg-[#061014] rounded-lg border border-[#4fafc4]/30 px-4 py-3 overflow-hidden">
-                <span className="font-mono text-sm text-teal-solid tracking-wide break-all">
+              <div className="flex-1 bg-[#08090b] rounded-md border border-[#ef4962]/30 px-4 py-3 overflow-hidden">
+                <span className="font-mono text-sm text-brand-accent tracking-wide break-all">
                   {cbu}
                 </span>
               </div>
@@ -256,7 +256,7 @@ export function TransferenciaModal({
                 type="button"
                 onClick={copiarCbu}
                 aria-label="Copiar CBU"
-                className="btn-cta flex items-center justify-center w-11 h-11 rounded-lg flex-shrink-0"
+                className="btn-brand flex items-center justify-center w-11 h-11 rounded-md flex-shrink-0"
               >
                 {cbuCopiado ? (
                   <Check className="w-5 h-5" />
@@ -266,15 +266,15 @@ export function TransferenciaModal({
               </button>
             </div>
             {banco && (
-              <p className="text-xs text-ice-muted mt-2">Banco: {banco}</p>
+              <p className="text-xs text-brand-muted mt-2">Banco: {banco}</p>
             )}
           </div>
         )}
 
         {/* Banco (si no hay CBU pero sí banco) */}
         {!cbu && banco && (
-          <div className="mx-6 mb-5 rounded-xl bg-[#142c36] border border-[#4fafc4]/15 p-4">
-            <p className="text-xs text-ice-muted uppercase tracking-widest mb-1 font-semibold">
+          <div className="mx-6 mb-5 rounded-md bg-[#1a1d23] border border-[#ef4962]/15 p-4">
+            <p className="text-xs text-brand-muted uppercase tracking-widest mb-1 font-semibold">
               Banco
             </p>
             <p className="text-base text-white">{banco}</p>
@@ -283,14 +283,14 @@ export function TransferenciaModal({
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-3">
-          <p className="text-xs text-ice-muted uppercase tracking-widest font-semibold mb-3">
+          <p className="text-xs text-brand-muted uppercase tracking-widest font-semibold mb-3">
             Tus datos
           </p>
 
           <div>
             <Label
               htmlFor="nombre"
-              className="text-ice-muted text-xs mb-1 block"
+              className="text-brand-muted text-xs mb-1 block"
             >
               Nombre completo *
             </Label>
@@ -300,7 +300,7 @@ export function TransferenciaModal({
               value={formData.nombre}
               onChange={handleInputChange}
               placeholder="Juan Pérez"
-              className="bg-[#142c36] border-[#c4d5db]/15 text-white placeholder:text-[#5c7078] focus:border-[#4fafc4]/60 focus-visible:ring-[#4fafc4]/25 h-11"
+              className="bg-[#1a1d23] border-[#c0c0c0]/15 text-white placeholder:text-[#686c73] focus:border-[#ef4962]/60 focus-visible:ring-[#ef4962]/25 h-11"
               disabled={loading}
             />
           </div>
@@ -308,10 +308,10 @@ export function TransferenciaModal({
           <div>
             <Label
               htmlFor="email"
-              className="text-ice-muted text-xs mb-1 block"
+              className="text-brand-muted text-xs mb-1 block"
             >
               Email *{" "}
-              <span className="text-[#5c7078]">(recibís tus números acá)</span>
+              <span className="text-[#686c73]">(recibís tus números acá)</span>
             </Label>
             <Input
               id="email"
@@ -321,7 +321,7 @@ export function TransferenciaModal({
               value={formData.email}
               onChange={handleInputChange}
               placeholder="juan@email.com"
-              className="bg-[#142c36] border-[#c4d5db]/15 text-white placeholder:text-[#5c7078] focus:border-[#4fafc4]/60 focus-visible:ring-[#4fafc4]/25 h-11"
+              className="bg-[#1a1d23] border-[#c0c0c0]/15 text-white placeholder:text-[#686c73] focus:border-[#ef4962]/60 focus-visible:ring-[#ef4962]/25 h-11"
               disabled={loading}
             />
           </div>
@@ -329,10 +329,10 @@ export function TransferenciaModal({
           <div>
             <Label
               htmlFor="telefono"
-              className="text-ice-muted text-xs mb-1 block"
+              className="text-brand-muted text-xs mb-1 block"
             >
               WhatsApp *{" "}
-              <span className="text-[#5c7078]">(para contactarte)</span>
+              <span className="text-[#686c73]">(para contactarte)</span>
             </Label>
             <Input
               id="telefono"
@@ -342,23 +342,23 @@ export function TransferenciaModal({
               value={formData.telefono}
               onChange={handleInputChange}
               placeholder="3794123456"
-              className="bg-[#142c36] border-[#c4d5db]/15 text-white placeholder:text-[#5c7078] focus:border-[#4fafc4]/60 focus-visible:ring-[#4fafc4]/25 h-11"
+              className="bg-[#1a1d23] border-[#c0c0c0]/15 text-white placeholder:text-[#686c73] focus:border-[#ef4962]/60 focus-visible:ring-[#ef4962]/25 h-11"
               disabled={loading}
             />
           </div>
 
           {/* Comprobante */}
           <div>
-            <Label className="text-ice-muted text-xs mb-1 block uppercase tracking-widest font-semibold">
+            <Label className="text-brand-muted text-xs mb-1 block uppercase tracking-widest font-semibold">
               Comprobante *
             </Label>
             <div
-              className={`mt-1 border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-colors ${
+              className={`mt-1 border-2 border-dashed rounded-md p-5 text-center cursor-pointer transition-colors ${
                 dragOver
-                  ? "border-[#4fafc4] bg-[#4fafc4]/10"
+                  ? "border-[#ef4962] bg-[#ef4962]/10"
                   : comprobanteFile
                     ? "border-emerald-600/50 bg-emerald-500/10"
-                    : "border-[#c4d5db]/20 hover:border-[#4fafc4]/50 bg-[#142c36]"
+                    : "border-[#c0c0c0]/20 hover:border-[#ef4962]/50 bg-[#1a1d23]"
               }`}
               onDrop={handleDrop}
               onDragOver={(e) => {
@@ -388,7 +388,7 @@ export function TransferenciaModal({
                       <p className="text-sm font-medium text-emerald-400 truncate max-w-[180px]">
                         {comprobanteFile.name}
                       </p>
-                      <p className="text-xs text-[#5c7078]">
+                      <p className="text-xs text-[#686c73]">
                         {(comprobanteFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
                     </div>
@@ -402,16 +402,16 @@ export function TransferenciaModal({
                     className="w-7 h-7 rounded-full bg-[#333] hover:bg-[#444] flex items-center justify-center flex-shrink-0"
                     disabled={loading}
                   >
-                    <X className="w-4 h-4 text-ice" />
+                    <X className="w-4 h-4 text-brand-copy" />
                   </button>
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <Upload className="w-7 h-7 text-[#5c7078] mx-auto" />
-                  <p className="text-sm text-ice">
+                  <Upload className="w-7 h-7 text-[#686c73] mx-auto" />
+                  <p className="text-sm text-brand-copy">
                     Tocá para subir el comprobante
                   </p>
-                  <p className="text-xs text-[#5c7078]">
+                  <p className="text-xs text-[#686c73]">
                     JPG, PNG, WEBP o PDF · máx. 5MB
                   </p>
                 </div>
@@ -426,14 +426,14 @@ export function TransferenciaModal({
               variant="ghost"
               onClick={handleClose}
               disabled={loading}
-              className="flex-1 text-ice-muted hover:text-white hover:bg-[#142c36] border border-[#c4d5db]/20"
+              className="flex-1 text-brand-muted hover:text-white hover:bg-[#1a1d23] border border-[#c0c0c0]/20"
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               disabled={loading}
-              className="btn-cta flex-1 font-bold text-base h-11"
+              className="btn-brand flex-1 font-bold text-base h-11"
             >
               {loading ? "Enviando..." : "Finalizar compra"}
             </Button>

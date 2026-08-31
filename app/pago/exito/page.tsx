@@ -7,8 +7,9 @@ import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import dynamic from "next/dynamic"
+import { BrandSignature } from "@/components/brand-signature"
 
-const IphoneCarousel = dynamic(() => import("@/components/iphone-carousel"), {
+const PremioCarousel = dynamic(() => import("@/components/premio-carousel"), {
   ssr: false,
 })
 
@@ -118,28 +119,29 @@ function PagoExitoContent() {
 
   if (estado === "error") {
     return (
-      <div className="bg-rl flex min-h-screen items-center justify-center px-4">
-        <div className="card-rl-soft w-full max-w-md p-7 sm:p-9">
+      <div className="bg-brand flex min-h-screen items-center justify-center px-4">
+        <div className="card-brand-soft w-full max-w-md p-7 sm:p-9">
+          <BrandSignature className="mb-7" />
           <div className="text-center">
             <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-500/12 ring-1 ring-red-500/30">
               <XCircle className="h-7 w-7 text-red-400" />
             </span>
-            <h1 className="font-display text-3xl font-semibold uppercase tracking-tight text-ice">
+            <h1 className="font-display text-3xl font-semibold uppercase tracking-tight text-brand-copy">
               Error en el pago
             </h1>
           </div>
-          <p className="mt-5 text-center text-sm text-ice-muted">
+          <p className="mt-5 text-center text-sm text-brand-muted">
             Hubo un problema procesando tu pago. Puede ser que:
           </p>
-          <ul className="mt-3 space-y-1.5 text-sm text-ice-muted">
+          <ul className="mt-3 space-y-1.5 text-sm text-brand-muted">
             <li>• El pago fue rechazado</li>
             <li>• La sesión expiró</li>
             <li>• Hubo un error técnico</li>
           </ul>
-          <div className="divider-soft my-6" />
+          <div className="divider-brand-soft my-6" />
           <Link
             href="/"
-            className="btn-cta-outline flex w-full items-center justify-center gap-2 px-5 py-3 text-sm tracking-wide"
+            className="btn-brand-outline flex w-full items-center justify-center gap-2 px-5 py-3 text-sm tracking-wide"
           >
             <Home className="h-4 w-4" />
             Volver al inicio
@@ -150,51 +152,52 @@ function PagoExitoContent() {
   }
 
   return (
-    <div className="bg-rl flex min-h-screen items-center justify-center px-4 py-10">
-      <div className="card-rl w-full max-w-lg p-6 sm:p-8">
+    <div className="bg-brand flex min-h-screen items-center justify-center px-4 py-10">
+      <div className="card-brand w-full max-w-lg p-6 sm:p-8">
+        <BrandSignature className="mb-7" />
         <div className="text-center">
           <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/12 ring-1 ring-emerald-500/30">
             <CheckCircle className="h-7 w-7 text-emerald-400" />
           </span>
-          <h1 className="font-display text-3xl font-semibold uppercase tracking-tight text-brand sm:text-4xl">
+          <h1 className="font-display text-3xl font-semibold uppercase tracking-tight text-brand-display sm:text-4xl">
             ¡Pago exitoso!
           </h1>
-          <p className="mt-2 text-base font-semibold text-ice">
+          <p className="mt-2 text-base font-semibold text-brand-copy">
             ¡Gracias por tu compra, {datosCompra?.nombre}!
           </p>
-          <p className="mt-1 text-sm text-ice-muted">
+          <p className="mt-1 text-sm text-brand-muted">
             Tu pago se procesó correctamente y ya tenés tus números asignados.
           </p>
         </div>
 
         <div className="my-6 overflow-hidden rounded-md">
-          <IphoneCarousel />
+          <PremioCarousel />
         </div>
 
-        <div className="card-rl-soft space-y-3 p-4">
+        <div className="card-brand-soft space-y-3 p-4">
           <div className="flex items-baseline justify-between gap-3">
-            <span className="text-sm text-ice-muted">Chances compradas</span>
-            <span className="num-display text-lg font-semibold text-ice">
+            <span className="text-sm text-brand-muted">Chances compradas</span>
+            <span className="num-display text-lg font-semibold text-brand-copy">
               {datosCompra?.chances}
             </span>
           </div>
           <div className="flex items-baseline justify-between gap-3">
-            <span className="text-sm text-ice-muted">Precio pagado</span>
-            <span className="num-display text-lg font-semibold text-teal-solid">
+            <span className="text-sm text-brand-muted">Precio pagado</span>
+            <span className="num-display text-lg font-semibold text-brand-accent">
               ${datosCompra?.precio?.toLocaleString("es-AR")}
             </span>
           </div>
 
-          <div className="divider-soft !my-4" />
+          <div className="divider-brand-soft !my-4" />
 
-          <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-ice-muted">
+          <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-brand-muted">
             Tus números
           </span>
           <div className="flex flex-wrap gap-2">
             {numerosAsignados.map((numero) => (
               <span
                 key={numero}
-                className="chip-rl num-display rounded px-3 py-1 font-semibold"
+                className="chip-brand num-display rounded px-3 py-1 font-semibold"
               >
                 #{numero}
               </span>
@@ -202,22 +205,22 @@ function PagoExitoContent() {
           </div>
         </div>
 
-        <div className="mt-5 rounded-md border border-[#4fafc4]/22 bg-[#007e95]/[0.08] p-4">
-          <p className="text-sm leading-relaxed text-ice-muted">
-            <strong className="text-teal-solid">Importante:</strong> vas a
+        <div className="mt-5 rounded-md border border-[#ef4962]/22 bg-[#cf1834]/[0.08] p-4">
+          <p className="text-sm leading-relaxed text-brand-muted">
+            <strong className="text-brand-accent">Importante:</strong> vas a
             recibir un email de confirmación con todos los detalles de tu compra.
           </p>
         </div>
 
-        <div className="mt-5 rounded-md border border-[#e5813f]/25 bg-[#d25e23]/[0.07] p-4 text-center">
-          <p className="text-sm font-semibold text-[#f3ae7f]">
+        <div className="mt-5 rounded-md border border-[#ef4962]/25 bg-[#cf1834]/[0.07] p-4 text-center">
+          <p className="text-sm font-semibold text-[#f4b3bd]">
             El ganador se anuncia al vender el 100% de los números
           </p>
         </div>
 
         <Link
           href="/"
-          className="btn-cta mt-6 flex w-full items-center justify-center gap-2 px-5 py-3 text-sm font-semibold tracking-wide"
+          className="btn-brand mt-6 flex w-full items-center justify-center gap-2 px-5 py-3 text-sm font-semibold tracking-wide"
         >
           <Home className="h-4 w-4" />
           Volver al inicio
@@ -229,13 +232,14 @@ function PagoExitoContent() {
 
 function PantallaCargando({ texto }: { texto: string }) {
   return (
-    <div className="bg-rl flex min-h-screen items-center justify-center px-4">
-      <div className="card-rl-soft w-full max-w-md p-9 text-center">
-        <div className="mx-auto mb-5 h-11 w-11 animate-spin rounded-full border-2 border-[#4fafc4] border-t-transparent opacity-80" />
-        <h2 className="font-display text-2xl font-semibold uppercase tracking-tight text-ice">
+    <div className="bg-brand flex min-h-screen items-center justify-center px-4">
+      <div className="card-brand-soft w-full max-w-md p-9 text-center">
+        <BrandSignature className="mb-7" />
+        <div className="mx-auto mb-5 h-11 w-11 animate-spin rounded-full border-2 border-[#ef4962] border-t-transparent opacity-80" />
+        <h2 className="font-display text-2xl font-semibold uppercase tracking-tight text-brand-copy">
           Confirmando pago
         </h2>
-        <p className="mt-2 text-sm text-ice-muted">{texto}</p>
+        <p className="mt-2 text-sm text-brand-muted">{texto}</p>
       </div>
     </div>
   )

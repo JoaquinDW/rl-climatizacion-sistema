@@ -33,16 +33,15 @@ function dibujarComprobante(
   canvas.height = Math.max(1050, estimatedHeight)
 
   // Espeja la paleta de app/globals.css. Duplicada porque el comprobante se
-  // dibuja en canvas y no puede leer las clases de Tailwind.
+  // dibuja en canvas y no puede leer variables CSS ni clases de Tailwind.
   const C = {
-    bg: "#08151a",
-    tealLight: "#9ad5e1",
-    teal: "#4fafc4",
-    tealDeep: "#00637a",
-    tealBright: "#d8eef3",
-    ice: "#c4d5db",
-    iceMuted: "#8ca4ad",
-    dark: "#08151a",
+    bg: "#08090b",
+    redLight: "#ef4962",
+    red: "#cf1834",
+    redDeep: "#a90f28",
+    copy: "#f4f4f2",
+    muted: "#9a9da3",
+    dark: "#08090b",
   }
 
   const roundRect = (x: number, y: number, w: number, h: number, r: number) => {
@@ -63,12 +62,12 @@ function dibujarComprobante(
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   const glow = ctx.createRadialGradient(canvas.width / 2, 0, 0, canvas.width / 2, 0, canvas.width * 0.7)
-  glow.addColorStop(0, "rgba(0, 126, 149, 0.16)")
-  glow.addColorStop(1, "rgba(0, 126, 149, 0)")
+  glow.addColorStop(0, "rgba(207, 24, 52, 0.16)")
+  glow.addColorStop(1, "rgba(207, 24, 52, 0)")
   ctx.fillStyle = glow
   ctx.fillRect(0, 0, canvas.width, 320)
 
-  ctx.strokeStyle = C.teal
+  ctx.strokeStyle = C.red
   ctx.lineWidth = 3
   roundRect(16, 16, canvas.width - 32, canvas.height - 32, 24)
   ctx.stroke()
@@ -77,31 +76,30 @@ function dibujarComprobante(
   const pillH = 56
   const pillX = (canvas.width - pillW) / 2
   const pillY = 48
-  // El degradado se mantiene claro de punta a punta: el wordmark va en
-  // C.dark centrado, y con tealDeep al final quedaba ilegible (1.8:1).
+  // Franja roja de competición para el nombre de la marca.
   const pillGrad = ctx.createLinearGradient(pillX, pillY, pillX + pillW, pillY)
-  pillGrad.addColorStop(0, C.tealBright)
-  pillGrad.addColorStop(0.5, C.tealLight)
-  pillGrad.addColorStop(1, C.teal)
+  pillGrad.addColorStop(0, C.redDeep)
+  pillGrad.addColorStop(0.5, C.red)
+  pillGrad.addColorStop(1, C.redLight)
   ctx.fillStyle = pillGrad
   roundRect(pillX, pillY, pillW, pillH, 12)
   ctx.fill()
-  ctx.fillStyle = C.dark
+  ctx.fillStyle = C.copy
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.textAlign = "center"
   ctx.textBaseline = "middle"
   ctx.fillText(MARCA.toUpperCase(), canvas.width / 2, pillY + pillH / 2 + 1)
   ctx.textBaseline = "alphabetic"
 
-  ctx.fillStyle = C.tealBright
+  ctx.fillStyle = C.copy
   ctx.font = "bold 38px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.textAlign = "center"
   ctx.fillText("COMPROBANTE DE COMPRA", canvas.width / 2, 165)
 
   const lineGrad = ctx.createLinearGradient(150, 0, 650, 0)
-  lineGrad.addColorStop(0, "rgba(0, 126, 149, 0)")
-  lineGrad.addColorStop(0.5, C.teal)
-  lineGrad.addColorStop(1, "rgba(0, 126, 149, 0)")
+  lineGrad.addColorStop(0, "rgba(207, 24, 52, 0)")
+  lineGrad.addColorStop(0.5, C.red)
+  lineGrad.addColorStop(1, "rgba(207, 24, 52, 0)")
   ctx.strokeStyle = lineGrad
   ctx.lineWidth = 2
   ctx.beginPath()
@@ -109,21 +107,21 @@ function dibujarComprobante(
   ctx.lineTo(650, 192)
   ctx.stroke()
 
-  ctx.fillStyle = C.ice
+  ctx.fillStyle = C.copy
   ctx.font = "24px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.textAlign = "left"
   ctx.fillText(`¡Estás participando por ${premio}!`, 50, 245)
 
-  ctx.fillStyle = C.tealLight
+  ctx.fillStyle = C.redLight
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText("Comprador", 50, 300)
-  ctx.fillStyle = C.ice
+  ctx.fillStyle = C.copy
   ctx.font = "24px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText(comprador.nombre, 50, 335)
 
   let yPos = 370
   ctx.font = "20px 'Barlow Condensed', 'Arial Narrow', Arial"
-  ctx.fillStyle = C.iceMuted
+  ctx.fillStyle = C.muted
 
   if (comprador.email) {
     ctx.fillText(`Email: ${comprador.email}`, 50, yPos)
@@ -139,13 +137,13 @@ function dibujarComprobante(
   }
 
   yPos += 18
-  ctx.fillStyle = C.ice
+  ctx.fillStyle = C.copy
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText(`Numeros en Total: ${comprador.cantidad_chances}`, 50, yPos)
 
   if (comprador.precio_pagado != null) {
     yPos += 45
-    ctx.fillStyle = C.tealBright
+    ctx.fillStyle = C.redLight
     ctx.font = "bold 32px 'Barlow Condensed', 'Arial Narrow', Arial"
     ctx.fillText(`Total Pagado: $${comprador.precio_pagado.toLocaleString()}`, 50, yPos)
     yPos += 55
@@ -153,7 +151,7 @@ function dibujarComprobante(
     yPos += 40
   }
 
-  ctx.fillStyle = C.tealLight
+  ctx.fillStyle = C.redLight
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText("Tus Números:", 50, yPos)
 
@@ -181,12 +179,12 @@ function dibujarComprobante(
     )
 
     const gradient = ctx.createLinearGradient(0, 8, 0, 24)
-    gradient.addColorStop(0, C.tealLight)
-    gradient.addColorStop(1, C.teal)
+    gradient.addColorStop(0, C.redLight)
+    gradient.addColorStop(1, C.red)
     ctx.fillStyle = gradient
     ctx.fill(ticketPath)
 
-    ctx.strokeStyle = C.tealDeep
+    ctx.strokeStyle = C.redDeep
     ctx.lineWidth = 0.6
     ctx.stroke(ticketPath)
 
@@ -203,9 +201,9 @@ function dibujarComprobante(
 
   yPos = canvas.height - 140
   const footGrad = ctx.createLinearGradient(150, 0, 650, 0)
-  footGrad.addColorStop(0, "rgba(0, 126, 149, 0)")
-  footGrad.addColorStop(0.5, "rgba(0, 126, 149, 0.55)")
-  footGrad.addColorStop(1, "rgba(0, 126, 149, 0)")
+  footGrad.addColorStop(0, "rgba(207, 24, 52, 0)")
+  footGrad.addColorStop(0.5, "rgba(207, 24, 52, 0.55)")
+  footGrad.addColorStop(1, "rgba(207, 24, 52, 0)")
   ctx.strokeStyle = footGrad
   ctx.lineWidth = 1
   ctx.beginPath()
@@ -214,7 +212,7 @@ function dibujarComprobante(
   ctx.stroke()
 
   yPos = canvas.height - 100
-  ctx.fillStyle = C.iceMuted
+  ctx.fillStyle = C.muted
   ctx.font = "18px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.textAlign = "center"
   ctx.fillText(
@@ -224,7 +222,7 @@ function dibujarComprobante(
   )
 
   yPos += 40
-  ctx.fillStyle = C.tealBright
+  ctx.fillStyle = C.redLight
   ctx.font = "bold 22px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText("Mucha suerte!", canvas.width / 2, yPos)
 

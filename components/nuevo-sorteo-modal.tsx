@@ -279,7 +279,7 @@ export function NuevoSorteoModal({ open, onOpenChange, onSorteoCreado }: NuevoSo
           {/* Pack 4 */}
           <div className="space-y-3 p-4 border border-gray-700 rounded-lg">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-teal-400">Pack 4 (opcional)</h3>
+              <h3 className="font-semibold text-red-600">Pack 4 (opcional)</h3>
               <div className="flex items-center space-x-2">
                 <input
                   type="checkbox"

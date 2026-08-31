@@ -1,4 +1,4 @@
-# Guía de Inicio — RL Climatización
+# Guía de Inicio — Faustino Motors
 
 > **Nunca comitees credenciales.** Todo lo secreto va en `.env.local` (ya está en
 > `.gitignore`) y en las Environment Variables de Vercel. La contraseña del panel
@@ -11,7 +11,7 @@
 ### 1.1 Crear el proyecto
 
 1. Ir a [supabase.com](https://supabase.com) → **New project**
-2. Elegir nombre: `rl-climatizacion-sorteos`
+2. Elegir nombre: `faustino-motors-sorteos`
 3. Elegir región: **South America (São Paulo)**
 4. Guardar la contraseña de la base de datos en un gestor de contraseñas
 5. Esperar que el proyecto termine de crearse (~2 min)
@@ -74,7 +74,7 @@ Es el único canal de notificaciones del sistema (no hay bot de WhatsApp).
 1. Ir a [resend.com](https://resend.com) → crear cuenta
 2. **API Keys** → crear una clave
 3. Pegar en `.env.local` como `RESEND_API_KEY`
-4. **Domains** → verificar el dominio de RL Climatización
+4. **Domains** → verificar el dominio de Faustino Motors
 
 Hasta que el dominio esté verificado, los envíos desde `@rlclimatizacion.com.ar`
 van a fallar. Para probar antes de eso, usar el dominio de prueba `onboarding@resend.dev`
@@ -91,7 +91,7 @@ fuente única de la identidad; cambiar ahí se propaga a metadata, emails y comp
 
 1. En [vercel.com](https://vercel.com) → **New Project** → importar el repo
 2. En **Environment Variables** cargar todas las variables de la tabla de la sección 6
-3. El dominio inicial será algo como `rl-climatizacion.vercel.app`
+3. El dominio inicial será algo como `faustino-motors.vercel.app`
 
 ### 4.2 Imágenes
 
@@ -122,7 +122,7 @@ entorno y configurá:
 
 En **Configuración → Cuenta de transferencia**:
 
-- **Alias**: el alias de Mercado Pago de RL Climatización
+- **Alias**: el alias de Mercado Pago de Faustino Motors
 - **Titular**: nombre completo tal como figura en la cuenta
 
 Estos datos son exactamente lo que ve el comprador cuando elige pagar por
