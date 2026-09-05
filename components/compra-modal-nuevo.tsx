@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label"
 import { ArrowLeft, ShoppingCart, CreditCard } from "lucide-react"
 import { MetodoPagoSelector } from "./metodo-pago-selector"
 import { TransferenciaModal } from "./transferencia-modal"
+import { ParticipacionGratisModal } from "./participacion-gratis-modal"
 
 interface CompraModalProps {
   isOpen: boolean
@@ -25,6 +26,18 @@ interface CompraModalProps {
     telefono: string
     comprobanteFile: File
   }) => void
+  // Sorteo gratuito: no hay monto, ni datos bancarios, ni comprobante
+  gratis?: boolean
+  onParticipacionGratis?: (data: {
+    nombre: string
+    email: string
+    telefono: string
+    instagram: string
+  }) => void
+  gratisPrecioLabel?: string
+  gratisRequisitosTitulo?: string
+  gratisRequisitos?: string
+  gratisNota?: string
 }
 
 export function CompraModalNuevo({
@@ -33,6 +46,12 @@ export function CompraModalNuevo({
   pack,
   onCompraMercadoPago,
   onCompraTransferencia,
+  gratis = false,
+  onParticipacionGratis,
+  gratisPrecioLabel,
+  gratisRequisitosTitulo,
+  gratisRequisitos,
+  gratisNota,
 }: CompraModalProps) {
   const [paso, setPaso] = useState<"metodo" | "datos-mp" | "transferencia">(
     "metodo"
@@ -52,13 +71,16 @@ export function CompraModalNuevo({
   })
 
   useEffect(() => {
+    // En un sorteo gratis no hay nada que transferir: no tiene sentido
+    // pedir el alias ni el CBU.
+    if (gratis) return
     fetch("/api/configuracion-transferencia")
       .then((r) => r.json())
       .then((data) => {
         if (data.alias && data.titular) setConfigTransferencia(data)
       })
       .catch(() => {})
-  }, [])
+  }, [gratis])
 
   // Efecto para abrir automáticamente el modal de transferencia
   useEffect(() => {
@@ -158,6 +180,17 @@ export function CompraModalNuevo({
       alert("Hubo un error al procesar tu compra. Intenta nuevamente.")
     }
 
+    handleClose()
+  }
+
+  const handleSubmitGratis = async (data: {
+    nombre: string
+    email: string
+    telefono: string
+    instagram: string
+  }) => {
+    await onParticipacionGratis?.(data)
+    setTransferenciaModalOpen(false)
     handleClose()
   }
 
@@ -312,17 +345,31 @@ export function CompraModalNuevo({
       </Dialog>
       */}
 
-      {/* Modal de transferencia - ÚNICO ACTIVO */}
-      <TransferenciaModal
-        isOpen={transferenciaModalOpen}
-        onClose={handleClose}
-        pack={pack}
-        onSubmit={handleSubmitTransferencia}
-        alias={configTransferencia.alias}
-        titular={configTransferencia.titular}
-        cbu={configTransferencia.cbu}
-        banco={configTransferencia.banco}
-      />
+      {/* Sorteo gratis: formulario sin monto ni comprobante */}
+      {gratis ? (
+        <ParticipacionGratisModal
+          isOpen={transferenciaModalOpen}
+          onClose={handleClose}
+          pack={pack}
+          onSubmit={handleSubmitGratis}
+          precioLabel={gratisPrecioLabel}
+          requisitosTitulo={gratisRequisitosTitulo}
+          requisitos={gratisRequisitos}
+          nota={gratisNota}
+        />
+      ) : (
+        /* Modal de transferencia - ÚNICO ACTIVO en sorteos pagos */
+        <TransferenciaModal
+          isOpen={transferenciaModalOpen}
+          onClose={handleClose}
+          pack={pack}
+          onSubmit={handleSubmitTransferencia}
+          alias={configTransferencia.alias}
+          titular={configTransferencia.titular}
+          cbu={configTransferencia.cbu}
+          banco={configTransferencia.banco}
+        />
+      )}
     </>
   )
 }

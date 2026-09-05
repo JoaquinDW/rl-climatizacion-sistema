@@ -236,6 +236,8 @@ export interface TransferenciaAprobadaData {
   precioPagado: number
   nombreSorteo: string
   sorteoImagenUrl?: string
+  // Sorteo gratuito: se omite todo lo relacionado al monto
+  gratis?: boolean
 }
 
 export interface TransferenciaRechazadaData {
@@ -245,6 +247,8 @@ export interface TransferenciaRechazadaData {
   precioPagado: number
   nombreSorteo: string
   motivo?: string
+  // Sorteo gratuito: se omite todo lo relacionado al monto
+  gratis?: boolean
 }
 
 export async function enviarEmailTransferenciaAprobada(
@@ -254,7 +258,9 @@ export async function enviarEmailTransferenciaAprobada(
     const { data: emailResult, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: [data.email],
-      subject: `✅ ¡Transferencia Aprobada! - ${data.nombreSorteo}`,
+      subject: data.gratis
+        ? `✅ ¡Ya estás participando! - ${data.nombreSorteo}`
+        : `✅ ¡Transferencia Aprobada! - ${data.nombreSorteo}`,
       html: generarHTMLTransferenciaAprobada(data),
     })
 
@@ -277,7 +283,9 @@ export async function enviarEmailTransferenciaRechazada(
     const { data: emailResult, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: [data.email],
-      subject: "❌ Transferencia no Aprobada",
+      subject: data.gratis
+        ? "❌ No pudimos confirmar tu participación"
+        : "❌ Transferencia no Aprobada",
       html: generarHTMLTransferenciaRechazada(data),
     })
 
@@ -296,27 +304,43 @@ export async function enviarEmailTransferenciaRechazada(
 function generarHTMLTransferenciaAprobada(
   data: TransferenciaAprobadaData,
 ): string {
+  const intro = data.gratis
+    ? "¡Confirmamos tu participación! Tus números ya quedaron asignados para"
+    : "Tu pago fue verificado y aprobado exitosamente. Tus números ya quedaron asignados para"
+
+  const filasResumen = [
+    { label: "Chances", value: String(data.cantidadChances) },
+  ]
+  if (!data.gratis) {
+    filasResumen.push({
+      label: "Monto abonado",
+      value: `$${data.precioPagado.toLocaleString()}`,
+    })
+  }
+
   const body = `
     <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${data.nombre}</strong>,</p>
-    <p style="margin:0 0 22px 0;">Tu pago fue verificado y aprobado exitosamente. Tus números ya quedaron asignados para <strong style="color:${COLORS.copy};">${data.nombreSorteo}</strong>.</p>
+    <p style="margin:0 0 22px 0;">${intro} <strong style="color:${COLORS.copy};">${data.nombreSorteo}</strong>.</p>
     ${bloqueNumeros(data.numerosAsignados)}
-    ${bloqueResumen([
-      { label: "Chances", value: String(data.cantidadChances) },
-      {
-        label: "Monto abonado",
-        value: `$${data.precioPagado.toLocaleString()}`,
-      },
-    ])}
+    ${bloqueResumen(filasResumen)}
     ${bloqueImagen(data.sorteoImagenUrl)}
     ${bloqueSuerte()}
   `
 
   return emailLayout({
-    preheader:
-      "Tu transferencia fue aprobada y tus números ya están asignados.",
-    title: "¡Transferencia Aprobada!",
-    subtitle: "Tu pago fue verificado y aprobado exitosamente",
-    badge: { text: "✅ Pago verificado correctamente", accent: COLORS.greenOk },
+    preheader: data.gratis
+      ? "Tu participación fue confirmada y tus números ya están asignados."
+      : "Tu transferencia fue aprobada y tus números ya están asignados.",
+    title: data.gratis ? "¡Ya estás participando!" : "¡Transferencia Aprobada!",
+    subtitle: data.gratis
+      ? "Confirmamos tu participación en el sorteo"
+      : "Tu pago fue verificado y aprobado exitosamente",
+    badge: {
+      text: data.gratis
+        ? "✅ Participación confirmada"
+        : "✅ Pago verificado correctamente",
+      accent: COLORS.greenOk,
+    },
     bodyHtml: body,
   })
 }
@@ -324,17 +348,39 @@ function generarHTMLTransferenciaAprobada(
 function generarHTMLTransferenciaRechazada(
   data: TransferenciaRechazadaData,
 ): string {
+  const intro = data.gratis
+    ? "Lamentamos informarte que no pudimos confirmar tu participación en"
+    : "Lamentamos informarte que no pudimos aprobar tu transferencia para participar en"
+
+  const filasResumen = [
+    { label: "Chances solicitadas", value: String(data.cantidadChances) },
+  ]
+  if (!data.gratis) {
+    filasResumen.push({
+      label: "Monto esperado",
+      value: `$${data.precioPagado.toLocaleString()}`,
+    })
+  }
+  filasResumen.push({ label: "Email", value: data.email })
+
+  // En un sorteo gratis los motivos son otros: no hay comprobante ni monto,
+  // lo que falla son los requisitos de participación.
+  const queHacer = data.gratis
+    ? `
+            <li>Verificá que nos sigas en todas nuestras redes sociales</li>
+            <li>Asegurate de que tu usuario de Instagram esté bien escrito</li>
+            <li>Revisá que tu cuenta no sea privada, así podemos verificarte</li>
+            <li>Podés volver a anotarte una vez que cumplas los requisitos</li>`
+    : `
+            <li>Verifica que hayas enviado el comprobante correcto</li>
+            <li>Asegúrate de que el monto transferido sea exacto</li>
+            <li>Contactanos si tienes dudas sobre tu transferencia</li>
+            <li>Puedes enviar un nuevo comprobante si es necesario</li>`
+
   const body = `
     <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${data.nombre}</strong>,</p>
-    <p style="margin:0 0 22px 0;">Lamentamos informarte que no pudimos aprobar tu transferencia para participar en <strong style="color:${COLORS.copy};">${data.nombreSorteo}</strong>.</p>
-    ${bloqueResumen([
-      { label: "Chances solicitadas", value: String(data.cantidadChances) },
-      {
-        label: "Monto esperado",
-        value: `$${data.precioPagado.toLocaleString()}`,
-      },
-      { label: "Email", value: data.email },
-    ])}
+    <p style="margin:0 0 22px 0;">${intro} <strong style="color:${COLORS.copy};">${data.nombreSorteo}</strong>.</p>
+    ${bloqueResumen(filasResumen)}
     ${
       data.motivo
         ? `
@@ -352,11 +398,7 @@ function generarHTMLTransferenciaRechazada(
       <tr>
         <td style="padding:18px;">
           <p style="margin:0 0 10px 0; font-weight:700; color:${COLORS.brandRedLight};">💬 ¿Qué puedes hacer?</p>
-          <ul style="margin:0; padding-left:20px; color:${COLORS.copy}; font-size:14px; line-height:1.7;">
-            <li>Verifica que hayas enviado el comprobante correcto</li>
-            <li>Asegúrate de que el monto transferido sea exacto</li>
-            <li>Contactanos si tienes dudas sobre tu transferencia</li>
-            <li>Puedes enviar un nuevo comprobante si es necesario</li>
+          <ul style="margin:0; padding-left:20px; color:${COLORS.copy}; font-size:14px; line-height:1.7;">${queHacer}
           </ul>
         </td>
       </tr>
@@ -366,11 +408,19 @@ function generarHTMLTransferenciaRechazada(
   `
 
   return emailLayout({
-    preheader: "Necesitamos que revises tu transferencia.",
-    title: "Transferencia No Aprobada",
-    subtitle: "Necesitamos que revises tu pago",
+    preheader: data.gratis
+      ? "No pudimos confirmar tu participación."
+      : "Necesitamos que revises tu transferencia.",
+    title: data.gratis
+      ? "Participación No Confirmada"
+      : "Transferencia No Aprobada",
+    subtitle: data.gratis
+      ? "No pudimos verificar que cumplas los requisitos"
+      : "Necesitamos que revises tu pago",
     badge: {
-      text: "❌ Tu transferencia no pudo ser verificada",
+      text: data.gratis
+        ? "❌ Tu participación no pudo ser confirmada"
+        : "❌ Tu transferencia no pudo ser verificada",
       accent: COLORS.danger,
     },
     bodyHtml: body,

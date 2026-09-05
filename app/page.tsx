@@ -6,6 +6,7 @@ import {
   Clock,
   Trophy,
   ShoppingCart,
+  Gift,
   ChevronDown,
   Ticket,
   Car,
@@ -315,6 +316,68 @@ export default function LandingPage() {
     setPackSeleccionado(null)
   }
 
+  const procesarParticipacionGratis = async (data: {
+    nombre: string
+    email: string
+    telefono: string
+    instagram: string
+  }) => {
+    if (!packSeleccionado || !sorteo) return
+
+    try {
+      toast({
+        title: "Procesando...",
+        description: "Estamos registrando tu participación",
+      })
+
+      const response = await fetch("/api/participar-gratis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sorteoId: sorteo.id,
+          nombre: data.nombre,
+          email: data.email,
+          telefono: data.telefono,
+          instagram_username: data.instagram,
+          cantidadChances: packSeleccionado.chances,
+        }),
+      })
+
+      if (!response.ok) {
+        // 409 si ya participó con ese email o si ya cerraron las inscripciones
+        const datos = await response.json().catch(() => ({}))
+        toast({
+          variant: "destructive",
+          title: "No se pudo registrar tu participación",
+          description: datos.error || "Intentá nuevamente en unos minutos.",
+        })
+        setModalAbierto(false)
+        setPackSeleccionado(null)
+        return
+      }
+
+      toast({
+        title: "¡Ya estás participando!",
+        description:
+          "Te enviamos tus números por email cuando confirmemos que cumplís los requisitos.",
+        duration: 6000,
+      })
+
+      await cargarDatos()
+    } catch (error) {
+      console.error("Error procesando participación gratis:", error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          "Ocurrió un error registrando tu participación. Intenta nuevamente.",
+      })
+    }
+
+    setModalAbierto(false)
+    setPackSeleccionado(null)
+  }
+
   const TOTAL_CHANCES = sorteo?.total_chances || 9999
   const porcentajeVendido = (chancesVendidas / TOTAL_CHANCES) * 100
   // Se agotaron las chances o el sorteo ya terminó (define qué card se muestra)
@@ -336,6 +399,12 @@ export default function LandingPage() {
     : undefined
 
   const PACKS = getPacks()
+  // Modo gratuito: la landing esconde precios y el modal no pide comprobante
+  const esGratis = !!sorteo?.es_gratis
+  const requisitosGratis = contenido.gratis_requisitos
+    .split("\n")
+    .map((linea) => linea.trim())
+    .filter(Boolean)
 
   const handleCompra = (pack: (typeof PACKS)[0]) => {
     if (ventasBloqueadas) return
@@ -634,16 +703,16 @@ export default function LandingPage() {
       </section>
 
       {/* Sección de Packs */}
-      {!ventasBloqueadas && (
+      {!ventasBloqueadas && PACKS.length > 0 && (
         <section id="packs" className="py-20 scroll-mt-16">
           <MotorsportDivider className="mx-auto mb-16 max-w-4xl" />
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-12">
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
-                Elegí tus números
+                {esGratis ? contenido.packs_kicker_gratis : "Elegí tus números"}
               </p>
               <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy">
-                Compra tus números
+                {esGratis ? contenido.packs_titulo_gratis : "Compra tus números"}
               </h2>
             </Reveal>
 
@@ -652,14 +721,20 @@ export default function LandingPage() {
                 <Reveal
                   key={pack.chances}
                   delay={index * 100}
-                  className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex"
+                  className={
+                    PACKS.length === 1
+                      ? "w-full max-w-sm flex"
+                      : "w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] flex"
+                  }
                 >
                   <div
                     className={`relative flex flex-col w-full p-7 text-center ${
-                      pack.popular ? "border-brand-accent" : "card-brand-soft"
+                      pack.popular || PACKS.length === 1
+                        ? "border-brand-accent"
+                        : "card-brand-soft"
                     }`}
                   >
-                    {pack.popular && (
+                    {pack.popular && PACKS.length > 1 && (
                       <span className="btn-brand absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.2em]">
                         {contenido.packs_popular_label}
                       </span>
@@ -686,24 +761,64 @@ export default function LandingPage() {
                     </p>
 
                     <p className="text-3xl font-semibold text-brand-accent mt-5">
-                      ${pack.precio.toLocaleString()}
+                      {esGratis
+                        ? contenido.gratis_precio_label
+                        : `$${pack.precio.toLocaleString()}`}
                     </p>
 
                     <button
                       onClick={() => handleCompra(pack)}
                       className={`mt-5 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold tracking-wide w-full ${
-                        pack.popular ? "btn-brand" : "btn-brand-outline"
+                        pack.popular || PACKS.length === 1
+                          ? "btn-brand"
+                          : "btn-brand-outline"
                       }`}
                     >
-                      <ShoppingCart className="w-4 h-4" />
-                      {contenido.packs_comprar_boton}
+                      {esGratis ? (
+                        <Gift className="w-4 h-4" />
+                      ) : (
+                        <ShoppingCart className="w-4 h-4" />
+                      )}
+                      {esGratis
+                        ? contenido.packs_participar_boton
+                        : contenido.packs_comprar_boton}
                     </button>
                   </div>
                 </Reveal>
               ))}
             </div>
 
-            {PACKS.length > 1 && (
+            {esGratis && requisitosGratis.length > 0 && (
+              <Reveal delay={200}>
+                <div className="card-brand-soft mx-auto mt-12 max-w-2xl p-7">
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-5 text-center">
+                    {contenido.gratis_requisitos_titulo}
+                  </p>
+                  <ol className="space-y-4">
+                    {requisitosGratis.map((requisito, index) => (
+                      <li
+                        key={`${index}-${requisito}`}
+                        className="flex items-start gap-4"
+                      >
+                        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#ef4962]/15 num-display text-sm font-bold text-brand-accent">
+                          {index + 1}
+                        </span>
+                        <span className="text-base text-brand-copy leading-snug pt-0.5">
+                          {requisito}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                  {contenido.gratis_nota && (
+                    <p className="text-xs text-brand-muted text-center tracking-wide mt-6">
+                      {contenido.gratis_nota}
+                    </p>
+                  )}
+                </div>
+              </Reveal>
+            )}
+
+            {!esGratis && PACKS.length > 1 && (
               <Reveal delay={200}>
                 <p className="text-xs text-brand-muted text-center tracking-wide mt-8">
                   {contenido.packs_nota}
@@ -1062,6 +1177,12 @@ export default function LandingPage() {
         pack={packSeleccionado}
         onCompraMercadoPago={procesarCompra}
         onCompraTransferencia={procesarTransferencia}
+        gratis={esGratis}
+        onParticipacionGratis={procesarParticipacionGratis}
+        gratisPrecioLabel={contenido.gratis_precio_label}
+        gratisRequisitosTitulo={contenido.gratis_requisitos_titulo}
+        gratisRequisitos={contenido.gratis_requisitos}
+        gratisNota={contenido.gratis_nota}
       />
 
       {/* Barra fija con el contador, sólo en mobile */}

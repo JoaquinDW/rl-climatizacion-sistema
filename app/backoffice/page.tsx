@@ -403,7 +403,7 @@ export default function BackofficePage() {
         : c.telefono || "",
       Chances: c.cantidad_chances,
       Números: c.numeros_asignados.join(", "),
-      Precio: c.precio_pagado,
+      Precio: c.precio_pagado > 0 ? c.precio_pagado : "Gratis",
       Estado: c.estado_pago,
       Fecha: new Date(c.created_at).toLocaleDateString(),
     }))
@@ -591,6 +591,7 @@ export default function BackofficePage() {
                 precioPagado: comprador.precio_pagado,
                 nombreSorteo: sorteoActual?.nombre || "Sorteo",
                 sorteoImagenUrl: sorteoActual?.carousel_image_1,
+                gratis: comprador.metodo_pago === "gratis",
               },
             }
 
@@ -666,6 +667,7 @@ export default function BackofficePage() {
                   nombreSorteo:
                     sorteoActual?.nombre || "T-SHIRT SORTEO EXCLUSIVO",
                   motivo: motivo,
+                  gratis: comprador.metodo_pago === "gratis",
                 },
               }),
             })
@@ -1011,7 +1013,7 @@ export default function BackofficePage() {
               className="data-[state=active]:bg-gray-100"
             >
               <Clock className="w-4 h-4 mr-2" />
-              Transferencias Pendientes ({transferenciasPendientes.length})
+              Pendientes de Aprobación ({transferenciasPendientes.length})
             </TabsTrigger>
             <TabsTrigger
               value="historico"
@@ -1283,6 +1285,11 @@ export default function BackofficePage() {
                             <h3 className="font-semibold text-gray-900">
                               {sorteoActual.nombre}
                             </h3>
+                            {sorteoActual.es_gratis && (
+                              <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
+                                GRATIS
+                              </Badge>
+                            )}
                             <Button
                               variant="ghost"
                               size="sm"
@@ -1316,44 +1323,55 @@ export default function BackofficePage() {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium text-gray-900">
-                            Precios:
-                          </h4>
-                          {sorteoActual.estado === "activo" && (
-                            <Button
-                              onClick={() => setEditarPreciosModalAbierto(true)}
-                              variant="ghost"
-                              size="sm"
-                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                            >
-                              <DollarSign className="w-4 h-4 mr-1" />
-                              Editar
-                            </Button>
-                          )}
+                      {sorteoActual.es_gratis ? (
+                        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+                          <strong>Sorteo gratuito.</strong> La página no muestra
+                          precios ni datos bancarios, y los participantes no
+                          suben comprobante. Igual tenés que aprobarlos a mano
+                          desde "Pendientes de Aprobación".
                         </div>
-                        <div className="grid grid-cols-3 gap-2 text-sm">
-                          <div className="bg-gray-50 p-2 rounded">
-                            <div className="text-gray-500">6 chances</div>
-                            <div className="font-medium">
-                              ${sorteoActual.precio_6_chances.toLocaleString()}
-                            </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-medium text-gray-900">
+                              Precios:
+                            </h4>
+                            {sorteoActual.estado === "activo" && (
+                              <Button
+                                onClick={() =>
+                                  setEditarPreciosModalAbierto(true)
+                                }
+                                variant="ghost"
+                                size="sm"
+                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                              >
+                                <DollarSign className="w-4 h-4 mr-1" />
+                                Editar
+                              </Button>
+                            )}
                           </div>
-                          <div className="bg-gray-50 p-2 rounded">
-                            <div className="text-gray-500">12 chances</div>
-                            <div className="font-medium">
-                              ${sorteoActual.precio_12_chances.toLocaleString()}
+                          <div className="grid grid-cols-3 gap-2 text-sm">
+                            <div className="bg-gray-50 p-2 rounded">
+                              <div className="text-gray-500">6 chances</div>
+                              <div className="font-medium">
+                                ${sorteoActual.precio_6_chances.toLocaleString()}
+                              </div>
                             </div>
-                          </div>
-                          <div className="bg-gray-50 p-2 rounded">
-                            <div className="text-gray-500">24 chances</div>
-                            <div className="font-medium">
-                              ${sorteoActual.precio_24_chances.toLocaleString()}
+                            <div className="bg-gray-50 p-2 rounded">
+                              <div className="text-gray-500">12 chances</div>
+                              <div className="font-medium">
+                                ${sorteoActual.precio_12_chances.toLocaleString()}
+                              </div>
+                            </div>
+                            <div className="bg-gray-50 p-2 rounded">
+                              <div className="text-gray-500">24 chances</div>
+                              <div className="font-medium">
+                                ${sorteoActual.precio_24_chances.toLocaleString()}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Información del ganador */}
                       {sorteoActual.estado === "sorteado" &&

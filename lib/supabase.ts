@@ -42,6 +42,7 @@ export interface Sorteo {
   precio_pack_5: number
   pack_5_visible: boolean
   descripcion_pack_5: string
+  es_gratis: boolean // true = sorteo gratuito: sin precio, sin alias y sin comprobante
   fecha_sorteo: string | null
   fecha_cierre_ventas: string | null // Cuándo se dejan de aceptar compras (null = sin cierre programado)
   fecha_sorteo_programada: string | null // Fecha y hora del sorteo, informativa (null = a definir)
@@ -77,7 +78,7 @@ export interface Comprador {
   precio_pagado: number
   estado_pago: string // 'pendiente', 'pagado', 'cancelado', 'expirado'
   mercadopago_id?: string | null // Para pagos de MercadoPago o URL de comprobante temporal
-  metodo_pago?: string // 'mercadopago', 'transferencia'
+  metodo_pago?: string // 'mercadopago', 'transferencia', 'gratis'
   comprobante_url?: string
   estado_transferencia?: string // 'pendiente', 'aprobado', 'rechazado'
   fecha_transferencia?: string

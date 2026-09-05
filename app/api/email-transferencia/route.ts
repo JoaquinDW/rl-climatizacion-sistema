@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
         precioPagado: data.precioPagado,
         nombreSorteo: data.nombreSorteo || "T-SHIRT SORTEO EXCLUSIVO",
         sorteoImagenUrl: data.sorteoImagenUrl,
+        gratis: !!data.gratis,
       }
       console.log("📧 Final email data being sent:", JSON.stringify(transferenciaData, null, 2))
       resultado = await enviarEmailTransferenciaAprobada(transferenciaData)
@@ -43,6 +44,7 @@ export async function POST(request: NextRequest) {
         precioPagado: data.precioPagado,
         nombreSorteo: data.nombreSorteo || "T-SHIRT SORTEO EXCLUSIVO",
         motivo: data.motivo,
+        gratis: !!data.gratis,
       }
       resultado = await enviarEmailTransferenciaRechazada(transferenciaData)
     } else {

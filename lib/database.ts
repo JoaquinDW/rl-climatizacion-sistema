@@ -82,6 +82,7 @@ export async function obtenerSorteoActivo(): Promise<Sorteo | null> {
         precio_pack_5: 0,
         pack_5_visible: false,
         descripcion_pack_5: "",
+        es_gratis: false,
         fecha_sorteo: "2025-02-15",
         fecha_cierre_ventas: null,
         fecha_sorteo_programada: null,
@@ -98,6 +99,7 @@ export async function obtenerSorteoActivo(): Promise<Sorteo | null> {
         carousel_image_8: null,
         ganador_id: null,
         numero_ganador: null,
+        ganador_nombre: null,
         fecha_sorteo_realizado: null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -187,7 +189,11 @@ export async function crearNuevoSorteo(
   cantidadPack5 = 0,
   precio5 = 0,
   descripcionPack5 = "",
-  pack5Visible = false
+  pack5Visible = false,
+  esGratis = false,
+  pack1Visible = true,
+  pack2Visible = true,
+  pack3Visible = true
 ): Promise<Sorteo | null> {
   try {
     const tablasExisten = await verificarTablas()
@@ -210,6 +216,9 @@ export async function crearNuevoSorteo(
         descripcion_pack_1: descripcionPack1,
         descripcion_pack_2: descripcionPack2,
         descripcion_pack_3: descripcionPack3,
+        pack_1_visible: pack1Visible,
+        pack_2_visible: pack2Visible,
+        pack_3_visible: pack3Visible,
         precio_6_chances: precio6,
         precio_12_chances: precio12,
         precio_24_chances: precio24,
@@ -221,6 +230,7 @@ export async function crearNuevoSorteo(
         precio_pack_5: precio5,
         pack_5_visible: pack5Visible,
         descripcion_pack_5: descripcionPack5,
+        es_gratis: esGratis,
         fecha_sorteo: fechaSorteo,
         estado: "activo",
         imagen_url:
@@ -498,7 +508,8 @@ export async function actualizarPreciosYCantidadesSorteo(
     precio: number
     visible: boolean
     descripcion: string
-  } = { cantidad: 0, precio: 0, visible: false, descripcion: "" }
+  } = { cantidad: 0, precio: 0, visible: false, descripcion: "" },
+  esGratis = false
 ): Promise<boolean> {
   try {
     // Si es el sorteo por defecto, no podemos actualizar en Supabase
@@ -535,6 +546,7 @@ export async function actualizarPreciosYCantidadesSorteo(
         precio_pack_5: pack5.precio,
         pack_5_visible: pack5.visible,
         descripcion_pack_5: pack5.descripcion,
+        es_gratis: esGratis,
         updated_at: new Date().toISOString(),
       })
       .eq("id", sorteoId)
@@ -1056,6 +1068,42 @@ export async function obtenerTodosLosCompradores(): Promise<Comprador[]> {
   }
 }
 
+// Resuelve el precio de un pack a partir de la cantidad de chances elegida.
+// Devuelve null si la cantidad no corresponde a ningún pack disponible, que es
+// la forma de detectar que el front mandó un valor inventado.
+export function precioDePack(
+  sorteo: Sorteo,
+  cantidadChances: number
+): number | null {
+  // Los packs 1-3 son visibles por defecto (?? true) y los 4-5 ocultos,
+  // igual que en la landing.
+  if (
+    (sorteo.pack_1_visible ?? true) &&
+    cantidadChances === sorteo.cantidad_pack_1
+  ) {
+    return sorteo.precio_6_chances
+  }
+  if (
+    (sorteo.pack_2_visible ?? true) &&
+    cantidadChances === sorteo.cantidad_pack_2
+  ) {
+    return sorteo.precio_12_chances
+  }
+  if (
+    (sorteo.pack_3_visible ?? true) &&
+    cantidadChances === sorteo.cantidad_pack_3
+  ) {
+    return sorteo.precio_24_chances
+  }
+  if (sorteo.pack_4_visible && cantidadChances === sorteo.cantidad_pack_4) {
+    return sorteo.precio_pack_4
+  }
+  if (sorteo.pack_5_visible && cantidadChances === sorteo.cantidad_pack_5) {
+    return sorteo.precio_pack_5
+  }
+  return null
+}
+
 // Crear un comprador con pago por transferencia (pendiente de confirmación)
 export async function crearCompradorTransferencia({
   sorteoId,
@@ -1089,18 +1137,8 @@ export async function crearCompradorTransferencia({
     // Los números se asignarán cuando el admin apruebe la transferencia
     const numerosAsignados: number[] = []
 
-    let precioPagado = 0
-    if (cantidadChances === sorteo.cantidad_pack_1) {
-      precioPagado = sorteo.precio_6_chances
-    } else if (cantidadChances === sorteo.cantidad_pack_2) {
-      precioPagado = sorteo.precio_12_chances
-    } else if (cantidadChances === sorteo.cantidad_pack_3) {
-      precioPagado = sorteo.precio_24_chances
-    } else if (sorteo.pack_4_visible && cantidadChances === sorteo.cantidad_pack_4) {
-      precioPagado = sorteo.precio_pack_4
-    } else if (sorteo.pack_5_visible && cantidadChances === sorteo.cantidad_pack_5) {
-      precioPagado = sorteo.precio_pack_5
-    } else {
+    const precioPagado = precioDePack(sorteo, cantidadChances)
+    if (precioPagado === null) {
       throw new Error(`Cantidad de chances no válida: ${cantidadChances}`)
     }
 
@@ -1134,6 +1172,124 @@ export async function crearCompradorTransferencia({
     console.error("Error creando comprador con transferencia:", error)
     return null
   }
+}
+
+// Error de "ya participaste": lo lanza crearParticipacionGratis para que la
+// API pueda responder 409 con un mensaje claro en vez de un 500 genérico.
+export class ParticipacionDuplicadaError extends Error {
+  constructor(message = "Ya estás participando con este email") {
+    super(message)
+    this.name = "ParticipacionDuplicadaError"
+  }
+}
+
+// Normaliza el email para que el pre-chequeo y el índice único
+// (lower(email)) coincidan siempre.
+function normalizarEmail(email: string): string {
+  return email.trim().toLowerCase()
+}
+
+// ¿Este email ya se anotó en el sorteo gratis? El índice único parcial
+// idx_compradores_gratis_email_unico es la garantía real; esto sólo existe
+// para poder devolver un mensaje amable antes de intentar el insert.
+export async function yaParticipoGratis(
+  sorteoId: string,
+  email: string
+): Promise<boolean> {
+  try {
+    const { data, error } = await supabase
+      .from("compradores")
+      .select("id")
+      .eq("sorteo_id", sorteoId)
+      .eq("metodo_pago", "gratis")
+      // eq y no ilike: un email puede tener "_", que en LIKE es un comodín.
+      // Las participaciones gratis se guardan siempre en minúsculas, así que
+      // la comparación exacta alcanza.
+      .eq("email", normalizarEmail(email))
+      .limit(1)
+
+    if (error) {
+      console.error("Error verificando participación gratis:", error)
+      return false
+    }
+
+    return (data?.length ?? 0) > 0
+  } catch (error) {
+    console.error("Error verificando participación gratis:", error)
+    return false
+  }
+}
+
+// Crear una participación en un sorteo gratuito. Igual que las transferencias,
+// queda pendiente: los números se asignan cuando el admin aprueba, después de
+// verificar a mano que la persona cumpla los requisitos (seguir las redes,
+// compartir el sorteo).
+export async function crearParticipacionGratis({
+  sorteoId,
+  nombre,
+  email,
+  telefono,
+  instagram_username,
+  cantidadChances,
+}: {
+  sorteoId: string
+  nombre: string
+  email: string
+  telefono?: string
+  instagram_username: string
+  cantidadChances: number
+}): Promise<Comprador | null> {
+  const tablasExisten = await verificarTablas()
+  if (!tablasExisten) {
+    throw new Error("Las tablas de la base de datos no existen")
+  }
+
+  const sorteo = await obtenerSorteo(sorteoId)
+  if (!sorteo) {
+    throw new Error("No se pudo obtener información del sorteo")
+  }
+
+  if (!sorteo.es_gratis) {
+    throw new Error("Este sorteo no es gratuito")
+  }
+
+  // El pack tiene que existir aunque su precio sea 0: define cuántas chances
+  // recibe el participante.
+  if (precioDePack(sorteo, cantidadChances) === null) {
+    throw new Error(`Cantidad de chances no válida: ${cantidadChances}`)
+  }
+
+  const { data, error } = await supabase
+    .from("compradores")
+    .insert({
+      sorteo_id: sorteoId,
+      nombre,
+      email: normalizarEmail(email),
+      telefono: telefono || null,
+      instagram_username: instagram_username.replace(/^@+/, "").trim(),
+      cantidad_chances: cantidadChances,
+      numeros_asignados: [], // Array vacío hasta la aprobación del admin
+      precio_pagado: 0,
+      estado_pago: "pendiente",
+      es_ganador: false,
+      comprobante_url: null,
+      metodo_pago: "gratis",
+      estado_transferencia: "pendiente",
+    })
+    .select()
+    .single()
+
+  if (error) {
+    // 23505 = unique_violation: el índice parcial frenó un segundo intento
+    // con el mismo email (incluso en una carrera entre dos requests).
+    if (error.code === "23505") {
+      throw new ParticipacionDuplicadaError()
+    }
+    console.error("Error creando participación gratis:", error)
+    return null
+  }
+
+  return data
 }
 
 // Obtener transferencias pendientes de confirmación
@@ -1337,6 +1493,7 @@ export async function obtenerSorteo(sorteoId: string): Promise<Sorteo | null> {
         precio_pack_5: 0,
         pack_5_visible: false,
         descripcion_pack_5: "",
+        es_gratis: false,
         fecha_sorteo: "2025-02-15",
         fecha_cierre_ventas: null,
         fecha_sorteo_programada: null,
@@ -1353,6 +1510,7 @@ export async function obtenerSorteo(sorteoId: string): Promise<Sorteo | null> {
         carousel_image_8: null,
         ganador_id: null,
         numero_ganador: null,
+        ganador_nombre: null,
         fecha_sorteo_realizado: null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
