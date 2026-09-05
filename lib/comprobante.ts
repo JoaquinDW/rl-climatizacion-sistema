@@ -141,7 +141,8 @@ function dibujarComprobante(
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText(`Numeros en Total: ${comprador.cantidad_chances}`, 50, yPos)
 
-  if (comprador.precio_pagado != null) {
+  // En un sorteo gratis el monto es 0: mostrar "Total Pagado: $0" no aporta nada
+  if (comprador.precio_pagado != null && comprador.precio_pagado > 0) {
     yPos += 45
     ctx.fillStyle = C.redLight
     ctx.font = "bold 32px 'Barlow Condensed', 'Arial Narrow', Arial"

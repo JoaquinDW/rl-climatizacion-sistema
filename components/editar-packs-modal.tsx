@@ -66,6 +66,9 @@ export function EditarPacksModal({
     visible: sorteo.pack_5_visible ?? false,
     descripcion: sorteo.descripcion_pack_5 || "",
   })
+  // Sorteo gratuito: la landing esconde precios, alias y comprobante. Los packs
+  // siguen definiendo cuántas chances recibe cada participante.
+  const [esGratis, setEsGratis] = useState(sorteo.es_gratis ?? false)
 
   const formatearPrecio = (valor: string) => {
     const numeros = valor.replace(/\D/g, "")
@@ -81,30 +84,43 @@ export function EditarPacksModal({
     setLoading(true)
 
     try {
-      // Validaciones
-      if (pack1.cantidad <= 0 || pack2.cantidad <= 0 || pack3.cantidad <= 0) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Las cantidades deben ser mayores a 0",
-        })
-        return
-      }
-
-      if (pack1.precio <= 0 || pack2.precio <= 0 || pack3.precio <= 0) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Los precios deben ser mayores a 0",
-        })
-        return
-      }
-
-      // Verificar que las cantidades activas sean diferentes entre sí
-      const packsActivos = [pack1, pack2, pack3, pack4, pack5].filter(
-        (p) => p.visible || p.cantidad > 0
+      // Validaciones: sólo importan los packs que se muestran en la landing.
+      // Un pack oculto puede quedar en 0 (por ejemplo, un sorteo gratis con
+      // una sola opción de participación).
+      const packsVisibles = [pack1, pack2, pack3, pack4, pack5].filter(
+        (p) => p.visible
       )
-      const cantidades = packsActivos.map((p) => p.cantidad)
+
+      if (packsVisibles.length === 0) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Tiene que haber al menos un pack visible",
+        })
+        return
+      }
+
+      if (packsVisibles.some((p) => p.cantidad <= 0)) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Las cantidades de los packs visibles deben ser mayores a 0",
+        })
+        return
+      }
+
+      if (!esGratis && packsVisibles.some((p) => p.precio <= 0)) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Los precios de los packs visibles deben ser mayores a 0",
+        })
+        return
+      }
+
+      // Verificar que las cantidades visibles sean diferentes entre sí: son
+      // las que identifican al pack cuando llega una compra o participación
+      const cantidades = packsVisibles.map((p) => p.cantidad)
       const cantidadesUnicas = new Set(cantidades)
       if (cantidadesUnicas.size !== cantidades.length) {
         toast({
@@ -122,7 +138,8 @@ export function EditarPacksModal({
         pack2,
         pack3,
         pack4,
-        pack5
+        pack5,
+        esGratis
       )
 
       if (exito) {
@@ -155,7 +172,6 @@ export function EditarPacksModal({
     setPack,
     placeholderDesc,
     placeholderPrecio,
-    minCantidad = 1,
   }: {
     id: string
     label: string
@@ -164,7 +180,6 @@ export function EditarPacksModal({
     setPack: (p: typeof pack) => void
     placeholderDesc: string
     placeholderPrecio: string
-    minCantidad?: number
   }) => (
     <div className="space-y-3 p-3 border rounded-lg">
       <div className="flex items-center justify-between">
@@ -199,7 +214,7 @@ export function EditarPacksModal({
           <Input
             id={`${id}-cantidad`}
             type="number"
-            min={minCantidad}
+            min={0}
             max="100"
             value={pack.cantidad}
             onChange={(e) =>
@@ -213,12 +228,13 @@ export function EditarPacksModal({
           <Input
             id={`${id}-precio`}
             type="text"
-            value={formatearPrecio(pack.precio.toString())}
+            value={esGratis ? "Gratis" : formatearPrecio(pack.precio.toString())}
             onChange={(e) =>
               setPack({ ...pack, precio: parsearPrecio(e.target.value) })
             }
             placeholder={placeholderPrecio}
-            className="mt-1 h-8 text-sm"
+            disabled={esGratis}
+            className="mt-1 h-8 text-sm disabled:opacity-60"
           />
         </div>
       </div>
@@ -233,6 +249,29 @@ export function EditarPacksModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 overflow-hidden">
+          <div className="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+            <input
+              type="checkbox"
+              id="sorteo-gratis"
+              checked={esGratis}
+              onChange={(e) => setEsGratis(e.target.checked)}
+              className="mt-0.5 w-4 h-4 cursor-pointer"
+            />
+            <div>
+              <Label
+                htmlFor="sorteo-gratis"
+                className="text-sm font-semibold cursor-pointer text-emerald-900"
+              >
+                Sorteo gratis (sin pago)
+              </Label>
+              <p className="text-xs text-emerald-800 mt-0.5">
+                La página deja de mostrar precios y datos bancarios, y el
+                formulario no pide comprobante. Las participaciones igual quedan
+                pendientes de tu aprobación.
+              </p>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 overflow-y-auto pr-1">
             <PackCard
               id="pack1"
@@ -269,7 +308,6 @@ export function EditarPacksModal({
               setPack={setPack4}
               placeholderDesc="Descripción del pack 4"
               placeholderPrecio="0"
-              minCantidad={0}
             />
             <PackCard
               id="pack5"
@@ -279,7 +317,6 @@ export function EditarPacksModal({
               setPack={setPack5}
               placeholderDesc="Descripción del pack 5"
               placeholderPrecio="0"
-              minCantidad={0}
             />
           </div>
 

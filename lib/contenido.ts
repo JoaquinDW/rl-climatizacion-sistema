@@ -60,6 +60,15 @@ export interface ContenidoSitio {
   packs_comprar_boton: string
   packs_nota: string
 
+  // Sorteo gratis (sólo se usan cuando el sorteo tiene es_gratis = true)
+  packs_kicker_gratis: string
+  packs_titulo_gratis: string
+  gratis_precio_label: string
+  packs_participar_boton: string
+  gratis_requisitos_titulo: string
+  gratis_requisitos: string
+  gratis_nota: string
+
   // Premios
   premios_kicker: string
   premios_titulo: string
@@ -141,6 +150,21 @@ export const CONTENIDO_DEFAULTS: ContenidoSitio = {
   packs_popular_label: "Más popular",
   packs_comprar_boton: "Comprar",
   packs_nota: "Mientras más chances comprás, más posibilidades de ganar.",
+
+  packs_kicker_gratis: "Participación gratuita",
+  packs_titulo_gratis: "Participá gratis",
+  gratis_precio_label: "GRATIS",
+  packs_participar_boton: "Participar gratis",
+  gratis_requisitos_titulo: "Cómo participar",
+  // Un requisito por línea. Se renderiza como lista numerada en la landing
+  // y dentro del modal de participación.
+  gratis_requisitos: [
+    "Seguinos en Instagram, TikTok y Facebook (@faustino_motors)",
+    "Compartí el sorteo con 3 personas para que también nos sigan",
+    "Completá el formulario con tus datos",
+  ].join("\n"),
+  gratis_nota:
+    "Es 100% gratis. Verificamos que cumplas los requisitos antes de asignarte los números.",
 
   premios_kicker: "Lo que podés ganar",
   premios_titulo: "Premios",

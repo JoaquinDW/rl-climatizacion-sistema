@@ -88,6 +88,29 @@ const SECCIONES: Seccion[] = [
     ],
   },
   {
+    titulo: "Sorteo gratis",
+    descripcion:
+      "Textos que reemplazan a los precios cuando el sorteo está marcado como gratuito (Configurar → Editar Packs → Sorteo gratis).",
+    campos: [
+      { key: "packs_kicker_gratis", label: "Texto chico arriba del título" },
+      { key: "packs_titulo_gratis", label: "Título de la sección de participación" },
+      {
+        key: "gratis_precio_label",
+        label: "Texto que reemplaza al precio",
+        ayuda: "Aparece en la tarjeta donde normalmente va el monto",
+      },
+      { key: "packs_participar_boton", label: "Texto del botón" },
+      { key: "gratis_requisitos_titulo", label: "Título del bloque de requisitos" },
+      {
+        key: "gratis_requisitos",
+        label: "Requisitos para participar",
+        multiline: true,
+        ayuda: "Un requisito por línea. Se muestran numerados en la página y en el formulario.",
+      },
+      { key: "gratis_nota", label: "Nota debajo de los requisitos" },
+    ],
+  },
+  {
     titulo: "Sección Premios",
     campos: [
       { key: "premios_kicker", label: "Texto chico arriba del título" },
