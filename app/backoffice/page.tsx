@@ -879,7 +879,7 @@ export default function BackofficePage() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
                 Panel de Administración
@@ -888,10 +888,10 @@ export default function BackofficePage() {
                 Gestiona tus sorteos y compradores
               </p>
             </div>
-            <div className="flex items-center gap-2 flex-wrap justify-end">
+            <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:justify-end">
               <Button
                 onClick={() => setNuevoSorteoModalAbierto(true)}
-                className="bg-gray-900 hover:bg-gray-800"
+                className="w-full bg-gray-900 text-white shadow-sm hover:bg-gray-800 sm:w-auto"
                 size="sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -903,7 +903,7 @@ export default function BackofficePage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="border-gray-300"
+                      className="w-full border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-50 hover:text-gray-900 sm:w-auto"
                     >
                       <Settings className="w-4 h-4 mr-2" />
                       Configurar
@@ -945,7 +945,7 @@ export default function BackofficePage() {
                   onClick={() => setEditarCuentaTransferenciaModalAbierto(true)}
                   variant="outline"
                   size="sm"
-                  className="border-green-200 text-green-700 hover:bg-green-50"
+                  className="w-full border-green-200 bg-white text-green-700 shadow-sm hover:bg-green-50 hover:text-green-800 sm:w-auto"
                 >
                   <Banknote className="w-4 h-4 mr-2" />
                   Cuenta Transferencia
@@ -955,7 +955,7 @@ export default function BackofficePage() {
                 <Button
                   onClick={() => setRealizarSorteoModalAbierto(true)}
                   size="sm"
-                  className="bg-green-600 hover:bg-green-700"
+                  className="w-full bg-green-600 text-white shadow-sm hover:bg-green-700 sm:w-auto"
                 >
                   <Play className="w-4 h-4 mr-2" />
                   Realizar Sorteo
@@ -965,7 +965,7 @@ export default function BackofficePage() {
                 <Button
                   onClick={() => setFinalizarSorteoModalAbierto(true)}
                   size="sm"
-                  className="bg-orange-600 hover:bg-orange-700"
+                  className="w-full bg-orange-600 text-white shadow-sm hover:bg-orange-700 sm:w-auto"
                 >
                   <Flag className="w-4 h-4 mr-2" />
                   Terminar Sorteo
@@ -975,7 +975,7 @@ export default function BackofficePage() {
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="text-gray-600 hover:text-gray-900 bg-transparent"
+                className="w-full border-gray-300 bg-white text-gray-600 shadow-sm hover:bg-gray-50 hover:text-gray-900 sm:w-auto"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Salir
