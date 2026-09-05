@@ -25,18 +25,28 @@ export async function POST(request: NextRequest) {
       precio5,
       descripcionPack5,
       pack5Visible,
+      esGratis,
+      pack1Visible,
+      pack2Visible,
+      pack3Visible,
     } = body
 
-    if (!nombre || !totalChances || !precio6 || !precio12 || !precio24) {
+    if (!nombre || !totalChances) {
+      return NextResponse.json({ error: "Faltan campos requeridos" }, { status: 400 })
+    }
+
+    // En un sorteo gratis los precios van en 0, así que sólo se exigen
+    // cuando el sorteo efectivamente cobra.
+    if (!esGratis && (!precio6 || !precio12 || !precio24)) {
       return NextResponse.json({ error: "Faltan campos requeridos" }, { status: 400 })
     }
 
     const nuevoSorteo = await crearNuevoSorteo(
       nombre,
       totalChances,
-      precio6,
-      precio12,
-      precio24,
+      precio6 || 0,
+      precio12 || 0,
+      precio24 || 0,
       fechaSorteo,
       cantidadPack1,
       cantidadPack2,
@@ -54,6 +64,11 @@ export async function POST(request: NextRequest) {
       precio5,
       descripcionPack5,
       pack5Visible,
+      !!esGratis,
+      // Los packs 1-3 son visibles salvo que se destilden explícitamente
+      pack1Visible !== false,
+      pack2Visible !== false,
+      pack3Visible !== false,
     )
 
     if (!nuevoSorteo) {

@@ -39,6 +39,7 @@ import {
   Hash,
   FileText,
   AlertTriangle,
+  Instagram,
 } from "lucide-react"
 import type { Comprador } from "@/lib/supabase"
 import { useToast } from "@/hooks/use-toast"
@@ -80,7 +81,9 @@ export function TransferenciasPendientes({
     try {
       await onApprobar(compradorSeleccionado.id)
       toast({
-        title: "✅ Transferencia aprobada",
+        title: esGratis(compradorSeleccionado)
+          ? "✅ Participación aprobada"
+          : "✅ Transferencia aprobada",
         description: `Se han asignado ${compradorSeleccionado.cantidad_chances} números a ${compradorSeleccionado.nombre}`,
       })
       setModalAprobacion(false)
@@ -89,7 +92,7 @@ export function TransferenciasPendientes({
       toast({
         variant: "destructive",
         title: "Error",
-        description: "No se pudo aprobar la transferencia",
+        description: "No se pudo aprobar la solicitud",
       })
     } finally {
       setLoading(false)
@@ -109,8 +112,12 @@ export function TransferenciasPendientes({
     try {
       await onRechazar(compradorSeleccionado.id, motivoRechazo)
       toast({
-        title: "❌ Transferencia rechazada",
-        description: `Se ha rechazado la transferencia de ${compradorSeleccionado.nombre}`,
+        title: esGratis(compradorSeleccionado)
+          ? "❌ Participación rechazada"
+          : "❌ Transferencia rechazada",
+        description: esGratis(compradorSeleccionado)
+          ? `Se ha rechazado la participación de ${compradorSeleccionado.nombre}`
+          : `Se ha rechazado la transferencia de ${compradorSeleccionado.nombre}`,
       })
       setModalRechazo(false)
       setCompradorSeleccionado(null)
@@ -119,12 +126,17 @@ export function TransferenciasPendientes({
       toast({
         variant: "destructive",
         title: "Error",
-        description: "No se pudo rechazar la transferencia",
+        description: "No se pudo rechazar la solicitud",
       })
     } finally {
       setLoading(false)
     }
   }
+
+  // Participación en un sorteo gratuito: no hay monto ni comprobante que revisar,
+  // lo que se verifica es que la persona siga las redes (de ahí el link a Instagram).
+  const esGratis = (comprador: Comprador): boolean =>
+    comprador.metodo_pago === "gratis"
 
   const obtenerUrlComprobante = (comprador: Comprador): string => {
     // El comprobante está en comprobante_url
@@ -137,16 +149,19 @@ export function TransferenciasPendientes({
     return sinQuery.endsWith(".pdf")
   }
 
+  const gratisSeleccionado =
+    !!compradorSeleccionado && esGratis(compradorSeleccionado)
+
   if (transferencias.length === 0) {
     return (
       <Card>
         <CardContent className="p-8 text-center">
           <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No hay transferencias pendientes
+            No hay solicitudes pendientes
           </h3>
           <p className="text-gray-500">
-            Todas las transferencias han sido procesadas.
+            Ya procesaste todas las transferencias y participaciones.
           </p>
         </CardContent>
       </Card>
@@ -159,7 +174,7 @@ export function TransferenciasPendientes({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-yellow-500" />
-            Transferencias Pendientes de Confirmación
+            Pendientes de Aprobación
             <Badge variant="secondary">{transferencias.length}</Badge>
           </CardTitle>
         </CardHeader>
@@ -172,7 +187,7 @@ export function TransferenciasPendientes({
                 <TableHead>Chances</TableHead>
                 <TableHead>Precio</TableHead>
                 <TableHead>Fecha</TableHead>
-                <TableHead>Comprobante</TableHead>
+                <TableHead>Comprobante / Instagram</TableHead>
                 <TableHead>Acciones</TableHead>
               </TableRow>
             </TableHeader>
@@ -206,10 +221,16 @@ export function TransferenciasPendientes({
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center">
-                      <DollarSign className="h-4 w-4 text-green-600 mr-1" />$
-                      {transferencia.precio_pagado?.toLocaleString()}
-                    </div>
+                    {esGratis(transferencia) ? (
+                      <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
+                        Gratis
+                      </Badge>
+                    ) : (
+                      <div className="flex items-center">
+                        <DollarSign className="h-4 w-4 text-green-600 mr-1" />$
+                        {transferencia.precio_pagado?.toLocaleString()}
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center text-sm text-gray-500">
@@ -218,14 +239,30 @@ export function TransferenciasPendientes({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleVerComprobante(transferencia)}
-                    >
-                      <Eye className="h-4 w-4 mr-1" />
-                      Ver
-                    </Button>
+                    {esGratis(transferencia) ? (
+                      transferencia.instagram_username ? (
+                        <a
+                          href={`https://instagram.com/${transferencia.instagram_username}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                        >
+                          <Instagram className="h-4 w-4" />@
+                          {transferencia.instagram_username}
+                        </a>
+                      ) : (
+                        <span className="text-sm text-gray-400">Sin Instagram</span>
+                      )
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleVerComprobante(transferencia)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Ver
+                      </Button>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
@@ -265,7 +302,12 @@ export function TransferenciasPendientes({
 
       {/* Modal de vista de comprobante */}
       <Dialog
-        open={!!compradorSeleccionado && !modalAprobacion && !modalRechazo}
+        open={
+          !!compradorSeleccionado &&
+          !esGratis(compradorSeleccionado) &&
+          !modalAprobacion &&
+          !modalRechazo
+        }
         onOpenChange={(open) => !open && setCompradorSeleccionado(null)}
       >
         <DialogContent className="max-w-4xl">
@@ -350,11 +392,14 @@ export function TransferenciasPendientes({
       <Dialog open={modalAprobacion} onOpenChange={setModalAprobacion}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Aprobar Transferencia</DialogTitle>
+            <DialogTitle>
+              {gratisSeleccionado ? "Aprobar Participación" : "Aprobar Transferencia"}
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <p>
-              ¿Confirmas que quieres aprobar la transferencia de{" "}
+              ¿Confirmas que quieres aprobar{" "}
+              {gratisSeleccionado ? "la participación" : "la transferencia"} de{" "}
               <strong>{compradorSeleccionado?.nombre}</strong>?
             </p>
             <div className="bg-green-50 p-4 rounded-lg">
@@ -362,8 +407,8 @@ export function TransferenciasPendientes({
                 ✅ Se asignarán automáticamente{" "}
                 {compradorSeleccionado?.cantidad_chances} números únicos
                 <br />
-                ✅ El estado cambiará a "pagado"
-                <br />✅ El comprador aparecerá en la lista oficial
+                ✅ Se le enviarán los números por email
+                <br />✅ El participante aparecerá en la lista oficial
               </p>
             </div>
           </div>
@@ -376,7 +421,11 @@ export function TransferenciasPendientes({
               disabled={loading}
               className="bg-green-600 hover:bg-green-700"
             >
-              {loading ? "Procesando..." : "Aprobar Transferencia"}
+              {loading
+                ? "Procesando..."
+                : gratisSeleccionado
+                  ? "Aprobar Participación"
+                  : "Aprobar Transferencia"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -386,18 +435,27 @@ export function TransferenciasPendientes({
       <Dialog open={modalRechazo} onOpenChange={setModalRechazo}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Rechazar Transferencia</DialogTitle>
+            <DialogTitle>
+              {gratisSeleccionado
+                ? "Rechazar Participación"
+                : "Rechazar Transferencia"}
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <p>
-              ¿Por qué rechazas la transferencia de{" "}
+              ¿Por qué rechazas{" "}
+              {gratisSeleccionado ? "la participación" : "la transferencia"} de{" "}
               <strong>{compradorSeleccionado?.nombre}</strong>?
             </p>
             <div>
               <Label htmlFor="motivo">Motivo (opcional)</Label>
               <Textarea
                 id="motivo"
-                placeholder="Ej: Comprobante ilegible, monto incorrecto, etc."
+                placeholder={
+                  gratisSeleccionado
+                    ? "Ej: no nos sigue en Instagram, usuario inexistente, etc."
+                    : "Ej: Comprobante ilegible, monto incorrecto, etc."
+                }
                 value={motivoRechazo}
                 onChange={(e) => setMotivoRechazo(e.target.value)}
                 className="mt-1"
@@ -405,9 +463,9 @@ export function TransferenciasPendientes({
             </div>
             <div className="bg-red-50 p-4 rounded-lg">
               <p className="text-sm text-red-800">
-                ⚠️ Esta acción marcará la transferencia como cancelada
+                ⚠️ Esta acción marcará la solicitud como cancelada
                 <br />
-                ⚠️ No se asignarán números al comprador
+                ⚠️ No se asignarán números al participante
               </p>
             </div>
           </div>
@@ -420,7 +478,11 @@ export function TransferenciasPendientes({
               onClick={confirmarRechazo}
               disabled={loading}
             >
-              {loading ? "Procesando..." : "Rechazar Transferencia"}
+              {loading
+                ? "Procesando..."
+                : gratisSeleccionado
+                  ? "Rechazar Participación"
+                  : "Rechazar Transferencia"}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -98,6 +98,10 @@ CREATE TABLE IF NOT EXISTS sorteos (
   pack_5_visible           BOOLEAN DEFAULT false,
   descripcion_pack_5       TEXT DEFAULT '',
 
+  -- Sorteo gratuito: no se cobra nada. La landing oculta precios, alias y
+  -- comprobante, y las participaciones entran con precio_pagado = 0.
+  es_gratis                BOOLEAN NOT NULL DEFAULT false,
+
   -- Fechas
   fecha_sorteo             DATE,
   fecha_cierre_ventas      TIMESTAMPTZ,
@@ -121,6 +125,14 @@ COMMENT ON COLUMN sorteos.fecha_cierre_ventas IS
   'Momento en que se dejan de aceptar compras. NULL = sin cierre programado.';
 COMMENT ON COLUMN sorteos.fecha_sorteo_programada IS
   'Fecha y hora en que se realiza el sorteo (informativo). NULL = a definir.';
+
+-- CREATE TABLE IF NOT EXISTS no agrega columnas a una tabla que ya existe:
+-- este ALTER es lo que hace que el schema siga siendo re-ejecutable sobre
+-- bases creadas antes de que existiera el modo gratis.
+ALTER TABLE sorteos ADD COLUMN IF NOT EXISTS es_gratis BOOLEAN NOT NULL DEFAULT false;
+
+COMMENT ON COLUMN sorteos.es_gratis IS
+  'true = sorteo gratuito: no se cobra, no se pide comprobante y los packs no muestran precio.';
 
 
 -- ── compradores ─────────────────────────────────────────────────────────────
@@ -188,7 +200,7 @@ COMMENT ON COLUMN compradores.instagram_username IS
 COMMENT ON COLUMN compradores.estado_pago IS
   'pendiente | pagado | cancelado | expirado';
 COMMENT ON COLUMN compradores.metodo_pago IS
-  'mercadopago | transferencia';
+  'mercadopago | transferencia | gratis';
 COMMENT ON COLUMN compradores.estado_transferencia IS
   'pendiente | aprobado | rechazado (sólo para metodo_pago = transferencia)';
 
@@ -307,6 +319,12 @@ CREATE INDEX IF NOT EXISTS idx_compradores_sorteo_estado
 -- GIN: búsquedas dentro del array de números asignados
 CREATE INDEX IF NOT EXISTS idx_compradores_numeros_asignados
   ON compradores USING GIN (numeros_asignados);
+-- Una sola participación gratis por email por sorteo. El filtro por
+-- metodo_pago deja intactas las compras pagas (ahí sí se puede comprar
+-- varias veces con el mismo email).
+CREATE UNIQUE INDEX IF NOT EXISTS idx_compradores_gratis_email_unico
+  ON compradores (sorteo_id, lower(email))
+  WHERE metodo_pago = 'gratis';
 
 -- sorteos
 CREATE INDEX IF NOT EXISTS idx_sorteos_estado
