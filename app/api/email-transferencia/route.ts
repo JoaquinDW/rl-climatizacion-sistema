@@ -5,13 +5,16 @@ import {
   TransferenciaAprobadaData,
   TransferenciaRechazadaData,
 } from "@/lib/email"
+import { ADMIN_SESSION_COOKIE, esSesionAdminValida } from "@/lib/admin-auth"
 
 export async function POST(request: NextRequest) {
+  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value
+  if (!esSesionAdminValida(token)) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+  }
+
   try {
     const { tipo, data } = await request.json()
-    
-    console.log("📨 Email API received request:", { tipo })
-    console.log("📨 Email data received:", JSON.stringify(data, null, 2))
 
     if (!tipo || !data) {
       console.error("❌ Missing required parameters in email API")
@@ -34,7 +37,6 @@ export async function POST(request: NextRequest) {
         sorteoImagenUrl: data.sorteoImagenUrl,
         gratis: !!data.gratis,
       }
-      console.log("📧 Final email data being sent:", JSON.stringify(transferenciaData, null, 2))
       resultado = await enviarEmailTransferenciaAprobada(transferenciaData)
     } else if (tipo === "rechazada") {
       const transferenciaData: TransferenciaRechazadaData = {

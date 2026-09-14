@@ -34,6 +34,13 @@ contra la Quiniela de Buenos Aires.
 - Playwright (web scraping)
 - Tailwind CSS + Radix UI (shadcn/ui)
 
+📨 **Mailing desde el backoffice**
+
+- Editor con vista previa en el estilo grafito, rojo y plata de Faustino Motors
+- Audiencias por sorteo: confirmados, pendientes o todos los contactos con email
+- Envío de prueba y doble confirmación antes de una campaña real
+- Personalización por destinatario, deduplicación y lotes seguros de hasta 100 emails
+
 ## Comandos Disponibles
 
 ```bash
@@ -78,4 +85,6 @@ limitada por la resolución de ese original.
   sin pasar por `generarNumerosUnicos()`.
 - Ningún secreto va al repo: `.env.local` está en `.gitignore`. La **service_role key**
   de Supabase no se usa en este proyecto y no debe aparecer en ningún archivo.
+- El backoffice crea una sesión HttpOnly firmada. En producción conviene definir un
+  `ADMIN_SESSION_SECRET` largo y distinto de la contraseña del panel.
 - Los reportes `.csv` están ignorados por git porque contienen datos de compradores.

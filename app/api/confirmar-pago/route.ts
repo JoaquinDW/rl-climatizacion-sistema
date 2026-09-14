@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { crearComprador, generarNumerosUnicos, obtenerSorteo } from "@/lib/database"
 import { verificarNumerosUnicos } from "@/lib/verificarNumerosUnicos"
+import { enviarEmailConfirmacion } from "@/lib/email"
 
 export async function POST(request: NextRequest) {
   try {
@@ -96,21 +97,15 @@ export async function POST(request: NextRequest) {
     // Enviar email solo si el comprador proporcionó un email
     if (email) {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/send-email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nombre,
-            email,
-            telefono,
-            cantidadChances: chances,
-            numerosAsignados,
-            precioPagado: precio,
-            sorteoNombre: sorteo?.nombre,
-            sorteoImagenUrl: sorteo?.carousel_image_1 || sorteo?.imagen_url,
-          }),
+        await enviarEmailConfirmacion({
+          nombre,
+          email,
+          cantidadChances: chances,
+          numerosAsignados,
+          precioPagado: precio,
+          sorteoNombre: sorteo.nombre,
+          sorteoImagenUrl:
+            sorteo.carousel_image_1 || sorteo.imagen_url || undefined,
         })
       } catch (emailError) {
         console.error("Error enviando email:", emailError)

@@ -1,7 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { enviarEmailConfirmacion, type EmailData } from "@/lib/email"
+import { ADMIN_SESSION_COOKIE, esSesionAdminValida } from "@/lib/admin-auth"
 
 export async function POST(request: NextRequest) {
+  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value
+  if (!esSesionAdminValida(token)) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+  }
+
   try {
     const emailData: EmailData = await request.json()
 
