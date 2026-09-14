@@ -1318,14 +1318,15 @@ export async function obtenerTransferenciasPendientes(): Promise<Comprador[]> {
   }
 }
 
-// Aprobar transferencia y asignar números
+// Aprobar una transferencia o participación gratuita y devolver exactamente
+// el registro que contiene los números recién asignados.
 export async function aprobarTransferencia(
   compradorId: string
-): Promise<boolean> {
+): Promise<Comprador | null> {
   try {
     const tablasExisten = await verificarTablas()
     if (!tablasExisten) {
-      return false
+      return null
     }
 
     // Obtener datos del comprador y del sorteo
@@ -1342,7 +1343,7 @@ export async function aprobarTransferencia(
 
     if (errorComprador || !comprador) {
       console.error("Error obteniendo comprador:", errorComprador)
-      return false
+      return null
     }
 
     // Generar números únicos si no los tiene
@@ -1386,8 +1387,17 @@ export async function aprobarTransferencia(
       console.log(`✅ [aprobarTransferencia] Validación exitosa: ${verificacion.mensaje}`)
     }
 
+    if (
+      !Array.isArray(numerosAsignados) ||
+      numerosAsignados.length !== comprador.cantidad_chances
+    ) {
+      throw new Error(
+        `No se pudieron asignar las ${comprador.cantidad_chances} chances solicitadas`,
+      )
+    }
+
     // Actualizar estado a pagado y asignar números
-    const { error: errorUpdate } = await supabase
+    const { data: compradorAprobado, error: errorUpdate } = await supabase
       .from("compradores")
       .update({
         estado_pago: "pagado",
@@ -1395,19 +1405,22 @@ export async function aprobarTransferencia(
         updated_at: new Date().toISOString(),
       })
       .eq("id", compradorId)
+      .eq("estado_pago", "pendiente")
+      .select("*")
+      .single()
 
-    if (errorUpdate) {
+    if (errorUpdate || !compradorAprobado) {
       console.error("Error aprobando transferencia:", errorUpdate)
-      return false
+      return null
     }
 
     // Verificar si se completó el sorteo después de aprobar esta transferencia
     // await verificarSorteoCompletoAPI(comprador.sorteo_id)
 
-    return true
+    return compradorAprobado as Comprador
   } catch (error) {
     console.error("Error aprobando transferencia:", error)
-    return false
+    return null
   }
 }
 

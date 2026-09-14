@@ -1,11 +1,46 @@
 import { NextRequest, NextResponse } from "next/server"
+import { z } from "zod"
 import {
   enviarEmailTransferenciaAprobada,
+  enviarEmailParticipacionGratuitaAprobada,
   enviarEmailTransferenciaRechazada,
+  ParticipacionGratuitaAprobadaData,
   TransferenciaAprobadaData,
   TransferenciaRechazadaData,
 } from "@/lib/email"
 import { ADMIN_SESSION_COOKIE, esSesionAdminValida } from "@/lib/admin-auth"
+
+const destinatarioSchema = z.object({
+  nombre: z.string().trim().min(1).max(160),
+  email: z.string().trim().email(),
+  cantidadChances: z.number().int().positive(),
+  numerosAsignados: z.array(z.number().int().nonnegative()).min(1),
+  nombreSorteo: z.string().trim().min(1).max(200),
+  sorteoImagenUrl: z.string().url().optional(),
+})
+
+const requestSchema = z.discriminatedUnion("tipo", [
+  z.object({
+    tipo: z.literal("aprobada"),
+    data: destinatarioSchema.extend({ precioPagado: z.number().nonnegative() }),
+  }),
+  z.object({
+    tipo: z.literal("participacion-gratuita"),
+    data: destinatarioSchema,
+  }),
+  z.object({
+    tipo: z.literal("rechazada"),
+    data: z.object({
+      nombre: z.string().trim().min(1).max(160),
+      email: z.string().trim().email(),
+      cantidadChances: z.number().int().positive(),
+      precioPagado: z.number().nonnegative(),
+      nombreSorteo: z.string().trim().min(1).max(200),
+      motivo: z.string().trim().max(1000).optional(),
+      gratis: z.boolean().optional(),
+    }),
+  }),
+])
 
 export async function POST(request: NextRequest) {
   const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value
@@ -14,13 +49,22 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { tipo, data } = await request.json()
-
-    if (!tipo || !data) {
-      console.error("❌ Missing required parameters in email API")
+    const parsed = requestSchema.safeParse(await request.json())
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "Faltan parámetros requeridos" },
-        { status: 400 }
+        { error: "Los datos del email son inválidos o no incluyen números." },
+        { status: 400 },
+      )
+    }
+
+    const { tipo, data } = parsed.data
+    if (
+      tipo !== "rechazada" &&
+      data.numerosAsignados.length !== data.cantidadChances
+    ) {
+      return NextResponse.json(
+        { error: "La cantidad de números no coincide con las chances asignadas." },
+        { status: 400 },
       )
     }
 
@@ -33,18 +77,29 @@ export async function POST(request: NextRequest) {
         cantidadChances: data.cantidadChances,
         numerosAsignados: data.numerosAsignados,
         precioPagado: data.precioPagado,
-        nombreSorteo: data.nombreSorteo || "T-SHIRT SORTEO EXCLUSIVO",
+        nombreSorteo: data.nombreSorteo,
         sorteoImagenUrl: data.sorteoImagenUrl,
-        gratis: !!data.gratis,
       }
       resultado = await enviarEmailTransferenciaAprobada(transferenciaData)
+    } else if (tipo === "participacion-gratuita") {
+      const participacionData: ParticipacionGratuitaAprobadaData = {
+        nombre: data.nombre,
+        email: data.email,
+        cantidadChances: data.cantidadChances,
+        numerosAsignados: data.numerosAsignados,
+        nombreSorteo: data.nombreSorteo,
+        sorteoImagenUrl: data.sorteoImagenUrl,
+      }
+      resultado = await enviarEmailParticipacionGratuitaAprobada(
+        participacionData,
+      )
     } else if (tipo === "rechazada") {
       const transferenciaData: TransferenciaRechazadaData = {
         nombre: data.nombre,
         email: data.email,
         cantidadChances: data.cantidadChances,
         precioPagado: data.precioPagado,
-        nombreSorteo: data.nombreSorteo || "T-SHIRT SORTEO EXCLUSIVO",
+        nombreSorteo: data.nombreSorteo,
         motivo: data.motivo,
         gratis: !!data.gratis,
       }
@@ -65,7 +120,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      mensaje: `Email de transferencia ${tipo} enviado correctamente`,
+      mensaje: `Email ${tipo} enviado correctamente`,
       data: resultado.data,
     })
   } catch (error) {

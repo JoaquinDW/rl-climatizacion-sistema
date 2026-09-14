@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import {
   enviarEmailConfirmacion,
+  enviarEmailParticipacionGratuitaAprobada,
   enviarEmailTransferenciaAprobada,
 } from "@/lib/email"
 import { obtenerSorteoActivo } from "@/lib/database"
@@ -60,6 +61,15 @@ export async function POST(request: NextRequest) {
       sorteoImagenUrl: imagenSorteo,
     }
 
+    const datosParticipacionGratuita = {
+      nombre: MARCA,
+      email: emailDestino,
+      cantidadChances: 3,
+      numerosAsignados: [7613, 7614, 7615],
+      nombreSorteo: sorteo.nombre,
+      sorteoImagenUrl: imagenSorteo,
+    }
+
     let resultado
 
     if (tipo === "confirmacion") {
@@ -68,9 +78,16 @@ export async function POST(request: NextRequest) {
       resultado = await enviarEmailTransferenciaAprobada(
         datosTransferenciaAprobada
       )
+    } else if (tipo === "gratuita") {
+      resultado = await enviarEmailParticipacionGratuitaAprobada(
+        datosParticipacionGratuita,
+      )
     } else {
       return NextResponse.json(
-        { error: "Tipo de email no válido. Use 'confirmacion' o 'aprobada'" },
+        {
+          error:
+            "Tipo de email no válido. Use 'confirmacion', 'aprobada' o 'gratuita'",
+        },
         { status: 400 }
       )
     }

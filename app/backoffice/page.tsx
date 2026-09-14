@@ -54,7 +54,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Gift,
-  Mail,
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -85,7 +84,8 @@ import { ConfirmarEliminarModal } from "@/components/confirmar-eliminar-modal"
 import { FinalizarSorteoModal } from "@/components/finalizar-sorteo-modal"
 import { PremiosSecundariosManager } from "@/components/premios-secundarios-manager"
 import { ContenidoManager } from "@/components/contenido-manager"
-import { MailingManager } from "@/components/mailing-manager"
+// Feature de campañas generales preparada para una futura contratación.
+// import { MailingManager } from "@/components/mailing-manager"
 import {
   obtenerSorteoActivo,
   obtenerTodosSorteos,
@@ -539,80 +539,31 @@ export default function BackofficePage() {
         throw new Error("Comprador no encontrado")
       }
 
-      const exitoso = await aprobarTransferencia(compradorId)
-      if (exitoso) {
-        // Recargar datos para reflejar cambios
-        await cargarDatos()
-
-        // Obtener el comprador actualizado con los números asignados
-        const compradorActualizado = await obtenerCompradores(
-          sorteoActual?.id || "",
-        )
-        const compradorConNumeros = compradorActualizado.find(
-          (c) => c.id === compradorId,
-        )
-
-        // Generar preview de la remera con diseño si hay imagen
-        let tshirtPreviewUrl = null
-        if (sorteoActual?.imagen_url) {
-          try {
-            console.log(
-              "🎨 Generating t-shirt preview for:",
-              sorteoActual.imagen_url,
-            )
-            const previewResponse = await fetch(
-              "/api/generate-tshirt-preview",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  designImageUrl: sorteoActual.imagen_url,
-                }),
-              },
-            )
-
-            if (previewResponse.ok) {
-              const previewData = await previewResponse.json()
-              tshirtPreviewUrl = previewData.imageUrl
-              console.log("✅ T-shirt preview generated:", tshirtPreviewUrl)
-            } else {
-              const errorData = await previewResponse.text()
-              console.warn(
-                "❌ Failed to generate t-shirt preview:",
-                previewResponse.status,
-                errorData,
-              )
-            }
-          } catch (previewError) {
-            console.warn("❌ Error generating t-shirt preview:", previewError)
-          }
-        } else {
-          console.log("⚠️ No sorteo image URL available for preview generation")
-        }
-
+      const compradorAprobado = await aprobarTransferencia(compradorId)
+      if (compradorAprobado) {
         // Notificación de aprobación por email (único canal).
         if (comprador.email) {
           try {
+            const esParticipacionGratuita = comprador.metodo_pago === "gratis"
+            const imagenSorteo =
+              sorteoActual?.carousel_image_1 || sorteoActual?.imagen_url
             const emailData = {
-              tipo: "aprobada",
+              tipo: esParticipacionGratuita
+                ? "participacion-gratuita"
+                : "aprobada",
               data: {
                 nombre: comprador.nombre,
                 email: comprador.email,
                 cantidadChances: comprador.cantidad_chances,
-                numerosAsignados: compradorConNumeros?.numeros_asignados || [],
+                numerosAsignados: compradorAprobado.numeros_asignados,
                 precioPagado: comprador.precio_pagado,
                 nombreSorteo: sorteoActual?.nombre || "Sorteo",
-                sorteoImagenUrl: sorteoActual?.carousel_image_1,
-                gratis: comprador.metodo_pago === "gratis",
+                sorteoImagenUrl:
+                  imagenSorteo && /^https?:\/\//i.test(imagenSorteo)
+                    ? imagenSorteo
+                    : undefined,
               },
             }
-
-            console.log(
-              "📧 Sending email with data:",
-              JSON.stringify(emailData, null, 2),
-            )
 
             const response = await fetch("/api/email-transferencia", {
               method: "POST",
@@ -635,6 +586,10 @@ export default function BackofficePage() {
             "⚠️ Comprador sin email, saltando notificación de aprobación",
           )
         }
+
+        // Reflejar la aprobación después de preparar la notificación con el
+        // registro exacto que devolvió la actualización.
+        await cargarDatos()
       } else {
         throw new Error("No se pudo aprobar la transferencia")
       }
@@ -1036,13 +991,14 @@ export default function BackofficePage() {
               <History className="w-4 h-4 mr-2" />
               Histórico
             </TabsTrigger>
+            {/* Feature de mailing general oculta hasta que el cliente la contrate.
             <TabsTrigger
               value="mailing"
               className="data-[state=active]:bg-gray-100"
             >
               <Mail className="w-4 h-4 mr-2" />
               Mailing
-            </TabsTrigger>
+            </TabsTrigger> */}
             {/* <TabsTrigger
               value="test"
               className="data-[state=active]:bg-gray-100"
@@ -1768,9 +1724,10 @@ export default function BackofficePage() {
             />
           </TabsContent>
 
+          {/* Feature de mailing general oculta hasta que el cliente la contrate.
           <TabsContent value="mailing" className="space-y-6">
             <MailingManager sorteo={sorteoActual} />
-          </TabsContent>
+          </TabsContent> */}
 
           <TabsContent value="historico" className="space-y-6">
             <Card>
