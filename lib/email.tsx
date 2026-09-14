@@ -365,8 +365,15 @@ export interface TransferenciaAprobadaData {
   precioPagado: number
   nombreSorteo: string
   sorteoImagenUrl?: string
-  // Sorteo gratuito: se omite todo lo relacionado al monto
-  gratis?: boolean
+}
+
+export interface ParticipacionGratuitaAprobadaData {
+  nombre: string
+  email: string
+  cantidadChances: number
+  numerosAsignados: number[]
+  nombreSorteo: string
+  sorteoImagenUrl?: string
 }
 
 export interface TransferenciaRechazadaData {
@@ -387,9 +394,7 @@ export async function enviarEmailTransferenciaAprobada(
     const { data: emailResult, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: [data.email],
-      subject: data.gratis
-        ? `✅ ¡Ya estás participando! - ${data.nombreSorteo}`
-        : `✅ ¡Transferencia Aprobada! - ${data.nombreSorteo}`,
+      subject: `✅ ¡Transferencia aprobada! Tus números para ${data.nombreSorteo}`,
       html: generarHTMLTransferenciaAprobada(data),
     })
 
@@ -401,6 +406,29 @@ export async function enviarEmailTransferenciaAprobada(
     return { success: true, data: emailResult }
   } catch (error) {
     console.error("Error enviando email de transferencia aprobada:", error)
+    return { success: false, error }
+  }
+}
+
+export async function enviarEmailParticipacionGratuitaAprobada(
+  data: ParticipacionGratuitaAprobadaData,
+) {
+  try {
+    const { data: emailResult, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [data.email],
+      subject: `🏁 ¡Ya estás participando gratis! - ${data.nombreSorteo}`,
+      html: generarHTMLParticipacionGratuitaAprobada(data),
+    })
+
+    if (error) {
+      console.error("Error enviando email de participación gratuita:", error)
+      return { success: false, error }
+    }
+
+    return { success: true, data: emailResult }
+  } catch (error) {
+    console.error("Error enviando email de participación gratuita:", error)
     return { success: false, error }
   }
 }
@@ -430,26 +458,20 @@ export async function enviarEmailTransferenciaRechazada(
   }
 }
 
-function generarHTMLTransferenciaAprobada(
+export function generarHTMLTransferenciaAprobada(
   data: TransferenciaAprobadaData,
 ): string {
-  const intro = data.gratis
-    ? "¡Confirmamos tu participación! Tus números ya quedaron asignados para"
-    : "Tu pago fue verificado y aprobado exitosamente. Tus números ya quedaron asignados para"
-
   const filasResumen = [
     { label: "Chances", value: String(data.cantidadChances) },
-  ]
-  if (!data.gratis) {
-    filasResumen.push({
+    {
       label: "Monto abonado",
-      value: `$${data.precioPagado.toLocaleString()}`,
-    })
-  }
+      value: `$${data.precioPagado.toLocaleString("es-AR")}`,
+    },
+  ]
 
   const body = `
     <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${escapeHtml(data.nombre)}</strong>,</p>
-    <p style="margin:0 0 22px 0;">${intro} <strong style="color:${COLORS.copy};">${escapeHtml(data.nombreSorteo)}</strong>.</p>
+    <p style="margin:0 0 22px 0;">Verificamos tu transferencia y el pago fue aprobado. Ya estás participando en <strong style="color:${COLORS.copy};">${escapeHtml(data.nombreSorteo)}</strong>.</p>
     ${bloqueNumeros(data.numerosAsignados)}
     ${bloqueResumen(filasResumen)}
     ${bloqueImagen(data.sorteoImagenUrl)}
@@ -457,17 +479,39 @@ function generarHTMLTransferenciaAprobada(
   `
 
   return emailLayout({
-    preheader: data.gratis
-      ? "Tu participación fue confirmada y tus números ya están asignados."
-      : "Tu transferencia fue aprobada y tus números ya están asignados.",
-    title: data.gratis ? "¡Ya estás participando!" : "¡Transferencia Aprobada!",
-    subtitle: data.gratis
-      ? "Confirmamos tu participación en el sorteo"
-      : "Tu pago fue verificado y aprobado exitosamente",
+    preheader: `Tu transferencia fue aprobada. Tus números son: ${data.numerosAsignados.join(", ")}.`,
+    title: "¡Transferencia aprobada!",
+    subtitle: "Tu pago fue verificado y tus números ya están asignados",
     badge: {
-      text: data.gratis
-        ? "✅ Participación confirmada"
-        : "✅ Pago verificado correctamente",
+      text: "✅ Pago verificado correctamente",
+      accent: COLORS.greenOk,
+    },
+    bodyHtml: body,
+  })
+}
+
+export function generarHTMLParticipacionGratuitaAprobada(
+  data: ParticipacionGratuitaAprobadaData,
+): string {
+  const body = `
+    <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${escapeHtml(data.nombre)}</strong>,</p>
+    <p style="margin:0 0 22px 0;">Verificamos que cumplís los requisitos y confirmamos tu participación gratuita en <strong style="color:${COLORS.copy};">${escapeHtml(data.nombreSorteo)}</strong>.</p>
+    ${bloqueNumeros(data.numerosAsignados)}
+    ${bloqueResumen([
+      { label: "Chances gratuitas", value: String(data.cantidadChances) },
+      { label: "Estado", value: "Participación confirmada" },
+    ])}
+    ${bloqueImagen(data.sorteoImagenUrl)}
+    <p style="margin:24px 0 6px 0; text-align:center; color:${COLORS.muted};">Guardá este email: estos son tus números oficiales para el sorteo.</p>
+    ${bloqueSuerte()}
+  `
+
+  return emailLayout({
+    preheader: `Tu participación gratuita fue confirmada. Tus números son: ${data.numerosAsignados.join(", ")}.`,
+    title: "¡Estás participando!",
+    subtitle: "Tus requisitos fueron verificados y ya tenés tus números",
+    badge: {
+      text: "🏁 Participación gratuita confirmada",
       accent: COLORS.greenOk,
     },
     bodyHtml: body,

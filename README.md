@@ -34,13 +34,6 @@ contra la Quiniela de Buenos Aires.
 - Playwright (web scraping)
 - Tailwind CSS + Radix UI (shadcn/ui)
 
-📨 **Mailing desde el backoffice**
-
-- Editor con vista previa en el estilo grafito, rojo y plata de Faustino Motors
-- Audiencias por sorteo: confirmados, pendientes o todos los contactos con email
-- Envío de prueba y doble confirmación antes de una campaña real
-- Personalización por destinatario, deduplicación y lotes seguros de hasta 100 emails
-
 ## Comandos Disponibles
 
 ```bash

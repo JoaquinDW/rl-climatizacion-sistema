@@ -77,8 +77,7 @@ Es el único canal de notificaciones del sistema (no hay bot de WhatsApp).
 4. **Domains** → verificar el dominio de Faustino Motors
 
 Una clave con permiso **Sending access** es suficiente y es preferible a una clave
-con acceso total. El panel **Mailing** del backoffice permite enviar una prueba y luego
-una campaña segmentada a los contactos del sorteo activo.
+con acceso total.
 
 Hasta que el dominio esté verificado, los envíos desde `@rlclimatizacion.com.ar`
 van a fallar. Para probar antes de eso, usar el dominio de prueba `onboarding@resend.dev`
@@ -140,13 +139,9 @@ descripciones de los packs, imagen principal y carrusel.
 ### Aprobar transferencias
 
 Las compras por transferencia **no** asignan números hasta que las aprobás
-manualmente en el backoffice. Las de MercadoPago se asignan solas al confirmarse el webhook.
-
-### Enviar un mailing
-
-En **Mailing** elegí la audiencia, redactá el asunto y el mensaje, revisá la vista
-previa y enviate primero una prueba. El envío final exige escribir `ENVIAR`; cada
-destinatario recibe un email individual y nunca ve las direcciones de los demás.
+manualmente en el backoffice. Al aprobar una transferencia o una participación
+gratuita, el sistema envía el email correspondiente con los números recién asignados.
+Las de MercadoPago se asignan solas al confirmarse el webhook.
 
 ---
 

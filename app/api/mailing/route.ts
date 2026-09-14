@@ -88,6 +88,11 @@ async function obtenerDestinatarios(
 }
 
 export async function POST(request: NextRequest) {
+  // Feature preparada para una futura contratación, deshabilitada por defecto.
+  if (process.env.ENABLE_MAILING_CAMPAIGNS !== "true") {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 })
+  }
+
   const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value
   if (!esSesionAdminValida(token)) {
     return NextResponse.json(
