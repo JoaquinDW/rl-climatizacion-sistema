@@ -2,7 +2,7 @@ import MercadoPagoConfig, { Preference } from "mercadopago"
 import { type NextRequest, NextResponse } from "next/server"
 import { obtenerSorteo } from "@/lib/database"
 import { ventasBloqueadas } from "@/lib/fechas"
-import { MARCA } from "@/lib/marca"
+import { MARCA, SITIO_URL } from "@/lib/marca"
 
 export async function POST(request: NextRequest) {
   try {
@@ -58,8 +58,7 @@ export async function POST(request: NextRequest) {
 
     const preference = new Preference(client)
 
-    // Asegurar que tenemos una URL base válida
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL
+    const baseUrl = SITIO_URL
 
     console.log("Base URL:", baseUrl)
 

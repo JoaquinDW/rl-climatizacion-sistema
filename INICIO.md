@@ -74,14 +74,14 @@ Es el único canal de notificaciones del sistema (no hay bot de WhatsApp).
 1. Ir a [resend.com](https://resend.com) → crear cuenta
 2. **API Keys** → crear una clave
 3. Pegar en `.env.local` como `RESEND_API_KEY`
-4. **Domains** → verificar el dominio de Faustino Motors
+4. **Domains** → verificar `faustinomotors.com.ar`
 
 Una clave con permiso **Sending access** es suficiente y es preferible a una clave
 con acceso total.
 
-Hasta que el dominio esté verificado, los envíos desde `@rlclimatizacion.com.ar`
-van a fallar. Para probar antes de eso, usar el dominio de prueba `onboarding@resend.dev`
-en `RESEND_FROM_EMAIL`.
+El dominio `faustinomotors.com.ar` ya está verificado y el remitente predeterminado es
+`Faustino Motors <noreply@faustinomotors.com.ar>`. Para usar otro buzón del mismo
+dominio, definirlo en `RESEND_FROM_EMAIL`.
 
 El remitente y el nombre de marca salen de [`lib/marca.ts`](lib/marca.ts) — es la
 fuente única de la identidad; cambiar ahí se propaga a metadata, emails y comprobantes.
@@ -151,12 +151,10 @@ Las de MercadoPago se asignan solas al confirmarse el webhook.
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API |
-| `NEXT_PUBLIC_APP_URL` | URL de Vercel (o dominio propio) |
-| `NEXT_PUBLIC_SITE_URL` | Dominio público, usado en metadata |
 | `MERCADOPAGO_ACCESS_TOKEN` | MercadoPago Developers |
 | `NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY` | MercadoPago Developers |
 | `RESEND_API_KEY` | resend.com → API Keys |
-| `RESEND_FROM_EMAIL` | Remitente verificado en Resend |
+| `RESEND_FROM_EMAIL` | Opcional: otro remitente de `@faustinomotors.com.ar` |
 | `ADMIN_SESSION_SECRET` | Secreto largo para firmar la sesión del backoffice (recomendado) |
 | `BLOB_READ_WRITE_TOKEN` | Vercel → Storage → Blob |
 | `CRON_SECRET` | Inventar un string aleatorio largo |
