@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server"
+import {
+  ADMIN_SESSION_COOKIE,
+  adminCookieOptions,
+  crearTokenAdmin,
+} from "@/lib/admin-auth"
 
 // Las credenciales viven SOLO en variables de entorno del servidor.
 // Este código corre solo en el servidor (nunca se envía al navegador) y no
@@ -19,7 +24,17 @@ export async function POST(request: Request) {
     const { username, password } = await request.json()
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      return NextResponse.json({ ok: true })
+      const token = crearTokenAdmin()
+      if (!token) {
+        return NextResponse.json(
+          { ok: false, error: "Login no configurado en el servidor" },
+          { status: 500 },
+        )
+      }
+
+      const response = NextResponse.json({ ok: true })
+      response.cookies.set(ADMIN_SESSION_COOKIE, token, adminCookieOptions)
+      return response
     }
 
     return NextResponse.json(

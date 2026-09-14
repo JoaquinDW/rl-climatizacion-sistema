@@ -54,6 +54,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Gift,
+  Mail,
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -84,6 +85,7 @@ import { ConfirmarEliminarModal } from "@/components/confirmar-eliminar-modal"
 import { FinalizarSorteoModal } from "@/components/finalizar-sorteo-modal"
 import { PremiosSecundariosManager } from "@/components/premios-secundarios-manager"
 import { ContenidoManager } from "@/components/contenido-manager"
+import { MailingManager } from "@/components/mailing-manager"
 import {
   obtenerSorteoActivo,
   obtenerTodosSorteos,
@@ -186,13 +188,25 @@ export default function BackofficePage() {
   const [eliminandoComprador, setEliminandoComprador] = useState(false)
   const { toast } = useToast()
 
-  // Verificar autenticación al cargar
+  // Verificar la cookie HttpOnly de sesión al cargar.
   useEffect(() => {
-    const authStatus = localStorage.getItem("admin_authenticated")
-    if (authStatus === "true") {
-      setIsAuthenticated(true)
+    let activo = true
+
+    fetch("/api/admin-session", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (activo) setIsAuthenticated(data.authenticated === true)
+      })
+      .catch(() => {
+        if (activo) setIsAuthenticated(false)
+      })
+      .finally(() => {
+        if (activo) setLoading(false)
+      })
+
+    return () => {
+      activo = false
     }
-    setLoading(false)
   }, [])
 
   // Cargar datos cuando esté autenticado
@@ -268,8 +282,8 @@ export default function BackofficePage() {
     setIsAuthenticated(true)
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin_authenticated")
+  const handleLogout = async () => {
+    await fetch("/api/admin-session", { method: "DELETE" }).catch(() => null)
     setIsAuthenticated(false)
   }
 
@@ -1022,6 +1036,13 @@ export default function BackofficePage() {
               <History className="w-4 h-4 mr-2" />
               Histórico
             </TabsTrigger>
+            <TabsTrigger
+              value="mailing"
+              className="data-[state=active]:bg-gray-100"
+            >
+              <Mail className="w-4 h-4 mr-2" />
+              Mailing
+            </TabsTrigger>
             {/* <TabsTrigger
               value="test"
               className="data-[state=active]:bg-gray-100"
@@ -1745,6 +1766,10 @@ export default function BackofficePage() {
               onRechazar={handleRechazarTransferencia}
               onContactar={handleContactarComprador}
             />
+          </TabsContent>
+
+          <TabsContent value="mailing" className="space-y-6">
+            <MailingManager sorteo={sorteoActual} />
           </TabsContent>
 
           <TabsContent value="historico" className="space-y-6">

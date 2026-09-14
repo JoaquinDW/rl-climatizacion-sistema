@@ -34,7 +34,6 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
       })
 
       if (res.ok) {
-        localStorage.setItem("admin_authenticated", "true")
         onLogin()
       } else {
         setError("Credenciales incorrectas")

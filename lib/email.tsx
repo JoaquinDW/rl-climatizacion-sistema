@@ -4,6 +4,19 @@ import { FROM_EMAIL, LOGO_PATH, MARCA, SITIO_URL } from "./marca"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>'"]/g, (character) => {
+    const entities: Record<string, string> = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#039;",
+      '"': "&quot;",
+    }
+    return entities[character]
+  })
+}
+
 // Paleta de marca (coincide con la landing: grafito, rojo y plata).
 // Duplicada acá a propósito: los emails no pueden usar clases de Tailwind.
 const COLORS = {
@@ -51,6 +64,71 @@ export async function enviarEmailConfirmacion(data: EmailData) {
   }
 }
 
+export interface MailingContenido {
+  asunto: string
+  titulo: string
+  mensaje: string
+  textoBoton?: string
+  urlBoton?: string
+  nombreSorteo?: string
+}
+
+export interface MailingDestinatario {
+  nombre: string
+  email: string
+}
+
+export async function enviarMailingPrueba(
+  destinatario: MailingDestinatario,
+  contenido: MailingContenido,
+) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [destinatario.email],
+      subject: `[PRUEBA] ${contenido.asunto}`,
+      html: generarHTMLMailing(destinatario, contenido, true),
+      tags: [{ name: "type", value: "mailing-test" }],
+    })
+
+    if (error) return { success: false as const, error }
+    return { success: true as const, data }
+  } catch (error) {
+    return { success: false as const, error }
+  }
+}
+
+export async function enviarCampanaMailing(
+  destinatarios: MailingDestinatario[],
+  contenido: MailingContenido,
+  campaignId: string,
+) {
+  const TAMANO_LOTE = 100
+  let enviados = 0
+
+  for (let inicio = 0; inicio < destinatarios.length; inicio += TAMANO_LOTE) {
+    const lote = destinatarios.slice(inicio, inicio + TAMANO_LOTE)
+    const { data, error } = await resend.batch.send(
+      lote.map((destinatario) => ({
+        from: FROM_EMAIL,
+        to: [destinatario.email],
+        subject: contenido.asunto,
+        html: generarHTMLMailing(destinatario, contenido),
+        tags: [{ name: "type", value: "mailing-campaign" }],
+      })),
+      { idempotencyKey: `${campaignId}-${inicio / TAMANO_LOTE}` },
+    )
+
+    if (error) {
+      return { success: false as const, enviados, error }
+    }
+
+    enviados += data?.data.length ?? lote.length
+  }
+
+  return { success: true as const, enviados }
+}
+
 // ---------------------------------------------------------------------------
 // Bloques reutilizables del template
 // ---------------------------------------------------------------------------
@@ -79,10 +157,10 @@ function emailLayout({
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark light" />
     <meta name="supported-color-schemes" content="dark light" />
-    <title>${title}</title>
+    <title>${escapeHtml(title)}</title>
   </head>
   <body style="margin:0; padding:0; background-color:${COLORS.bg}; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:transparent; font-size:1px; line-height:1px;">${preheader}</div>
+    <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:transparent; font-size:1px; line-height:1px;">${escapeHtml(preheader)}</div>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${COLORS.bg}; padding:24px 12px;">
       <tr>
         <td align="center">
@@ -101,8 +179,8 @@ function emailLayout({
                   </tr>
                 </table>
                 <p style="margin:18px 0 0 0; font-size:12px; font-weight:700; letter-spacing:3px; color:${COLORS.brandRedLight}; text-transform:uppercase;">${MARCA}</p>
-                <h1 style="margin:10px 0 6px 0; font-size:27px; font-weight:800; color:${COLORS.copy};">${title}</h1>
-                <p style="margin:0; font-size:15px; color:${COLORS.muted};">${subtitle}</p>
+                <h1 style="margin:10px 0 6px 0; font-size:27px; font-weight:800; color:${COLORS.copy};">${escapeHtml(title)}</h1>
+                <p style="margin:0; font-size:15px; color:${COLORS.muted};">${escapeHtml(subtitle)}</p>
               </td>
             </tr>
 
@@ -121,7 +199,7 @@ function emailLayout({
                 <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td align="center" style="background:rgba(255,255,255,0.03); border:1px solid ${accent}; border-radius:12px; padding:14px 18px;">
-                      <span style="font-size:16px; font-weight:700; color:${accent};">${badge.text}</span>
+                      <span style="font-size:16px; font-weight:700; color:${accent};">${escapeHtml(badge.text)}</span>
                     </td>
                   </tr>
                 </table>
@@ -174,7 +252,7 @@ function bloqueImagen(url?: string): string {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center" style="padding:28px 0 8px 0;">
-          <img src="${url}" alt="Imagen del sorteo" width="320" style="max-width:320px; width:100%; height:auto; border-radius:6px; border:3px solid ${COLORS.brandRed};" />
+          <img src="${escapeHtml(url)}" alt="Imagen del sorteo" width="320" style="max-width:320px; width:100%; height:auto; border-radius:6px; border:3px solid ${COLORS.brandRed};" />
         </td>
       </tr>
     </table>
@@ -190,12 +268,12 @@ function bloqueResumen(rows: Array<{ label: string; value: string }>): string {
           i < rows.length - 1
             ? "border-bottom:1px solid rgba(200,205,213,0.12);"
             : ""
-        }">${r.label}</td>
+        }">${escapeHtml(r.label)}</td>
         <td align="right" style="padding:10px 0; font-size:14px; font-weight:700; color:${COLORS.copy}; ${
           i < rows.length - 1
             ? "border-bottom:1px solid rgba(200,205,213,0.12);"
             : ""
-        }">${r.value}</td>
+        }">${escapeHtml(r.value)}</td>
       </tr>`,
     )
     .join("")
@@ -211,9 +289,60 @@ function bloqueSuerte(): string {
   return `<p style="text-align:center; font-size:17px; margin:26px 0 6px 0; color:${COLORS.brandRedLight}; font-weight:600;">Mucha suerte!</p>`
 }
 
+export function generarHTMLMailing(
+  destinatario: MailingDestinatario,
+  contenido: MailingContenido,
+  esPrueba = false,
+): string {
+  const parrafos = contenido.mensaje
+    .split(/\n{2,}/)
+    .map((parrafo) => parrafo.trim())
+    .filter(Boolean)
+    .map(
+      (parrafo) =>
+        `<p style="margin:0 0 16px 0;">${escapeHtml(parrafo).replace(/\n/g, "<br />")}</p>`,
+    )
+    .join("")
+
+  const boton =
+    contenido.textoBoton && contenido.urlBoton
+      ? `
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:28px auto 8px auto;">
+          <tr>
+            <td align="center" style="background:${COLORS.brandRed}; border-radius:6px; box-shadow:0 8px 24px rgba(207,24,52,0.28);">
+              <a href="${escapeHtml(contenido.urlBoton)}" style="display:inline-block; padding:14px 24px; color:#ffffff; font-size:14px; font-weight:800; letter-spacing:0.5px; text-decoration:none; text-transform:uppercase;">${escapeHtml(contenido.textoBoton)}</a>
+            </td>
+          </tr>
+        </table>`
+      : ""
+
+  const contexto = contenido.nombreSorteo
+    ? `<p style="margin:0 0 18px 0; color:${COLORS.brandRedLight}; font-size:12px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase;">${escapeHtml(contenido.nombreSorteo)}</p>`
+    : ""
+
+  const body = `
+    ${
+      esPrueba
+        ? `<p style="margin:0 0 18px 0; padding:10px 12px; border:1px solid ${COLORS.silver}; border-radius:6px; color:${COLORS.silver}; font-size:12px; font-weight:700; letter-spacing:1px; text-align:center; text-transform:uppercase;">Vista de prueba · no fue enviada a la audiencia</p>`
+        : ""
+    }
+    <p style="margin:0 0 18px 0;">Hola <strong style="color:${COLORS.copy};">${escapeHtml(destinatario.nombre || "Participante")}</strong>,</p>
+    ${contexto}
+    ${parrafos}
+    ${boton}
+  `
+
+  return emailLayout({
+    preheader: contenido.mensaje.replace(/\s+/g, " ").slice(0, 140),
+    title: contenido.titulo,
+    subtitle: "Novedades desde el paddock de Faustino Motors",
+    bodyHtml: body,
+  })
+}
+
 function generarHTMLEmail(data: EmailData): string {
   const body = `
-    <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${data.nombre}</strong>,</p>
+    <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${escapeHtml(data.nombre)}</strong>,</p>
     <p style="margin:0 0 22px 0;">Nos complace informarte que tu compra ha sido aprobada y tus números han sido asignados exitosamente.</p>
     ${bloqueNumeros(data.numerosAsignados)}
     ${bloqueImagen(data.sorteoImagenUrl)}
@@ -319,8 +448,8 @@ function generarHTMLTransferenciaAprobada(
   }
 
   const body = `
-    <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${data.nombre}</strong>,</p>
-    <p style="margin:0 0 22px 0;">${intro} <strong style="color:${COLORS.copy};">${data.nombreSorteo}</strong>.</p>
+    <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${escapeHtml(data.nombre)}</strong>,</p>
+    <p style="margin:0 0 22px 0;">${intro} <strong style="color:${COLORS.copy};">${escapeHtml(data.nombreSorteo)}</strong>.</p>
     ${bloqueNumeros(data.numerosAsignados)}
     ${bloqueResumen(filasResumen)}
     ${bloqueImagen(data.sorteoImagenUrl)}
@@ -378,8 +507,8 @@ function generarHTMLTransferenciaRechazada(
             <li>Puedes enviar un nuevo comprobante si es necesario</li>`
 
   const body = `
-    <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${data.nombre}</strong>,</p>
-    <p style="margin:0 0 22px 0;">${intro} <strong style="color:${COLORS.copy};">${data.nombreSorteo}</strong>.</p>
+    <p style="margin:0 0 14px 0;">Hola <strong style="color:${COLORS.copy};">${escapeHtml(data.nombre)}</strong>,</p>
+    <p style="margin:0 0 22px 0;">${intro} <strong style="color:${COLORS.copy};">${escapeHtml(data.nombreSorteo)}</strong>.</p>
     ${bloqueResumen(filasResumen)}
     ${
       data.motivo
@@ -388,7 +517,7 @@ function generarHTMLTransferenciaRechazada(
         <tr>
           <td style="padding:16px 18px;">
             <p style="margin:0 0 6px 0; font-weight:700; color:${COLORS.danger};">📋 Motivo</p>
-            <p style="margin:0; color:${COLORS.copy};">${data.motivo}</p>
+            <p style="margin:0; color:${COLORS.copy};">${escapeHtml(data.motivo)}</p>
           </td>
         </tr>
       </table>`

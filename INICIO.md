@@ -76,6 +76,10 @@ Es el único canal de notificaciones del sistema (no hay bot de WhatsApp).
 3. Pegar en `.env.local` como `RESEND_API_KEY`
 4. **Domains** → verificar el dominio de Faustino Motors
 
+Una clave con permiso **Sending access** es suficiente y es preferible a una clave
+con acceso total. El panel **Mailing** del backoffice permite enviar una prueba y luego
+una campaña segmentada a los contactos del sorteo activo.
+
 Hasta que el dominio esté verificado, los envíos desde `@rlclimatizacion.com.ar`
 van a fallar. Para probar antes de eso, usar el dominio de prueba `onboarding@resend.dev`
 en `RESEND_FROM_EMAIL`.
@@ -138,6 +142,12 @@ descripciones de los packs, imagen principal y carrusel.
 Las compras por transferencia **no** asignan números hasta que las aprobás
 manualmente en el backoffice. Las de MercadoPago se asignan solas al confirmarse el webhook.
 
+### Enviar un mailing
+
+En **Mailing** elegí la audiencia, redactá el asunto y el mensaje, revisá la vista
+previa y enviate primero una prueba. El envío final exige escribir `ENVIAR`; cada
+destinatario recibe un email individual y nunca ve las direcciones de los demás.
+
 ---
 
 ## 6. Variables de entorno — resumen
@@ -152,6 +162,7 @@ manualmente en el backoffice. Las de MercadoPago se asignan solas al confirmarse
 | `NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY` | MercadoPago Developers |
 | `RESEND_API_KEY` | resend.com → API Keys |
 | `RESEND_FROM_EMAIL` | Remitente verificado en Resend |
+| `ADMIN_SESSION_SECRET` | Secreto largo para firmar la sesión del backoffice (recomendado) |
 | `BLOB_READ_WRITE_TOKEN` | Vercel → Storage → Blob |
 | `CRON_SECRET` | Inventar un string aleatorio largo |
 | `TEST_EMAIL_TO` | Opcional: destino por defecto de `/api/test-email` |
