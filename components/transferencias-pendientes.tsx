@@ -40,6 +40,7 @@ import {
   FileText,
   AlertTriangle,
   Instagram,
+  CheckCircle2,
 } from "lucide-react"
 import type { Comprador } from "@/lib/supabase"
 import { useToast } from "@/hooks/use-toast"
@@ -390,36 +391,56 @@ export function TransferenciasPendientes({
 
       {/* Modal de confirmación de aprobación */}
       <Dialog open={modalAprobacion} onOpenChange={setModalAprobacion}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
+        <DialogContent className="max-w-md gap-5 border-slate-200 bg-white shadow-2xl">
+          <DialogHeader className="space-y-2 pr-7">
+            <DialogTitle className="text-xl font-bold text-slate-950">
               {gratisSeleccionado ? "Aprobar Participación" : "Aprobar Transferencia"}
             </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <p>
+            <p className="text-sm leading-6 text-slate-600">
               ¿Confirmas que quieres aprobar{" "}
               {gratisSeleccionado ? "la participación" : "la transferencia"} de{" "}
-              <strong>{compradorSeleccionado?.nombre}</strong>?
+              <strong className="font-semibold text-slate-900">
+                {compradorSeleccionado?.nombre}
+              </strong>
+              ?
             </p>
-            <div className="bg-green-50 p-4 rounded-lg">
-              <p className="text-sm text-green-800">
-                ✅ Se asignarán automáticamente{" "}
-                {compradorSeleccionado?.cantidad_chances} números únicos
-                <br />
-                ✅ Se le enviarán los números por email
-                <br />✅ El participante aparecerá en la lista oficial
-              </p>
-            </div>
+          </DialogHeader>
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+            <p className="mb-3 text-sm font-semibold text-emerald-950">
+              Al aprobar se realizará lo siguiente:
+            </p>
+            <ul className="space-y-2 text-sm text-emerald-900">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
+                <span>
+                  Se asignarán automáticamente{" "}
+                  <strong className="font-semibold">
+                    {compradorSeleccionado?.cantidad_chances} números únicos
+                  </strong>
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
+                <span>Se le enviarán los números por email</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
+                <span>El participante aparecerá en la lista oficial</span>
+              </li>
+            </ul>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setModalAprobacion(false)}>
+          <DialogFooter className="gap-2 sm:space-x-0">
+            <Button
+              variant="outline"
+              className="border-slate-300 bg-white text-slate-700 hover:bg-slate-100 hover:text-slate-950"
+              onClick={() => setModalAprobacion(false)}
+            >
               Cancelar
             </Button>
             <Button
               onClick={confirmarAprobacion}
               disabled={loading}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-emerald-600 font-semibold text-white hover:bg-emerald-700"
             >
               {loading
                 ? "Procesando..."
