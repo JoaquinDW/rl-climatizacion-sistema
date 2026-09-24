@@ -23,5 +23,5 @@ export const FROM_EMAIL =
     ? remitenteConfigurado
     : `${MARCA} <noreply@${DOMINIO}>`
 
-export const LOGO_PATH = "/logo-faustino.png"
+export const LOGO_PATH = "/logo-faustino.jpeg"
 export const INSTAGRAM_LIVE_URL = REDES_OFICIALES.instagram

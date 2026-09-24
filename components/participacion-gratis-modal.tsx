@@ -128,7 +128,7 @@ export function ParticipacionGratisModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-[#111318] text-white border border-[#ef4962]/20 px-1 py-10 lg:py-2 overflow-hidden max-h-[95vh] overflow-y-auto rounded-md">
+      <DialogContent className="sm:max-w-md bg-[#0d0c09] text-white border border-[#f0cf6a]/20 px-1 py-10 lg:py-2 overflow-hidden max-h-[95vh] overflow-y-auto rounded-md">
         {/* Header */}
         <div className="pt-8 pb-4 px-6 text-center">
           <h2 className="text-3xl font-display font-semibold uppercase tracking-tight text-brand-display">
@@ -140,7 +140,7 @@ export function ParticipacionGratisModal({
         </div>
 
         {/* Chances destacadas (reemplaza al bloque de monto a transferir) */}
-        <div className="mx-6 mb-4 rounded-md bg-[#1a1d23] border border-[#ef4962]/15 p-4 text-center">
+        <div className="mx-6 mb-4 rounded-md bg-[#17140d] border border-[#f0cf6a]/15 p-4 text-center">
           <p className="text-3xl font-black text-brand-display flex items-center justify-center gap-2">
             <Gift className="w-7 h-7 text-brand-accent" strokeWidth={1.5} />
             {precioLabel}
@@ -152,7 +152,7 @@ export function ParticipacionGratisModal({
 
         {/* Requisitos */}
         {listaRequisitos.length > 0 && (
-          <div className="mx-6 mb-5 rounded-md bg-[#1a1d23] border border-[#ef4962]/15 p-4">
+          <div className="mx-6 mb-5 rounded-md bg-[#17140d] border border-[#f0cf6a]/15 p-4">
             <p className="text-xs text-brand-muted uppercase tracking-widest mb-3 font-semibold">
               {requisitosTitulo}
             </p>
@@ -162,7 +162,7 @@ export function ParticipacionGratisModal({
                   key={`${index}-${requisito}`}
                   className="flex items-start gap-3"
                 >
-                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#ef4962]/15 text-[11px] font-bold text-brand-accent">
+                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#f0cf6a]/15 text-[11px] font-bold text-brand-accent">
                     {index + 1}
                   </span>
                   <span className="text-sm text-brand-copy leading-snug">
@@ -193,7 +193,7 @@ export function ParticipacionGratisModal({
               value={formData.nombre}
               onChange={handleInputChange}
               placeholder="Juan Pérez"
-              className="bg-[#1a1d23] border-[#c0c0c0]/15 text-white placeholder:text-[#686c73] focus:border-[#ef4962]/60 focus-visible:ring-[#ef4962]/25 h-11"
+              className="bg-[#17140d] border-[#d7c180]/15 text-white placeholder:text-[#8d856f] focus:border-[#f0cf6a]/60 focus-visible:ring-[#f0cf6a]/25 h-11"
               disabled={loading}
             />
           </div>
@@ -204,7 +204,7 @@ export function ParticipacionGratisModal({
               className="text-brand-muted text-xs mb-1 block"
             >
               Email *{" "}
-              <span className="text-[#686c73]">(recibís tus números acá)</span>
+              <span className="text-[#8d856f]">(recibís tus números acá)</span>
             </Label>
             <Input
               id="email-gratis"
@@ -214,7 +214,7 @@ export function ParticipacionGratisModal({
               value={formData.email}
               onChange={handleInputChange}
               placeholder="juan@email.com"
-              className="bg-[#1a1d23] border-[#c0c0c0]/15 text-white placeholder:text-[#686c73] focus:border-[#ef4962]/60 focus-visible:ring-[#ef4962]/25 h-11"
+              className="bg-[#17140d] border-[#d7c180]/15 text-white placeholder:text-[#8d856f] focus:border-[#f0cf6a]/60 focus-visible:ring-[#f0cf6a]/25 h-11"
               disabled={loading}
             />
           </div>
@@ -225,7 +225,7 @@ export function ParticipacionGratisModal({
               className="text-brand-muted text-xs mb-1 block"
             >
               WhatsApp *{" "}
-              <span className="text-[#686c73]">(para contactarte)</span>
+              <span className="text-[#8d856f]">(para contactarte)</span>
             </Label>
             <Input
               id="telefono-gratis"
@@ -235,7 +235,7 @@ export function ParticipacionGratisModal({
               value={formData.telefono}
               onChange={handleInputChange}
               placeholder="3794123456"
-              className="bg-[#1a1d23] border-[#c0c0c0]/15 text-white placeholder:text-[#686c73] focus:border-[#ef4962]/60 focus-visible:ring-[#ef4962]/25 h-11"
+              className="bg-[#17140d] border-[#d7c180]/15 text-white placeholder:text-[#8d856f] focus:border-[#f0cf6a]/60 focus-visible:ring-[#f0cf6a]/25 h-11"
               disabled={loading}
             />
           </div>
@@ -246,7 +246,7 @@ export function ParticipacionGratisModal({
               className="text-brand-muted text-xs mb-1 block"
             >
               Instagram *{" "}
-              <span className="text-[#686c73]">
+              <span className="text-[#8d856f]">
                 (verificamos que nos sigas)
               </span>
             </Label>
@@ -258,7 +258,7 @@ export function ParticipacionGratisModal({
               placeholder="@tuusuario"
               autoCapitalize="none"
               autoCorrect="off"
-              className="bg-[#1a1d23] border-[#c0c0c0]/15 text-white placeholder:text-[#686c73] focus:border-[#ef4962]/60 focus-visible:ring-[#ef4962]/25 h-11"
+              className="bg-[#17140d] border-[#d7c180]/15 text-white placeholder:text-[#8d856f] focus:border-[#f0cf6a]/60 focus-visible:ring-[#f0cf6a]/25 h-11"
               disabled={loading}
             />
           </div>
@@ -276,7 +276,7 @@ export function ParticipacionGratisModal({
               variant="ghost"
               onClick={handleClose}
               disabled={loading}
-              className="flex-1 text-brand-muted hover:text-white hover:bg-[#1a1d23] border border-[#c0c0c0]/20"
+              className="flex-1 text-brand-muted hover:text-white hover:bg-[#17140d] border border-[#d7c180]/20"
             >
               Cancelar
             </Button>

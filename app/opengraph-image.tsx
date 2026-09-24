@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 import { headers } from "next/headers"
-import logoFaustino from "@/public/logo-faustino.png"
+import logoFaustino from "@/public/logo-faustino.jpeg"
 import { MARCA } from "@/lib/marca"
 
 export const runtime = "edge"
@@ -25,9 +25,9 @@ export default async function OpenGraphImage() {
           justifyContent: "center",
           position: "relative",
           overflow: "hidden",
-          color: "#F4F4F2",
+          color: "#FFF9E8",
           background:
-            "radial-gradient(circle at 72% 20%, rgba(207,24,52,.24), transparent 34%), linear-gradient(135deg, #08090B 0%, #111318 58%, #08090B 100%)",
+            "radial-gradient(circle at 72% 20%, rgba(214, 168, 47,.24), transparent 34%), linear-gradient(135deg, #050505 0%, #0d0c09 58%, #050505 100%)",
         }}
       >
         <div
@@ -47,8 +47,8 @@ export default async function OpenGraphImage() {
             alignItems: "center",
             gap: 64,
             padding: "52px 64px",
-            border: "1px solid rgba(192,192,192,.24)",
-            borderTop: "6px solid #CF1834",
+            border: "1px solid rgba(215, 193, 128,.24)",
+            borderTop: "6px solid #D6A82F",
             background: "rgba(17,19,24,.86)",
             boxShadow: "0 32px 90px rgba(0,0,0,.46)",
           }}
@@ -56,15 +56,15 @@ export default async function OpenGraphImage() {
           {/* Se coloca el raster oficial sin modificar su geometría. */}
           <img
             src={logoUrl}
-            width="300"
-            height="300"
+            width="320"
+            height="240"
             alt=""
             style={{ objectFit: "contain" }}
           />
           <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <div
               style={{
-                color: "#CF1834",
+                color: "#D6A82F",
                 fontSize: 24,
                 fontWeight: 700,
                 letterSpacing: 8,
@@ -90,14 +90,14 @@ export default async function OpenGraphImage() {
                 width: 110,
                 height: 7,
                 marginTop: 32,
-                background: "#CF1834",
+                background: "#D6A82F",
                 transform: "skewX(-28deg)",
               }}
             />
             <div
               style={{
                 marginTop: 24,
-                color: "#C0C0C0",
+                color: "#D7C180",
                 fontSize: 27,
                 letterSpacing: 1,
               }}

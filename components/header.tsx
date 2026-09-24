@@ -17,19 +17,19 @@ export function Header({ marca = MARCA }: { marca?: string }) {
   const [menuAbierto, setMenuAbierto] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#08090b]/90 backdrop-blur-xl">
-      <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#cf1834] to-transparent opacity-80" />
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#050505]/90 backdrop-blur-xl">
+      <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#d6a82f] to-transparent opacity-80" />
       <div className="container mx-auto px-4">
         <div className="flex h-[4.75rem] items-center justify-between">
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-3">
-            <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-[#08090b] shadow-[0_10px_28px_rgba(0,0,0,.45)] transition-all duration-300 group-hover:border-[#cf1834]/70 group-hover:shadow-[0_10px_32px_rgba(207,24,52,.18)]">
+            <span className="relative flex h-14 w-[4.7rem] shrink-0 items-center justify-center overflow-hidden rounded-md border border-[#d7c180]/20 bg-[#050505] shadow-[0_10px_28px_rgba(0,0,0,.45)] transition-all duration-300 group-hover:border-[#d6a82f]/70 group-hover:shadow-[0_10px_32px_rgba(214,168,47,.18)]">
               <Image
                 src={LOGO_PATH}
                 alt={`Logo de ${marca}`}
-                width={150}
-                height={150}
-                className="h-full w-full object-cover"
+                width={362}
+                height={272}
+                className="h-full w-full object-contain"
                 priority
               />
             </span>

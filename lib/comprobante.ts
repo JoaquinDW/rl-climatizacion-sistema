@@ -35,13 +35,13 @@ function dibujarComprobante(
   // Espeja la paleta de app/globals.css. Duplicada porque el comprobante se
   // dibuja en canvas y no puede leer variables CSS ni clases de Tailwind.
   const C = {
-    bg: "#08090b",
-    redLight: "#ef4962",
-    red: "#cf1834",
-    redDeep: "#a90f28",
-    copy: "#f4f4f2",
-    muted: "#9a9da3",
-    dark: "#08090b",
+    bg: "#050505",
+    goldLight: "#f0cf6a",
+    gold: "#d6a82f",
+    goldDeep: "#b88718",
+    copy: "#fff9e8",
+    muted: "#b9b098",
+    dark: "#050505",
   }
 
   const roundRect = (x: number, y: number, w: number, h: number, r: number) => {
@@ -62,12 +62,12 @@ function dibujarComprobante(
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   const glow = ctx.createRadialGradient(canvas.width / 2, 0, 0, canvas.width / 2, 0, canvas.width * 0.7)
-  glow.addColorStop(0, "rgba(207, 24, 52, 0.16)")
-  glow.addColorStop(1, "rgba(207, 24, 52, 0)")
+  glow.addColorStop(0, "rgba(214, 168, 47, 0.16)")
+  glow.addColorStop(1, "rgba(214, 168, 47, 0)")
   ctx.fillStyle = glow
   ctx.fillRect(0, 0, canvas.width, 320)
 
-  ctx.strokeStyle = C.red
+  ctx.strokeStyle = C.gold
   ctx.lineWidth = 3
   roundRect(16, 16, canvas.width - 32, canvas.height - 32, 24)
   ctx.stroke()
@@ -76,15 +76,15 @@ function dibujarComprobante(
   const pillH = 56
   const pillX = (canvas.width - pillW) / 2
   const pillY = 48
-  // Franja roja de competición para el nombre de la marca.
+  // Franja dorada de competición para el nombre de la marca.
   const pillGrad = ctx.createLinearGradient(pillX, pillY, pillX + pillW, pillY)
-  pillGrad.addColorStop(0, C.redDeep)
-  pillGrad.addColorStop(0.5, C.red)
-  pillGrad.addColorStop(1, C.redLight)
+  pillGrad.addColorStop(0, C.goldDeep)
+  pillGrad.addColorStop(0.5, C.gold)
+  pillGrad.addColorStop(1, C.goldLight)
   ctx.fillStyle = pillGrad
   roundRect(pillX, pillY, pillW, pillH, 12)
   ctx.fill()
-  ctx.fillStyle = C.copy
+  ctx.fillStyle = "#080704"
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.textAlign = "center"
   ctx.textBaseline = "middle"
@@ -97,9 +97,9 @@ function dibujarComprobante(
   ctx.fillText("COMPROBANTE DE COMPRA", canvas.width / 2, 165)
 
   const lineGrad = ctx.createLinearGradient(150, 0, 650, 0)
-  lineGrad.addColorStop(0, "rgba(207, 24, 52, 0)")
-  lineGrad.addColorStop(0.5, C.red)
-  lineGrad.addColorStop(1, "rgba(207, 24, 52, 0)")
+  lineGrad.addColorStop(0, "rgba(214, 168, 47, 0)")
+  lineGrad.addColorStop(0.5, C.gold)
+  lineGrad.addColorStop(1, "rgba(214, 168, 47, 0)")
   ctx.strokeStyle = lineGrad
   ctx.lineWidth = 2
   ctx.beginPath()
@@ -112,7 +112,7 @@ function dibujarComprobante(
   ctx.textAlign = "left"
   ctx.fillText(`¡Estás participando por ${premio}!`, 50, 245)
 
-  ctx.fillStyle = C.redLight
+  ctx.fillStyle = C.goldLight
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText("Comprador", 50, 300)
   ctx.fillStyle = C.copy
@@ -144,7 +144,7 @@ function dibujarComprobante(
   // En un sorteo gratis el monto es 0: mostrar "Total Pagado: $0" no aporta nada
   if (comprador.precio_pagado != null && comprador.precio_pagado > 0) {
     yPos += 45
-    ctx.fillStyle = C.redLight
+    ctx.fillStyle = C.goldLight
     ctx.font = "bold 32px 'Barlow Condensed', 'Arial Narrow', Arial"
     ctx.fillText(`Total Pagado: $${comprador.precio_pagado.toLocaleString()}`, 50, yPos)
     yPos += 55
@@ -152,7 +152,7 @@ function dibujarComprobante(
     yPos += 40
   }
 
-  ctx.fillStyle = C.redLight
+  ctx.fillStyle = C.goldLight
   ctx.font = "bold 26px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText("Tus Números:", 50, yPos)
 
@@ -180,12 +180,12 @@ function dibujarComprobante(
     )
 
     const gradient = ctx.createLinearGradient(0, 8, 0, 24)
-    gradient.addColorStop(0, C.redLight)
-    gradient.addColorStop(1, C.red)
+    gradient.addColorStop(0, C.goldLight)
+    gradient.addColorStop(1, C.gold)
     ctx.fillStyle = gradient
     ctx.fill(ticketPath)
 
-    ctx.strokeStyle = C.redDeep
+    ctx.strokeStyle = C.goldDeep
     ctx.lineWidth = 0.6
     ctx.stroke(ticketPath)
 
@@ -202,9 +202,9 @@ function dibujarComprobante(
 
   yPos = canvas.height - 140
   const footGrad = ctx.createLinearGradient(150, 0, 650, 0)
-  footGrad.addColorStop(0, "rgba(207, 24, 52, 0)")
-  footGrad.addColorStop(0.5, "rgba(207, 24, 52, 0.55)")
-  footGrad.addColorStop(1, "rgba(207, 24, 52, 0)")
+  footGrad.addColorStop(0, "rgba(214, 168, 47, 0)")
+  footGrad.addColorStop(0.5, "rgba(214, 168, 47, 0.55)")
+  footGrad.addColorStop(1, "rgba(214, 168, 47, 0)")
   ctx.strokeStyle = footGrad
   ctx.lineWidth = 1
   ctx.beginPath()
@@ -223,7 +223,7 @@ function dibujarComprobante(
   )
 
   yPos += 40
-  ctx.fillStyle = C.redLight
+  ctx.fillStyle = C.goldLight
   ctx.font = "bold 22px 'Barlow Condensed', 'Arial Narrow', Arial"
   ctx.fillText("Mucha suerte!", canvas.width / 2, yPos)
 
