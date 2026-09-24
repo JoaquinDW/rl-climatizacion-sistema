@@ -61,7 +61,7 @@ export function RedesSociales({ contenido }: { contenido: ContenidoSitio }) {
                   rel="noopener noreferrer"
                   className="btn-brand-outline inline-flex w-full items-center justify-center gap-2.5 px-5 py-3 text-sm"
                 >
-                  <Icono className="h-4 w-4 text-[#ef4962]" />
+                  <Icono className="h-4 w-4 text-[#f0cf6a]" />
                   {red.etiqueta || red.url}
                 </a>
               </Reveal>

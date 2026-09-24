@@ -228,28 +228,28 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-[#2a2e36] bg-[#0b0d10] text-[#f4f4f2] shadow-2xl shadow-black/20">
+    <div className="overflow-hidden rounded-2xl border border-[#2c2618] bg-[#090806] text-[#fff9e8] shadow-2xl shadow-black/20">
       <div className="relative overflow-hidden border-b border-white/10 px-5 py-7 sm:px-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_92%_12%,rgba(207,24,52,0.25),transparent_34%),linear-gradient(120deg,rgba(255,255,255,0.03),transparent_45%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_92%_12%,rgba(214, 168, 47,0.25),transparent_34%),linear-gradient(120deg,rgba(255,255,255,0.03),transparent_45%)]" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="grid h-14 w-14 place-items-center rounded-lg border border-white/15 bg-black/40">
-              <img src="/logo-faustino.png" alt={MARCA} className="h-11 w-11 rounded object-contain" />
+            <div className="grid h-16 w-[5.35rem] place-items-center rounded-lg border border-[#d7c180]/20 bg-black/40">
+              <img src="/logo-faustino.jpeg" alt={MARCA} className="h-full w-full rounded object-contain" />
             </div>
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#ef4962]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#f0cf6a]">
                 Race communications
               </p>
               <h2 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">
-                Mailing <span className="text-[#c0c0c0]">Faustino</span>
+                Mailing <span className="text-[#d7c180]">Faustino</span>
               </h2>
-              <p className="mt-1 text-sm text-[#9a9da3]">{nombreSorteo}</p>
+              <p className="mt-1 text-sm text-[#b9b098]">{nombreSorteo}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-black/30 px-4 py-3">
-            <Gauge className="h-5 w-5 text-[#ef4962]" />
+            <Gauge className="h-5 w-5 text-[#f0cf6a]" />
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#686c73]">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#8d856f]">
                 Audiencia lista
               </p>
               <p className="text-lg font-black tabular-nums text-white">
@@ -264,7 +264,7 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
         <div className="space-y-8 border-b border-white/10 p-5 sm:p-8 lg:border-b-0 lg:border-r">
           <section>
             <div className="mb-4 flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-[#cf1834] text-xs font-black">1</span>
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-[#d6a82f] text-xs font-black">1</span>
               <h3 className="text-sm font-extrabold uppercase tracking-[0.14em]">Elegí la audiencia</h3>
             </div>
             <div className="grid gap-2 sm:grid-cols-3">
@@ -273,14 +273,14 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
                   key={opcion.value}
                   type="button"
                   onClick={() => setAudiencia(opcion.value)}
-                  className={`rounded-lg border p-3 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ef4962] ${
+                  className={`rounded-lg border p-3 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f0cf6a] ${
                     audiencia === opcion.value
-                      ? "border-[#cf1834] bg-[#cf1834]/12 shadow-[inset_0_0_0_1px_rgba(207,24,52,0.25)]"
+                      ? "border-[#d6a82f] bg-[#d6a82f]/12 shadow-[inset_0_0_0_1px_rgba(214, 168, 47,0.25)]"
                       : "border-white/10 bg-white/[0.025] hover:border-white/25 hover:bg-white/[0.05]"
                   }`}
                 >
                   <span className="block text-sm font-bold text-white">{opcion.label}</span>
-                  <span className="mt-1 block text-xs leading-5 text-[#9a9da3]">{opcion.description}</span>
+                  <span className="mt-1 block text-xs leading-5 text-[#b9b098]">{opcion.description}</span>
                 </button>
               ))}
             </div>
@@ -288,36 +288,36 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
 
           <section className="space-y-4">
             <div className="flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-[#cf1834] text-xs font-black">2</span>
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-[#d6a82f] text-xs font-black">2</span>
               <h3 className="text-sm font-extrabold uppercase tracking-[0.14em]">Armá el mensaje</h3>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="mailing-asunto" className="text-[#c0c0c0]">Asunto</Label>
+              <Label htmlFor="mailing-asunto" className="text-[#d7c180]">Asunto</Label>
               <Input
                 id="mailing-asunto"
                 value={contenido.asunto}
                 maxLength={140}
                 onChange={(event) => actualizarContenido("asunto", event.target.value)}
-                className="border-white/15 bg-white/[0.04] text-white placeholder:text-[#686c73] focus-visible:ring-[#cf1834]"
+                className="border-white/15 bg-white/[0.04] text-white placeholder:text-[#8d856f] focus-visible:ring-[#d6a82f]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="mailing-titulo" className="text-[#c0c0c0]">Título principal</Label>
+              <Label htmlFor="mailing-titulo" className="text-[#d7c180]">Título principal</Label>
               <Input
                 id="mailing-titulo"
                 value={contenido.titulo}
                 maxLength={90}
                 onChange={(event) => actualizarContenido("titulo", event.target.value)}
-                className="border-white/15 bg-white/[0.04] text-white placeholder:text-[#686c73] focus-visible:ring-[#cf1834]"
+                className="border-white/15 bg-white/[0.04] text-white placeholder:text-[#8d856f] focus-visible:ring-[#d6a82f]"
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="mailing-mensaje" className="text-[#c0c0c0]">Mensaje</Label>
-                <span className="text-xs tabular-nums text-[#686c73]">{contenido.mensaje.length}/5000</span>
+                <Label htmlFor="mailing-mensaje" className="text-[#d7c180]">Mensaje</Label>
+                <span className="text-xs tabular-nums text-[#8d856f]">{contenido.mensaje.length}/5000</span>
               </div>
               <Textarea
                 id="mailing-mensaje"
@@ -325,30 +325,30 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
                 maxLength={5000}
                 rows={8}
                 onChange={(event) => actualizarContenido("mensaje", event.target.value)}
-                className="resize-y border-white/15 bg-white/[0.04] leading-6 text-white placeholder:text-[#686c73] focus-visible:ring-[#cf1834]"
+                className="resize-y border-white/15 bg-white/[0.04] leading-6 text-white placeholder:text-[#8d856f] focus-visible:ring-[#d6a82f]"
               />
-              <p className="text-xs text-[#686c73]">Separá párrafos dejando una línea en blanco.</p>
+              <p className="text-xs text-[#8d856f]">Separá párrafos dejando una línea en blanco.</p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="mailing-boton" className="text-[#c0c0c0]">Texto del botón <span className="text-[#686c73]">(opcional)</span></Label>
+                <Label htmlFor="mailing-boton" className="text-[#d7c180]">Texto del botón <span className="text-[#8d856f]">(opcional)</span></Label>
                 <Input
                   id="mailing-boton"
                   value={contenido.textoBoton}
                   maxLength={40}
                   onChange={(event) => actualizarContenido("textoBoton", event.target.value)}
-                  className="border-white/15 bg-white/[0.04] text-white focus-visible:ring-[#cf1834]"
+                  className="border-white/15 bg-white/[0.04] text-white focus-visible:ring-[#d6a82f]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="mailing-url" className="text-[#c0c0c0]">URL del botón</Label>
+                <Label htmlFor="mailing-url" className="text-[#d7c180]">URL del botón</Label>
                 <Input
                   id="mailing-url"
                   type="url"
                   value={contenido.urlBoton}
                   onChange={(event) => actualizarContenido("urlBoton", event.target.value)}
-                  className="border-white/15 bg-white/[0.04] text-white focus-visible:ring-[#cf1834]"
+                  className="border-white/15 bg-white/[0.04] text-white focus-visible:ring-[#d6a82f]"
                 />
               </div>
             </div>
@@ -356,7 +356,7 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
 
           <section className="rounded-xl border border-white/10 bg-white/[0.025] p-4">
             <div className="mb-3 flex items-center gap-2">
-              <FlaskConical className="h-4 w-4 text-[#ef4962]" />
+              <FlaskConical className="h-4 w-4 text-[#f0cf6a]" />
               <h3 className="text-sm font-bold">Envío de prueba</h3>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -365,7 +365,7 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
                 value={emailPrueba}
                 onChange={(event) => setEmailPrueba(event.target.value)}
                 placeholder="tu@email.com"
-                className="border-white/15 bg-black/20 text-white placeholder:text-[#686c73] focus-visible:ring-[#cf1834]"
+                className="border-white/15 bg-black/20 text-white placeholder:text-[#8d856f] focus-visible:ring-[#d6a82f]"
               />
               <Button
                 type="button"
@@ -380,12 +380,12 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
             </div>
           </section>
 
-          <div className="flex flex-col gap-3 rounded-xl border border-[#cf1834]/30 bg-[#cf1834]/[0.07] p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 rounded-xl border border-[#d6a82f]/30 bg-[#d6a82f]/[0.07] p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex gap-3">
-              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#ef4962]" />
+              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#f0cf6a]" />
               <div>
                 <p className="text-sm font-bold">Doble confirmación activada</p>
-                <p className="mt-1 text-xs leading-5 text-[#9a9da3]">El envío final te pedirá escribir ENVIAR y nunca expone los destinatarios entre sí.</p>
+                <p className="mt-1 text-xs leading-5 text-[#b9b098]">El envío final te pedirá escribir ENVIAR y nunca expone los destinatarios entre sí.</p>
               </div>
             </div>
             <Button
@@ -395,7 +395,7 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
                 setConfirmacionAbierta(true)
               }}
               disabled={!contenidoValido || destinatarios === 0 || cargandoAudiencia}
-              className="shrink-0 bg-[#cf1834] font-bold text-white hover:bg-[#a90f28]"
+              className="shrink-0 bg-[#d6a82f] font-bold text-black hover:bg-[#efc558]"
             >
               <Send />
               Revisar envío
@@ -403,78 +403,78 @@ export function MailingManager({ sorteo }: MailingManagerProps) {
           </div>
         </div>
 
-        <aside className="bg-[#111318] p-5 sm:p-8">
+        <aside className="bg-[#0d0c09] p-5 sm:p-8">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#686c73]">Live preview</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#8d856f]">Live preview</p>
               <h3 className="mt-1 text-sm font-bold">Vista aproximada</h3>
             </div>
-            <Mail className="h-5 w-5 text-[#ef4962]" />
+            <Mail className="h-5 w-5 text-[#f0cf6a]" />
           </div>
 
-          <div className="overflow-hidden rounded-lg border border-[#cf1834]/30 bg-[#08090b] shadow-2xl shadow-black/40">
-            <div className="h-1 bg-[#cf1834]" />
+          <div className="overflow-hidden rounded-lg border border-[#d6a82f]/30 bg-[#050505] shadow-2xl shadow-black/40">
+            <div className="h-1 bg-[#d6a82f]" />
             <div className="px-5 py-7 text-center">
-              <img src="/logo-faustino.png" alt="" className="mx-auto h-16 w-16 rounded-md border border-white/15 bg-black object-contain p-1.5" />
-              <p className="mt-4 text-[9px] font-extrabold uppercase tracking-[0.28em] text-[#ef4962]">{MARCA}</p>
+              <img src="/logo-faustino.jpeg" alt="" className="mx-auto h-24 w-32 rounded-md border border-[#d7c180]/20 bg-black object-contain p-1.5" />
+              <p className="mt-4 text-[9px] font-extrabold uppercase tracking-[0.28em] text-[#f0cf6a]">{MARCA}</p>
               <h4 className="mt-2 break-words text-xl font-black leading-tight text-white">{contenido.titulo || "Título del email"}</h4>
-              <p className="mt-2 text-xs text-[#9a9da3]">Novedades desde el paddock de Faustino Motors</p>
-              <div className="mx-auto mt-5 h-px w-full bg-gradient-to-r from-transparent via-[#cf1834] to-transparent" />
+              <p className="mt-2 text-xs text-[#b9b098]">Novedades desde el paddock de Faustino Motors</p>
+              <div className="mx-auto mt-5 h-px w-full bg-gradient-to-r from-transparent via-[#d6a82f] to-transparent" />
             </div>
             <div className="px-5 pb-7 text-sm leading-6 text-[#d8d8d5]">
               <p className="mb-4">Hola <strong className="text-white">Participante</strong>,</p>
-              <p className="mb-4 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#ef4962]">{nombreSorteo}</p>
+              <p className="mb-4 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#f0cf6a]">{nombreSorteo}</p>
               {contenido.mensaje.split(/\n{2,}/).map((parrafo, index) => (
                 <p key={`${index}-${parrafo.slice(0, 10)}`} className="mb-4 whitespace-pre-line break-words">{parrafo || "Tu mensaje aparecerá acá."}</p>
               ))}
               {contenido.textoBoton && contenido.urlBoton ? (
                 <div className="pt-2 text-center">
-                  <span className="inline-block rounded-md bg-[#cf1834] px-5 py-3 text-[11px] font-black uppercase tracking-wide text-white">{contenido.textoBoton}</span>
+                  <span className="inline-block rounded-md bg-[#d6a82f] px-5 py-3 text-[11px] font-black uppercase tracking-wide text-black">{contenido.textoBoton}</span>
                 </div>
               ) : null}
             </div>
-            <div className="border-t border-white/10 px-5 py-4 text-center text-[9px] leading-4 text-[#686c73]">Email automático de {MARCA}</div>
+            <div className="border-t border-white/10 px-5 py-4 text-center text-[9px] leading-4 text-[#8d856f]">Email automático de {MARCA}</div>
           </div>
 
           <div className="mt-5 grid grid-cols-2 gap-3">
             <div className="rounded-lg border border-white/10 bg-black/20 p-3">
-              <Users className="mb-2 h-4 w-4 text-[#ef4962]" />
+              <Users className="mb-2 h-4 w-4 text-[#f0cf6a]" />
               <p className="text-xl font-black tabular-nums">{destinatarios}</p>
-              <p className="text-[10px] uppercase tracking-wider text-[#686c73]">Destinatarios únicos</p>
+              <p className="text-[10px] uppercase tracking-wider text-[#8d856f]">Destinatarios únicos</p>
             </div>
             <div className="rounded-lg border border-white/10 bg-black/20 p-3">
               <CheckCircle2 className="mb-2 h-4 w-4 text-emerald-400" />
               <p className="text-xl font-black">1 a 1</p>
-              <p className="text-[10px] uppercase tracking-wider text-[#686c73]">Privacidad de envío</p>
+              <p className="text-[10px] uppercase tracking-wider text-[#8d856f]">Privacidad de envío</p>
             </div>
           </div>
         </aside>
       </div>
 
       <Dialog open={confirmacionAbierta} onOpenChange={setConfirmacionAbierta}>
-        <DialogContent className="border-[#2a2e36] bg-[#111318] text-white sm:max-w-md">
+        <DialogContent className="border-[#2c2618] bg-[#0d0c09] text-white sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl">
-              <AlertTriangle className="h-5 w-5 text-[#ef4962]" />
+              <AlertTriangle className="h-5 w-5 text-[#f0cf6a]" />
               Confirmar campaña
             </DialogTitle>
-            <DialogDescription className="leading-6 text-[#9a9da3]">
+            <DialogDescription className="leading-6 text-[#b9b098]">
               Se enviará “{contenido.asunto}” a <strong className="text-white">{destinatarios} destinatarios</strong>. Esta acción no se puede deshacer.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2 py-2">
-            <Label htmlFor="confirmar-mailing" className="text-[#c0c0c0]">Escribí ENVIAR para continuar</Label>
+            <Label htmlFor="confirmar-mailing" className="text-[#d7c180]">Escribí ENVIAR para continuar</Label>
             <Input
               id="confirmar-mailing"
               value={confirmacion}
               onChange={(event) => setConfirmacion(event.target.value.toUpperCase())}
               autoComplete="off"
-              className="border-white/15 bg-black/30 font-mono text-white focus-visible:ring-[#cf1834]"
+              className="border-white/15 bg-black/30 font-mono text-white focus-visible:ring-[#d6a82f]"
             />
           </div>
           <DialogFooter className="gap-2 sm:gap-0">
             <Button type="button" variant="outline" onClick={() => setConfirmacionAbierta(false)} className="border-white/15 bg-transparent text-white hover:bg-white/10 hover:text-white">Cancelar</Button>
-            <Button type="button" onClick={enviarCampana} disabled={confirmacion !== "ENVIAR" || enviandoCampana} className="bg-[#cf1834] font-bold text-white hover:bg-[#a90f28]">
+            <Button type="button" onClick={enviarCampana} disabled={confirmacion !== "ENVIAR" || enviandoCampana} className="bg-[#d6a82f] font-bold text-black hover:bg-[#efc558]">
               {enviandoCampana ? <Loader2 className="animate-spin" /> : <Send />}
               {enviandoCampana ? "Enviando…" : "Enviar campaña"}
             </Button>

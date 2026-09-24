@@ -38,7 +38,7 @@ export function MetodoPagoSelector({
 
       <div className="card-brand p-5">
         <div className="flex items-start gap-3">
-          <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#cf1834]/15 ring-1 ring-[#ef4962]/25">
+          <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#d6a82f]/15 ring-1 ring-[#f0cf6a]/25">
             <Banknote className="h-5 w-5 text-brand-accent" />
           </span>
           <div className="min-w-0">

@@ -39,7 +39,7 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
       <CardContent className="p-0">
         <div className="grid md:grid-cols-2 gap-0">
           {/* Columna de imagen */}
-          <div className="relative bg-[#08090b] aspect-square md:aspect-[4/3] min-h-[400px]">
+          <div className="relative bg-[#050505] aspect-square md:aspect-[4/3] min-h-[400px]">
             {imagenes.length > 0 ? (
               <>
                 <div className="absolute inset-0 flex items-center justify-center p-8">
@@ -55,7 +55,7 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#ef4962] border border-[#ef4962]/25 rounded-full w-8 h-8"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#f0cf6a] border border-[#f0cf6a]/25 rounded-full w-8 h-8"
                       onClick={anteriorImagen}
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -63,7 +63,7 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#ef4962] border border-[#ef4962]/25 rounded-full w-8 h-8"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-[#f0cf6a] border border-[#f0cf6a]/25 rounded-full w-8 h-8"
                       onClick={siguienteImagen}
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -77,8 +77,8 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
                           onClick={() => setImagenActual(index)}
                           className={`h-1.5 rounded-full transition-all ${
                             index === imagenActual
-                              ? "bg-[#ef4962] w-5"
-                              : "bg-[#9a9da3]/40 hover:bg-[#9a9da3]/70 w-1.5"
+                              ? "bg-[#f0cf6a] w-5"
+                              : "bg-[#b9b098]/40 hover:bg-[#b9b098]/70 w-1.5"
                           }`}
                         />
                       ))}
@@ -88,8 +88,8 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
               </>
             ) : (
               <div className="h-full flex items-center justify-center p-8">
-                <div className="w-24 h-24 rounded-full bg-[#ef4962]/8 flex items-center justify-center border border-[#ef4962]/20">
-                  <Trophy className="h-12 w-12 text-[#ef4962]/40" />
+                <div className="w-24 h-24 rounded-full bg-[#f0cf6a]/8 flex items-center justify-center border border-[#f0cf6a]/20">
+                  <Trophy className="h-12 w-12 text-[#f0cf6a]/40" />
                 </div>
               </div>
             )}
@@ -118,14 +118,14 @@ function GanadorCard({ ganador, imagenes, formatearFecha }: GanadorCardProps) {
               </p>
               <Badge
                 variant="outline"
-                className="bg-[#c0c0c0]/5 text-brand-copy border-[#c0c0c0]/20 text-sm px-3 py-0.5"
+                className="bg-[#d7c180]/5 text-brand-copy border-[#d7c180]/20 text-sm px-3 py-0.5"
               >
                 <DollarSign className="h-3 w-3 mr-1" />
                 {ganador.precio_premio}
               </Badge>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 pt-5 border-t border-[#c0c0c0]/10">
+            <div className="grid grid-cols-2 gap-4 pt-5 border-t border-[#d7c180]/10">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-1.5 text-xs text-brand-muted uppercase tracking-wider">
                   <Calendar className="h-3 w-3" />
@@ -190,8 +190,8 @@ export function GanadoresPasados({
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#ef4962]/8 rounded-full mb-4 border border-[#ef4962]/20">
-              <Trophy className="h-6 w-6 text-[#ef4962]/60" />
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#f0cf6a]/8 rounded-full mb-4 border border-[#f0cf6a]/20">
+              <Trophy className="h-6 w-6 text-[#f0cf6a]/60" />
             </div>
             <h2 className="text-5xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-4">
               {contenido.pasados_titulo}
@@ -236,8 +236,8 @@ export function GanadoresPasados({
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent mb-3">
               {contenido.pasados_kicker}
             </p>
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#ef4962]/8 rounded-full mb-4 border border-[#ef4962]/20">
-              <Trophy className="h-6 w-6 text-[#ef4962]/70" />
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#f0cf6a]/8 rounded-full mb-4 border border-[#f0cf6a]/20">
+              <Trophy className="h-6 w-6 text-[#f0cf6a]/70" />
             </div>
             <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy mb-3">
               {contenido.pasados_titulo}

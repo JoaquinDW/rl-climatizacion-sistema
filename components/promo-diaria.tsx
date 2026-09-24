@@ -42,7 +42,7 @@ export function PromoDiaria({ sorteoId, promo: promoProp }: PromoDiariaProps) {
     <Reveal variant="right" delay={100}>
       <div className="card-brand p-6 md:p-8 h-full flex flex-col">
         <div className="flex items-center gap-2 mb-4">
-          <Gift className="w-4 h-4 text-[#ef4962]" />
+          <Gift className="w-4 h-4 text-[#f0cf6a]" />
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent">
             {promo.titulo}
           </p>
@@ -65,7 +65,7 @@ export function PromoDiaria({ sorteoId, promo: promoProp }: PromoDiariaProps) {
           <div className="mt-auto pt-4">
             <div className="divider-brand mb-3" />
             <div className="flex items-center gap-2">
-              <Trophy className="w-4 h-4 text-[#ef4962] flex-shrink-0" />
+              <Trophy className="w-4 h-4 text-[#f0cf6a] flex-shrink-0" />
               <p className="text-xs text-brand-muted">
                 Último ganador:{" "}
                 <span className="text-brand-copy font-semibold">

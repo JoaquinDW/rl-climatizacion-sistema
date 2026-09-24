@@ -442,7 +442,7 @@ export default function LandingPage() {
     return (
       <div className="min-h-screen bg-brand flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-2 border-[#ef4962] border-t-transparent rounded-full animate-spin mx-auto opacity-80"></div>
+          <div className="w-12 h-12 border-2 border-[#f0cf6a] border-t-transparent rounded-full animate-spin mx-auto opacity-80"></div>
           <p className="text-brand-muted text-sm tracking-[0.3em] uppercase">
             Cargando
           </p>
@@ -457,11 +457,11 @@ export default function LandingPage() {
         <Header marca={contenido.marca} />
         <div className="flex-1 flex items-center justify-center px-4">
           <div className="text-center space-y-6 max-w-md">
-            <div className="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-[#08090b] shadow-[0_24px_70px_rgba(207,24,52,.18)]">
+            <div className="mx-auto flex h-36 w-48 items-center justify-center overflow-hidden rounded-md border border-[#d7c180]/20 bg-[#050505] shadow-[0_24px_70px_rgba(214,168,47,.18)]">
               <img
                 src={LOGO_PATH}
                 alt={contenido.marca}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
             </div>
             <div className="space-y-2">
@@ -485,7 +485,7 @@ export default function LandingPage() {
           </div>
         </div>
         <RedesSociales contenido={contenido} />
-        <footer className="border-t border-[#ef4962]/10 py-6">
+        <footer className="border-t border-[#f0cf6a]/10 py-6">
           <div className="container mx-auto px-4 text-center text-brand-muted text-xs tracking-wide">
             <p>{contenido.footer_copyright}</p>
           </div>
@@ -502,8 +502,8 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-white/[0.04]">
-        <div className="pointer-events-none absolute -right-32 top-14 h-[28rem] w-[28rem] rounded-full bg-[#cf1834]/10 blur-[110px]" />
-        <div className="pointer-events-none absolute left-[-12%] top-1/3 h-px w-[62%] -rotate-6 bg-gradient-to-r from-transparent via-[#cf1834]/45 to-transparent" />
+        <div className="pointer-events-none absolute -right-32 top-14 h-[28rem] w-[28rem] rounded-full bg-[#d6a82f]/10 blur-[110px]" />
+        <div className="pointer-events-none absolute left-[-12%] top-1/3 h-px w-[62%] -rotate-6 bg-gradient-to-r from-transparent via-[#d6a82f]/45 to-transparent" />
         <div className="pointer-events-none absolute left-[-8%] top-[38%] h-px w-[48%] -rotate-6 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
         <div className="relative container mx-auto px-4 pt-14 pb-16 lg:pt-24 lg:pb-24">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -800,7 +800,7 @@ export default function LandingPage() {
                         key={`${index}-${requisito}`}
                         className="flex items-start gap-4"
                       >
-                        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#ef4962]/15 num-display text-sm font-bold text-brand-accent">
+                        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#f0cf6a]/15 num-display text-sm font-bold text-brand-accent">
                           {index + 1}
                         </span>
                         <span className="text-base text-brand-copy leading-snug pt-0.5">
@@ -881,7 +881,7 @@ export default function LandingPage() {
                   <Reveal variant="right" delay={100}>
                     <div className="card-brand p-6 md:p-8 h-full">
                       <div className="flex items-center gap-2 mb-4">
-                        <Trophy className="w-4 h-4 text-[#ef4962]" />
+                        <Trophy className="w-4 h-4 text-[#f0cf6a]" />
                         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent">
                           {contenido.premios_sec_label}
                         </p>
@@ -1127,11 +1127,11 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <span className="flex items-center gap-2.5">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-[#08090b]">
+              <span className="flex h-12 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-[#d7c180]/20 bg-[#050505]">
                 <img
                   src={LOGO_PATH}
                   alt={`Logo de ${contenido.marca}`}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                 />
               </span>
               <span className="font-display text-lg font-semibold uppercase tracking-[0.06em] text-brand-display">
@@ -1155,7 +1155,7 @@ export default function LandingPage() {
               </Link>
             </div>
           </div>
-          <div className="border-t border-[#c0c0c0]/10 mt-6 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+          <div className="border-t border-[#d7c180]/10 mt-6 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2">
             <p className="text-brand-muted text-xs opacity-70">
               {contenido.footer_copyright}
             </p>

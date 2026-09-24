@@ -47,7 +47,7 @@ export function GanadoresExpress({
             {contenido.express_kicker}
           </p>
           <h2 className="text-5xl lg:text-6xl font-display font-semibold uppercase tracking-tight text-brand-copy flex items-center justify-center gap-3">
-            <Trophy className="w-7 h-7 text-[#ef4962]" />
+            <Trophy className="w-7 h-7 text-[#f0cf6a]" />
             {contenido.express_titulo}
           </h2>
         </Reveal>
@@ -75,7 +75,7 @@ export function GanadoresExpress({
                   <p className="text-brand-muted text-sm font-medium truncate">
                     {ganador.nombre_ganador || "Anónimo"}
                   </p>
-                  <Trophy className="w-4 h-4 text-[#ef4962]/70 flex-shrink-0" />
+                  <Trophy className="w-4 h-4 text-[#f0cf6a]/70 flex-shrink-0" />
                 </div>
               </div>
             </Reveal>

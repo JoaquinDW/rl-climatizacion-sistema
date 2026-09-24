@@ -83,7 +83,7 @@ export function CountdownCierre({
 
   if (restante && restante.total <= 0) return null
 
-  // Última hora: se resalta en ámbar/rojo para marcar urgencia
+  // Última hora: se resalta con el oro más claro para marcar urgencia
   const urgente = restante !== null && restante.total < 60 * 60 * 1000
   const mostrarDias = restante === null || restante.dias > 0
 
@@ -94,7 +94,7 @@ export function CountdownCierre({
 
     return (
       <div
-        className="fixed bottom-0 inset-x-0 z-40 sm:hidden border-t border-[#ef4962]/20 bg-[#08090b]/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
+        className="fixed bottom-0 inset-x-0 z-40 sm:hidden border-t border-[#f0cf6a]/20 bg-[#050505]/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
         role="timer"
       >
         <div className="flex items-center justify-between gap-3 px-4 py-3">
@@ -104,7 +104,7 @@ export function CountdownCierre({
             </p>
             <p
               className={`font-mono text-lg font-semibold tabular-nums leading-tight ${
-                urgente ? "text-[#f4b3bd]" : "text-brand-accent"
+                urgente ? "text-[#f7e1a0]" : "text-brand-accent"
               }`}
               aria-hidden="true"
             >
@@ -135,13 +135,13 @@ export function CountdownCierre({
   return (
     <div
       className={`card-brand p-5 sm:p-6 space-y-4 text-left ${
-        urgente ? "border-[#f4b3bd]/40" : ""
+        urgente ? "border-[#f7e1a0]/40" : ""
       }`}
       role="timer"
     >
       <div className="flex items-center gap-2">
         <Clock
-          className={`w-3.5 h-3.5 shrink-0 ${urgente ? "text-[#f4b3bd]" : "text-brand-accent"}`}
+          className={`w-3.5 h-3.5 shrink-0 ${urgente ? "text-[#f7e1a0]" : "text-brand-accent"}`}
         />
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-muted">
           {kicker}
@@ -157,8 +157,8 @@ export function CountdownCierre({
             key={bloque.etiqueta}
             className={`rounded-xl border px-2 py-3 text-center ${
               urgente
-                ? "border-[#f4b3bd]/25 bg-[#f4b3bd]/[0.06]"
-                : "border-[#ef4962]/15 bg-[#ef4962]/[0.04]"
+                ? "border-[#f7e1a0]/25 bg-[#f7e1a0]/[0.06]"
+                : "border-[#f0cf6a]/15 bg-[#f0cf6a]/[0.04]"
             } ${
               urgente && index === bloques.length - 1
                 ? "animate-pulse motion-reduce:animate-none"
@@ -167,7 +167,7 @@ export function CountdownCierre({
           >
             <span
               className={`block num-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-none ${
-                urgente ? "text-[#f4b3bd]" : "text-brand-display"
+                urgente ? "text-[#f7e1a0]" : "text-brand-display"
               }`}
             >
               {bloque.valor === undefined ? "--" : dosDigitos(bloque.valor)}

@@ -65,10 +65,9 @@ La identidad (nombre, dominio, remitente de email, logo) vive en
 [`lib/marca.ts`](lib/marca.ts). Es la fuente única: cambiar ahí se propaga a metadata,
 emails, comprobantes y textos por defecto del sitio.
 
-El archivo [`public/logo-faustino.png`](public/logo-faustino.png) es una copia exacta
-del logo oficial recibido (raster de 150×150 px). Los íconos web son redimensiones
-determinísticas; no existe una reconstrucción vectorial y su nitidez máxima queda
-limitada por la resolución de ese original.
+El archivo [`public/logo-faustino.jpeg`](public/logo-faustino.jpeg) es una copia exacta
+del logo oficial recibido (raster de 1448×1086 px). Los íconos web son redimensiones
+determinísticas del mismo original; no existe una reconstrucción vectorial.
 
 ## Seguridad
 

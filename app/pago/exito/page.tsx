@@ -205,15 +205,15 @@ function PagoExitoContent() {
           </div>
         </div>
 
-        <div className="mt-5 rounded-md border border-[#ef4962]/22 bg-[#cf1834]/[0.08] p-4">
+        <div className="mt-5 rounded-md border border-[#f0cf6a]/22 bg-[#d6a82f]/[0.08] p-4">
           <p className="text-sm leading-relaxed text-brand-muted">
             <strong className="text-brand-accent">Importante:</strong> vas a
             recibir un email de confirmación con todos los detalles de tu compra.
           </p>
         </div>
 
-        <div className="mt-5 rounded-md border border-[#ef4962]/25 bg-[#cf1834]/[0.07] p-4 text-center">
-          <p className="text-sm font-semibold text-[#f4b3bd]">
+        <div className="mt-5 rounded-md border border-[#f0cf6a]/25 bg-[#d6a82f]/[0.07] p-4 text-center">
+          <p className="text-sm font-semibold text-[#f7e1a0]">
             El ganador se anuncia al vender el 100% de los números
           </p>
         </div>
@@ -235,7 +235,7 @@ function PantallaCargando({ texto }: { texto: string }) {
     <div className="bg-brand flex min-h-screen items-center justify-center px-4">
       <div className="card-brand-soft w-full max-w-md p-9 text-center">
         <BrandSignature className="mb-7" />
-        <div className="mx-auto mb-5 h-11 w-11 animate-spin rounded-full border-2 border-[#ef4962] border-t-transparent opacity-80" />
+        <div className="mx-auto mb-5 h-11 w-11 animate-spin rounded-full border-2 border-[#f0cf6a] border-t-transparent opacity-80" />
         <h2 className="font-display text-2xl font-semibold uppercase tracking-tight text-brand-copy">
           Confirmando pago
         </h2>
