@@ -70,42 +70,41 @@ export default function PremioCarousel() {
   return (
     <div className="relative mx-auto w-full max-w-md sm:max-w-lg md:max-w-2xl">
       <div className="pointer-events-none absolute -inset-4 -z-10 border border-[#d6a82f]/12 bg-[#d6a82f]/[0.025] [clip-path:polygon(0_0,calc(100%-28px)_0,100%_28px,100%_100%,28px_100%,0_calc(100%-28px))]" />
-      <div
-        className="overflow-hidden rounded-md border border-white/15 bg-[#0b0a07] shadow-[0_28px_80px_rgba(0,0,0,0.56)]"
-        ref={emblaRef as any}
-      >
+      <div className="overflow-hidden rounded-md border border-white/15 bg-[#0b0a07] shadow-[0_28px_80px_rgba(0,0,0,0.56)]">
         <div className="flex h-8 items-center justify-between border-b border-white/10 bg-[#0d0c09] px-3">
           <span className="h-1.5 w-16 -skew-x-[28deg] bg-[#d6a82f]" />
           <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-brand-muted">
             Premio destacado
           </span>
         </div>
-        <div className="flex">
-          {finalSlides.map((src, idx) => (
-            <div key={idx} className="min-w-full flex-shrink-0">
-              <div className="relative overflow-hidden h-[500px] sm:h-[600px] md:h-[700px]">
-                {/* Imagen de fondo difuminada para llenar los espacios */}
-                <div className="absolute inset-0">
-                  <Image
-                    src={src}
-                    alt=""
-                    fill
-                    className="object-cover blur-2xl scale-110 opacity-50"
-                  />
-                </div>
-                {/* Imagen principal */}
-                <div className="relative w-full h-full">
-                  <Image
-                    src={src}
-                    alt={`Slide ${idx + 1}`}
-                    fill
-                    className="object-contain"
-                    priority={idx === 0}
-                  />
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {finalSlides.map((src, idx) => (
+              <div key={idx} className="min-w-full flex-shrink-0">
+                <div className="relative overflow-hidden h-[500px] sm:h-[600px] md:h-[700px]">
+                  {/* Imagen de fondo difuminada para llenar los espacios */}
+                  <div className="absolute inset-0">
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      className="object-cover blur-2xl scale-110 opacity-50"
+                    />
+                  </div>
+                  {/* Imagen principal */}
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={src}
+                      alt={`Slide ${idx + 1}`}
+                      fill
+                      className="object-contain"
+                      priority={idx === 0}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
