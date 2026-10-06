@@ -74,6 +74,7 @@ import { EditarPacksModal } from "@/components/editar-packs-modal"
 import { EditarTituloModal } from "@/components/editar-titulo-modal"
 import { EditarCuentaTransferenciaModal } from "@/components/editar-cuenta-transferencia-modal"
 import { EditarFechaSorteoModal } from "@/components/editar-fecha-sorteo-modal"
+import { EditarTotalChancesModal } from "@/components/editar-total-chances-modal"
 import { TestSorteos } from "@/components/test-sorteos"
 import { CarouselManager } from "@/components/carousel-manager"
 import { GestionGanadores } from "@/components/gestion-ganadores"
@@ -159,6 +160,8 @@ export default function BackofficePage() {
   const [editarTituloModalAbierto, setEditarTituloModalAbierto] =
     useState(false)
   const [editarFechaModalAbierto, setEditarFechaModalAbierto] = useState(false)
+  const [editarTotalChancesModalAbierto, setEditarTotalChancesModalAbierto] =
+    useState(false)
   const [
     editarCuentaTransferenciaModalAbierto,
     setEditarCuentaTransferenciaModalAbierto,
@@ -824,6 +827,15 @@ export default function BackofficePage() {
     await cargarDatos()
   }
 
+  const handleTotalChancesActualizado = (sorteoActualizado: Sorteo) => {
+    setSorteoActual(sorteoActualizado)
+    setTodosSorteos((sorteos) =>
+      sorteos.map((sorteo) =>
+        sorteo.id === sorteoActualizado.id ? sorteoActualizado : sorteo,
+      ),
+    )
+  }
+
   // Si no está autenticado, mostrar login
   if (!isAuthenticated) {
     return <AdminLogin onLogin={handleLogin} />
@@ -899,6 +911,12 @@ export default function BackofficePage() {
                     >
                       <Edit className="w-4 h-4 mr-2 text-purple-600" />
                       Editar Packs
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setEditarTotalChancesModalAbierto(true)}
+                    >
+                      <Hash className="w-4 h-4 mr-2 text-blue-600" />
+                      Editar total de chances
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() =>
@@ -1286,11 +1304,27 @@ export default function BackofficePage() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
+                        <div className="flex items-center gap-1">
                           <span className="text-gray-500">Total chances:</span>
-                          <span className="text-gray-900 ml-2 font-medium">
-                            {sorteoActual.total_chances}
+                          <span className="text-gray-900 ml-1 font-medium">
+                            {sorteoActual.total_chances.toLocaleString("es-AR")}
                           </span>
+                          {["activo", "completo"].includes(
+                            sorteoActual.estado,
+                          ) && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 px-2 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+                              onClick={() =>
+                                setEditarTotalChancesModalAbierto(true)
+                              }
+                            >
+                              <Edit className="mr-1 h-3.5 w-3.5" />
+                              Editar
+                            </Button>
+                          )}
                         </div>
                         <div>
                           <span className="text-gray-500">Sorteo:</span>
@@ -2167,6 +2201,17 @@ export default function BackofficePage() {
           onSuccess={handlePacksActualizados}
         />
       )}
+
+      {sorteoActual &&
+        ["activo", "completo"].includes(sorteoActual.estado) && (
+          <EditarTotalChancesModal
+            open={editarTotalChancesModalAbierto}
+            onOpenChange={setEditarTotalChancesModalAbierto}
+            sorteo={sorteoActual}
+            chancesVendidas={estadisticas.chancesVendidas}
+            onTotalActualizado={handleTotalChancesActualizado}
+          />
+        )}
 
       <ConfirmarEliminarModal
         isOpen={confirmarEliminarModalAbierto}

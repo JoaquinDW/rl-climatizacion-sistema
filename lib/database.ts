@@ -604,6 +604,195 @@ export async function actualizarPreciosSorteo(
   }
 }
 
+export interface ResultadoActualizarTotalChances {
+  exitoso: boolean
+  mensaje: string
+  sorteo?: Sorteo
+}
+
+// Actualizar el rango de chances sin invalidar números ya entregados.
+// Si un sorteo completo se amplía, vuelve a estar activo para poder seguir
+// vendiendo hasta alcanzar el nuevo total.
+export async function actualizarTotalChancesSorteo(
+  sorteoId: string,
+  nuevoTotal: number,
+): Promise<ResultadoActualizarTotalChances> {
+  try {
+    if (sorteoId === "default") {
+      return {
+        exitoso: false,
+        mensaje: "No se puede editar el sorteo de demostración.",
+      }
+    }
+
+    if (!Number.isSafeInteger(nuevoTotal) || nuevoTotal <= 0) {
+      return {
+        exitoso: false,
+        mensaje: "El total de chances debe ser un número entero mayor a 0.",
+      }
+    }
+
+    const tablasExisten = await verificarTablas()
+    if (!tablasExisten) {
+      return {
+        exitoso: false,
+        mensaje: "No se pudo acceder a la base de datos.",
+      }
+    }
+
+    const { data: sorteoActual, error: errorSorteo } = await supabase
+      .from("sorteos")
+      .select("total_chances, estado")
+      .eq("id", sorteoId)
+      .single()
+
+    if (errorSorteo || !sorteoActual) {
+      console.error(
+        "Error obteniendo sorteo para actualizar chances:",
+        errorSorteo,
+      )
+      return { exitoso: false, mensaje: "No se encontró el sorteo." }
+    }
+
+    if (!["activo", "completo"].includes(sorteoActual.estado)) {
+      return {
+        exitoso: false,
+        mensaje:
+          "Sólo se puede cambiar el total de un sorteo activo o completo.",
+      }
+    }
+
+    const { data: estadisticasData, error: errorEstadisticas } = await supabase
+      .rpc("obtener_estadisticas_sorteo", {
+        sorteo_id_param: sorteoId,
+      })
+      .single()
+
+    if (errorEstadisticas || !estadisticasData) {
+      console.error(
+        "Error obteniendo estadísticas para actualizar chances:",
+        errorEstadisticas,
+      )
+      return {
+        exitoso: false,
+        mensaje: "No se pudieron validar las chances ya vendidas.",
+      }
+    }
+
+    const { chances_vendidas: chancesVendidasRaw } = estadisticasData as {
+      chances_vendidas: number | string
+    }
+    const chancesVendidas = Number(chancesVendidasRaw)
+    if (!Number.isFinite(chancesVendidas)) {
+      return {
+        exitoso: false,
+        mensaje: "La cantidad de chances vendidas no es válida.",
+      }
+    }
+
+    if (nuevoTotal < chancesVendidas) {
+      return {
+        exitoso: false,
+        mensaje: `El nuevo total no puede ser menor a las ${chancesVendidas.toLocaleString("es-AR")} chances ya vendidas.`,
+      }
+    }
+
+    // Al achicar el rango también hay que comprobar el número más alto ya
+    // asignado. Se pagina para no depender del límite de 1.000 filas de la API.
+    if (nuevoTotal < sorteoActual.total_chances) {
+      let desde = 0
+      const tamanioPagina = 1000
+      let numeroMasAlto = -1
+      let hayMas = true
+
+      while (hayMas) {
+        const { data: compradores, error: errorCompradores } = await supabase
+          .from("compradores")
+          .select("numeros_asignados")
+          .eq("sorteo_id", sorteoId)
+          .eq("estado_pago", "pagado")
+          .range(desde, desde + tamanioPagina - 1)
+
+        if (errorCompradores) {
+          console.error(
+            "Error validando números antes de actualizar chances:",
+            errorCompradores,
+          )
+          return {
+            exitoso: false,
+            mensaje: "No se pudieron validar los números ya asignados.",
+          }
+        }
+
+        for (const comprador of compradores || []) {
+          for (const numero of comprador.numeros_asignados || []) {
+            if (numero > numeroMasAlto) numeroMasAlto = numero
+          }
+        }
+
+        hayMas = (compradores?.length || 0) === tamanioPagina
+        desde += tamanioPagina
+      }
+
+      if (numeroMasAlto > nuevoTotal) {
+        return {
+          exitoso: false,
+          mensaje: `No se puede reducir a ${nuevoTotal.toLocaleString("es-AR")}: ya fue asignado el número ${numeroMasAlto.toLocaleString("es-AR")}.`,
+        }
+      }
+    }
+
+    const reactivarSorteo =
+      sorteoActual.estado === "completo" && chancesVendidas < nuevoTotal
+
+    const cambios: {
+      total_chances: number
+      updated_at: string
+      estado?: string
+      fecha_sorteo_realizado?: null
+    } = {
+      total_chances: nuevoTotal,
+      updated_at: new Date().toISOString(),
+    }
+
+    if (reactivarSorteo) {
+      cambios.estado = "activo"
+      cambios.fecha_sorteo_realizado = null
+    }
+
+    const { data: sorteoActualizado, error: errorUpdate } = await supabase
+      .from("sorteos")
+      .update(cambios)
+      .eq("id", sorteoId)
+      .eq("total_chances", sorteoActual.total_chances)
+      .select("*")
+      .single()
+
+    if (errorUpdate || !sorteoActualizado) {
+      console.error("Error actualizando total de chances:", errorUpdate)
+      return {
+        exitoso: false,
+        mensaje:
+          "No se pudo actualizar el total. Recargá el panel e intentá nuevamente.",
+      }
+    }
+
+    return {
+      exitoso: true,
+      mensaje: reactivarSorteo
+        ? "El total se actualizó y el sorteo volvió a estar activo."
+        : "El total de chances se actualizó correctamente.",
+      sorteo: sorteoActualizado as Sorteo,
+    }
+  } catch (error) {
+    console.error("Error actualizando total de chances:", error)
+    return {
+      exitoso: false,
+      mensaje: "Ocurrió un error al actualizar el total de chances.",
+    }
+  }
+}
+
 export async function actualizarNombreSorteo(
   sorteoId: string,
   nombre: string
