@@ -14,6 +14,7 @@ import { ArrowLeft, ShoppingCart, CreditCard } from "lucide-react"
 import { MetodoPagoSelector } from "./metodo-pago-selector"
 import { TransferenciaModal } from "./transferencia-modal"
 import { ParticipacionGratisModal } from "./participacion-gratis-modal"
+import type { RedSocial } from "@/lib/contenido"
 
 interface CompraModalProps {
   isOpen: boolean
@@ -37,6 +38,7 @@ interface CompraModalProps {
   gratisPrecioLabel?: string
   gratisRequisitosTitulo?: string
   gratisRequisitos?: string
+  gratisRedes?: RedSocial[]
   gratisNota?: string
 }
 
@@ -51,6 +53,7 @@ export function CompraModalNuevo({
   gratisPrecioLabel,
   gratisRequisitosTitulo,
   gratisRequisitos,
+  gratisRedes,
   gratisNota,
 }: CompraModalProps) {
   const [paso, setPaso] = useState<"metodo" | "datos-mp" | "transferencia">(
@@ -355,6 +358,7 @@ export function CompraModalNuevo({
           precioLabel={gratisPrecioLabel}
           requisitosTitulo={gratisRequisitosTitulo}
           requisitos={gratisRequisitos}
+          redes={gratisRedes}
           nota={gratisNota}
         />
       ) : (

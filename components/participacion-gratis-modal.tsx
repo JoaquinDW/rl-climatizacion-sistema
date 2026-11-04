@@ -8,6 +8,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Gift } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { TextoConLinksRedes } from "@/components/texto-con-links-redes"
+import type { RedSocial } from "@/lib/contenido"
 
 interface ParticipacionGratisModalProps {
   isOpen: boolean
@@ -24,6 +25,7 @@ interface ParticipacionGratisModalProps {
   precioLabel?: string
   requisitosTitulo?: string
   requisitos?: string
+  redes?: RedSocial[]
   nota?: string
 }
 
@@ -35,6 +37,7 @@ export function ParticipacionGratisModal({
   precioLabel = "GRATIS",
   requisitosTitulo = "Cómo participar",
   requisitos = "",
+  redes = [],
   nota = "",
 }: ParticipacionGratisModalProps) {
   const [formData, setFormData] = useState({
@@ -167,7 +170,7 @@ export function ParticipacionGratisModal({
                     {index + 1}
                   </span>
                   <span className="text-sm text-brand-copy leading-snug">
-                    <TextoConLinksRedes texto={requisito} />
+                    <TextoConLinksRedes texto={requisito} redes={redes} />
                   </span>
                 </li>
               ))}
