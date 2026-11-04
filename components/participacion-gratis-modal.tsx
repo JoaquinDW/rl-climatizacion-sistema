@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Gift } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { TextoConLinksRedes } from "@/components/texto-con-links-redes"
 
 interface ParticipacionGratisModalProps {
   isOpen: boolean
@@ -166,7 +167,7 @@ export function ParticipacionGratisModal({
                     {index + 1}
                   </span>
                   <span className="text-sm text-brand-copy leading-snug">
-                    {requisito}
+                    <TextoConLinksRedes texto={requisito} />
                   </span>
                 </li>
               ))}
