@@ -21,6 +21,7 @@ import { GanadoresExpress } from "@/components/ganadores-express"
 import { PromoDiaria } from "@/components/promo-diaria"
 import { MuralGanadores } from "@/components/mural-ganadores"
 import { RedesSociales } from "@/components/redes-sociales"
+import { TextoConLinksRedes } from "@/components/texto-con-links-redes"
 import { Reveal } from "@/components/reveal"
 import { MotorsportDivider } from "@/components/motorsport-divider"
 import dynamic from "next/dynamic"
@@ -804,7 +805,7 @@ export default function LandingPage() {
                           {index + 1}
                         </span>
                         <span className="text-base text-brand-copy leading-snug pt-0.5">
-                          {requisito}
+                          <TextoConLinksRedes texto={requisito} />
                         </span>
                       </li>
                     ))}
