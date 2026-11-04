@@ -805,7 +805,10 @@ export default function LandingPage() {
                           {index + 1}
                         </span>
                         <span className="text-base text-brand-copy leading-snug pt-0.5">
-                          <TextoConLinksRedes texto={requisito} />
+                          <TextoConLinksRedes
+                            texto={requisito}
+                            redes={contenido.redes}
+                          />
                         </span>
                       </li>
                     ))}
@@ -1183,6 +1186,7 @@ export default function LandingPage() {
         gratisPrecioLabel={contenido.gratis_precio_label}
         gratisRequisitosTitulo={contenido.gratis_requisitos_titulo}
         gratisRequisitos={contenido.gratis_requisitos}
+        gratisRedes={contenido.redes}
         gratisNota={contenido.gratis_nota}
       />
 
